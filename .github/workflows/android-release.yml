@@ -38,8 +38,6 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
         with:
-          api-level: 37
-          build-tools-version: 36.0.0
           packages: |
             platform-tools
             platforms;android-28
