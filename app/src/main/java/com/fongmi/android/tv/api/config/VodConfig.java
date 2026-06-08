@@ -180,9 +180,13 @@ public class VodConfig extends BaseConfig {
     }
 
     private void initSite(Config config, JsonObject object) {
-        String spider = Json.safeString(object, "spider");
+        String spider = UrlUtil.resolve(config.getUrl(), Json.safeString(object, "spider"));
         BaseLoader.get().parseJar(spider, true);
         setSites(Json.safeListElement(object, "sites").stream().map(e -> Site.objectFrom(e, spider)).distinct().collect(Collectors.toCollection(ArrayList::new)));
+        for (Site site : getSites()) {
+            String jar = site.getJar();
+            if (!TextUtils.isEmpty(jar) && !jar.startsWith("assets://")) site.setJar(UrlUtil.resolve(config.getUrl(), jar));
+        }
         Map<String, Site> items = Site.findAll().stream().collect(Collectors.toMap(Site::getKey, Function.identity()));
         getSites().forEach(site -> site.sync(items.get(site.getKey())));
         CustomCspSetting.Result custom = CustomCspSetting.inject(getSites());

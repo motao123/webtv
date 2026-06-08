@@ -6,6 +6,7 @@ import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.utils.Download;
 import com.fongmi.android.tv.utils.UrlUtil;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.crawler.SpiderNull;
 import com.github.catvod.utils.Path;
 import com.github.catvod.utils.Util;
@@ -95,13 +96,19 @@ public class JarLoader {
                 File file = Download.create(jar, Path.jar(jar)).get();
                 if (Path.exists(file) && (hash.isEmpty() || verify(file, hashType, hash))) load(key, file);
             } else if (jar.startsWith("http")) {
-                if (hash.isEmpty()) return;
+                if (hash.isEmpty()) {
+                    SpiderDebug.log("jar", "rejected remote jar without ;sha256;/;md5; key=%s url=%s", key, jar);
+                    return;
+                }
                 File file = Download.create(jar, Path.jar(jar)).get();
                 if (!verify(file, hashType, hash)) {
                     Path.clear(file);
+                    SpiderDebug.log("jar", "hash mismatch key=%s url=%s type=%s", key, jar, hashType);
                     return;
                 }
                 load(key, file);
+            } else {
+                SpiderDebug.log("jar", "skipped unrecognized jar key=%s url=%s", key, jar);
             } else if (jar.startsWith("file")) {
                 File file = Path.local(jar);
                 if (Path.exists(file) && (hash.isEmpty() || verify(file, hashType, hash))) load(key, file);

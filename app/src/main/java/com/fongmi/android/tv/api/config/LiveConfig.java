@@ -194,9 +194,13 @@ public class LiveConfig extends BaseConfig {
     }
 
     private void initLive(Config config, JsonObject object) {
-        String spider = Json.safeString(object, "spider");
+        String spider = UrlUtil.resolve(config.getUrl(), Json.safeString(object, "spider"));
         BaseLoader.get().parseJar(spider, false);
         setLives(Json.safeListElement(object, "lives").stream().map(e -> Live.objectFrom(e, spider)).distinct().collect(Collectors.toCollection(ArrayList::new)));
+        for (Live live : getLives()) {
+            String jar = live.getJar();
+            if (!TextUtils.isEmpty(jar) && !jar.startsWith("assets://")) live.setJar(UrlUtil.resolve(config.getUrl(), jar));
+        }
         finishLive(config, spider);
     }
 

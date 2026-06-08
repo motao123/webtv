@@ -480,7 +480,34 @@ keyAlias=your_alias
 storePassword=your_password
 ```
 
-当前播放层依赖：
+## 配置源维护：补 JAR 哈希
+
+5.5.3 起，远程 `jar` 字段必须带 `;sha256;<64位小写hex>` 才能加载（详见上文 [安全加固 → 远程 JAR 加载](#远程-jar-加载)）。很多老 TVBox 配置源还在用裸 `./spider.jar`，装进 5.5.3 之后会出现「首页空、搜索报错」。
+
+仓库自带 `tools/patch_jar_hashes.py` 自动给配置源补 SHA-256：
+
+```bash
+# 1. 看看会处理哪些 jar
+python tools/patch_jar_hashes.py <config_url> --dry-run
+
+# 2. 真的下载并算哈希，输出修补版到 patched.json
+python tools/patch_jar_hashes.py <config_url> -o patched.json
+
+# 3. 把 patched.json 上传到自己的服务器（或 GitHub Gist / Pages），
+#    然后在 App 设置里把配置地址改成那份新的 URL
+```
+
+工具会：
+
+- 按 RFC 3986 把 `./spider.jar`、`../lib/x.jar` 解析成绝对 URL
+- 跳过 `assets://` / `file://` 本地 jar
+- 跳过作者已经带 `;sha256;` / `;md5;` 的 jar
+- 把 SHA-256 拼到 jar 字段末尾，其他字段不动
+- `report` 写到 stderr，明确列出每个 jar 的状态 / 哈希
+
+仅 stdlib（`urllib` / `hashlib` / `json`），Python 3.7+ 直接跑。
+
+## 当前播放层依赖
 
 - `app/libs/*.aar`：内置 Hook、TVBus、Thunder、ForceTech、JianPian 等播放能力依赖。
 - `third_party/maven`：已生成的 `androidx.media3:*:1.10.1-fongmi` 本地 Maven 产物。
