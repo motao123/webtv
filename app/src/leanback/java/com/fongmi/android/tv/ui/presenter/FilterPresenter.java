@@ -1,0 +1,57 @@
+package com.fongmi.android.tv.ui.presenter;
+
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.leanback.widget.Presenter;
+
+import com.fongmi.android.tv.bean.Value;
+import com.fongmi.android.tv.databinding.AdapterFilterBinding;
+
+public class FilterPresenter extends Presenter {
+
+    private OnClickListener listener;
+    private final String mKey;
+
+    public FilterPresenter(String key) {
+        mKey = key;
+    }
+
+    public interface OnClickListener {
+        void onItemClick(String key, Value item);
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        this.listener = listener;
+    }
+
+    @NonNull
+    @Override
+    public Presenter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent) {
+        return new ViewHolder(AdapterFilterBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull Presenter.ViewHolder viewHolder, Object object) {
+        Value item = (Value) object;
+        ViewHolder holder = (ViewHolder) viewHolder;
+        holder.binding.text.setText(item.getN());
+        holder.binding.text.setSelected(item.isSelected());
+        setOnClickListener(holder, view -> listener.onItemClick(mKey, item));
+    }
+
+    @Override
+    public void onUnbindViewHolder(@NonNull Presenter.ViewHolder viewHolder) {
+    }
+
+    public static class ViewHolder extends Presenter.ViewHolder {
+
+        private final AdapterFilterBinding binding;
+
+        public ViewHolder(@NonNull AdapterFilterBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+    }
+}

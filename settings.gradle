@@ -1,0 +1,28 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+        google()
+    }
+}
+
+plugins {
+    id "org.gradle.toolchains.foojay-resolver-convention" version "1.0.0"
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven { url = uri("$rootDir/third_party/maven") }
+        mavenCentral()
+        google()
+        flatDir { dirs "$rootDir/app/libs" }
+        maven { url = "https://jitpack.io" }
+    }
+}
+
+include ':app'
+include ':catvod'
+include ':chaquo'
+include ':quickjs'
+rootProject.name = "TV"

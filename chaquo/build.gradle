@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.library'
+    id 'com.chaquo.python'
+}
+
+android {
+    namespace = 'com.fongmi.chaquo'
+
+    compileSdk libs.versions.compileSdk.get().toInteger()
+
+    defaultConfig {
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+        python {
+            version = "3.10"
+            pip {
+                install("-r", "requirements.txt")
+            }
+        }
+    }
+
+    flavorDimensions = ["abi"]
+
+    productFlavors {
+        arm64_v8a {
+            dimension "abi"
+            ndk { abiFilters "arm64-v8a" }
+        }
+        armeabi_v7a {
+            dimension "abi"
+            ndk { abiFilters "armeabi-v7a" }
+        }
+    }
+
+    sourceSets {
+        main {
+            python.srcDirs = ["src/main/python"]
+        }
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+dependencies {
+    implementation project(':catvod')
+    coreLibraryDesugaring libs.desugar
+}

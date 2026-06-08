@@ -1,0 +1,131 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "androidx.media3",
+    "module": "media3-datasource",
+    "version": "1.10.1-fongmi",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "8.13"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.media3",
+          "module": "media3-common",
+          "version": {
+            "requires": "1.10.1-fongmi"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-database",
+          "version": {
+            "requires": "1.10.1-fongmi"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "media3-datasource-1.10.1-fongmi.aar",
+          "url": "media3-datasource-1.10.1-fongmi.aar",
+          "size": 179905,
+          "sha512": "5cb6d6af06ad99ae43a9a807324d2762d1b82bce59a4d825d361b811df4d46196be02624790490553f9947d2083f9c64678b2f605e426e196f608efd3ba545a8",
+          "sha256": "f68372b232cdf3fc4ce23ad20cbdd0cb4ae0e179d86c10130efcbb14cc7ffc92",
+          "sha1": "2f44cf849e348cf2e6a603ad8295f478f323bc4c",
+          "md5": "a76c43d382700b534c68267744a81682"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.annotation",
+          "module": "annotation",
+          "version": {
+            "requires": "1.6.0"
+          }
+        },
+        {
+          "group": "androidx.exifinterface",
+          "module": "exifinterface",
+          "version": {
+            "requires": "1.3.6"
+          }
+        },
+        {
+          "group": "com.hierynomus",
+          "module": "smbj",
+          "version": {
+            "requires": "0.14.0"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-common",
+          "version": {
+            "requires": "1.10.1-fongmi"
+          }
+        },
+        {
+          "group": "androidx.media3",
+          "module": "media3-database",
+          "version": {
+            "requires": "1.10.1-fongmi"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "media3-datasource-1.10.1-fongmi.aar",
+          "url": "media3-datasource-1.10.1-fongmi.aar",
+          "size": 179905,
+          "sha512": "5cb6d6af06ad99ae43a9a807324d2762d1b82bce59a4d825d361b811df4d46196be02624790490553f9947d2083f9c64678b2f605e426e196f608efd3ba545a8",
+          "sha256": "f68372b232cdf3fc4ce23ad20cbdd0cb4ae0e179d86c10130efcbb14cc7ffc92",
+          "sha1": "2f44cf849e348cf2e6a603ad8295f478f323bc4c",
+          "md5": "a76c43d382700b534c68267744a81682"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "media3-datasource-1.10.1-fongmi-sources.jar",
+          "url": "media3-datasource-1.10.1-fongmi-sources.jar",
+          "size": 145199,
+          "sha512": "c717527e3060b2d3d8130b3ab39037cad5029832c502f1096ab77612d852bcc2c6310e87af23f06da81deb8b1f6dff8aa80017fcd37a9b442c7bb112fd5a5ccd",
+          "sha256": "9779fa7a9f2c411214a2d4e9183e043b505fae3d718033a453d7fd090ae0e958",
+          "sha1": "ab770410e8a6ed17295ad8c41960ceb9f9d9019b",
+          "md5": "52eceaf7b43754fdbc9a7215fcf42682"
+        }
+      ]
+    }
+  ]
+}

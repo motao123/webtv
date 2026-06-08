@@ -1,0 +1,14 @@
+{
+  "fongmi_media": {
+    "repo": "https://github.com/FongMi/media.git",
+    "branch": "release-1.10.1-fongmi",
+    "commit": "4d26e566e2d291356216b58124ce3c489ca2a4d3",
+    "version": "1.10.1-fongmi"
+  },
+  "fongmi_nextlib": {
+    "repo": "https://github.com/FongMi/nextlib.git",
+    "branch": "fongmi",
+    "commit": "6ff6cf9d0820382b3c233d018c52e4163b09d345",
+    "version": "1.10.0-0.12.1"
+  }
+}

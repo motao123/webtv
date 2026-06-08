@@ -1,0 +1,20 @@
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
+    <!-- Home -->
+    <string name="home_vod">Vod</string>
+    <string name="home_live">Live</string>
+    <string name="home_search">Search</string>
+    <string name="home_keep">Keep</string>
+    <string name="home_push">Push</string>
+    <string name="home_setting">Setting</string>
+    <string name="home_history">History</string>
+    <string name="home_recommend">Recommend</string>
+
+    <!-- Collect -->
+    <string name="collect_result">Search results for <xliff:g name="name">%s</xliff:g></string>
+
+    <!-- Push -->
+    <string name="push_clip">Push clipboard content</string>
+    <string name="push_info">Scan QR Code or enter the URL in browser\n<xliff:g name="name">%s</xliff:g></string>
+
+</resources>

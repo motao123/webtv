@@ -1,0 +1,505 @@
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
+    <!-- App -->
+    <string name="app_name">TV</string>
+
+    <!-- Live -->
+    <string name="live_pass">Pass</string>
+    <string name="live_refresh">Refresh</string>
+    <string name="live_line">Line <xliff:g name="name">%s</xliff:g></string>
+
+    <!-- Detail -->
+    <string name="detail_title"><xliff:g name="name">%s</xliff:g> : <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_site">Site: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_year">Year: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_area">Area: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_type">Type: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_director">Director: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_actor">Actor: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_content">Summary: <xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_desc">Summary</string>
+
+    <!-- Keep -->
+    <string name="keep">Keep</string>
+    <string name="keep_add">Added</string>
+    <string name="keep_del">Removed</string>
+
+    <!-- Play -->
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="play_op">OP</string>
+    <string name="play_ed">ED</string>
+    <string name="play_exo">EXO</string>
+    <string name="play_next">Next</string>
+    <string name="play_prev">Prev</string>
+    <string name="play_stop">Stop</string>
+    <string name="play_repeat">Repeat</string>
+    <string name="play_forward">→</string>
+    <string name="play_backward">←</string>
+    <string name="play_speed">1.00</string>
+    <string name="play_reset">Reset</string>
+    <string name="play_decode">Hard</string>
+    <string name="play_timer">Timer</string>
+    <string name="play_title">Chapter</string>
+    <string name="play_scale">Default</string>
+    <string name="play_config">Config</string>
+    <string name="play_change">Change</string>
+    <string name="play_fullscreen">Fullscreen</string>
+    <string name="play_exit_fullscreen">Exit full</string>
+    <string name="play_invert">Invert</string>
+    <string name="play_across">Across</string>
+    <string name="play_reverse">Reverse</string>
+    <string name="play_track_text">Text</string>
+    <string name="play_track_audio">Audio</string>
+    <string name="play_track_video">Video</string>
+    <string name="offset_text">Text offset</string>
+    <string name="offset_audio">Audio offset</string>
+    <string name="offset_setting">Offset settings</string>
+    <string name="play_forward_hint">Normal play switched</string>
+    <string name="play_backward_hint">Reverse play switched</string>
+    <string name="play_ready">Ready to play: <xliff:g name="name">%s</xliff:g></string>
+    <string name="play_switch_flag">Switching flag to <xliff:g name="name">%s</xliff:g></string>
+    <string name="play_switch_site">Switching site to <xliff:g name="name">%s</xliff:g></string>
+    <string name="play_switch_parse">Switching parse to <xliff:g name="name">%s</xliff:g></string>
+
+    <!-- Danmaku Setting -->
+    <string name="danmaku">Danmaku</string>
+    <string name="danmaku_select">Select danmaku</string>
+    <string name="danmaku_setting">Danmaku setting</string>
+    <string name="danmaku_text_size">Text scale</string>
+    <string name="danmaku_transparency">Opacity</string>
+    <string name="danmaku_text_bold">Bold</string>
+    <string name="danmaku_style_mode">Text style</string>
+    <string name="danmaku_style_none">None</string>
+    <string name="danmaku_style_shadow">Shadow</string>
+    <string name="danmaku_style_stroke">Stroke</string>
+    <string name="danmaku_style_projection">Projection</string>
+    <string name="danmaku_shadow_transparency">Shadow opacity</string>
+    <string name="danmaku_stroke_width">Stroke width</string>
+    <string name="danmaku_projection_offset_x">Projection offset X</string>
+    <string name="danmaku_projection_offset_y">Projection offset Y</string>
+    <string name="danmaku_projection_transparency">Projection opacity</string>
+    <string name="danmaku_color_mode">Color mode</string>
+    <string name="danmaku_color_default">Default</string>
+    <string name="danmaku_color_colorful">Colorful</string>
+    <string name="danmaku_color_gradient">Gradient</string>
+    <string name="danmaku_color_override_hint">Original colors will be ignored</string>
+    <string name="danmaku_auto">Auto</string>
+    <string name="danmaku_duration">Scroll duration</string>
+    <string name="danmaku_fixed_duration">Fixed duration</string>
+    <string name="danmaku_time_offset">Time offset</string>
+    <string name="danmaku_max_on_screen">Max on screen</string>
+    <string name="danmaku_scroll_area_ratio">Scroll area</string>
+    <string name="danmaku_max_scroll_lines">Max scroll rows</string>
+    <string name="danmaku_max_top_lines">Max top rows</string>
+    <string name="danmaku_max_bottom_lines">Max bottom rows</string>
+    <string name="danmaku_line_spacing">Line gap</string>
+    <string name="danmaku_scroll_gap_ratio">Row gap</string>
+    <string name="danmaku_show_scroll">Scrolling</string>
+    <string name="danmaku_show_top">Top pinned</string>
+    <string name="danmaku_show_bottom">Bottom pinned</string>
+    <string name="danmaku_show_reverse">Reverse scroll</string>
+    <string name="danmaku_show_positioned">Positioned</string>
+    <string name="danmaku_show_subtitle">Subtitle type</string>
+    <string name="danmaku_show_special">Special type</string>
+    <string name="danmaku_section_appearance">Appearance</string>
+    <string name="danmaku_section_display">Display</string>
+    <string name="danmaku_section_timing">Timing</string>
+    <string name="danmaku_section_density">Density</string>
+    <string name="danmaku_reset">Reset</string>
+
+    <!-- Parse -->
+    <string name="parse">Parse</string>
+    <string name="parse_god">Super</string>
+    <string name="parse_from">Parse from: <xliff:g name="name">%s</xliff:g></string>
+
+    <!-- Push -->
+    <string name="push">Push</string>
+    <string name="push_image" translatable="false">data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCADwAPADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACvN7bxhffFCaRPB+oWZ8KSQX1h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g74M+K1mbfxR4fs9UYLtS5ZNlxH/ALkq4dfoDitbp7mFmtjGvNNudPbbcQtH6NjIP41518fo5NY8G+FfAFsxS88da3DaTbSQy2ULCWdwRzwFX8GNTyfBX4nfCdd/w38bf8JHoqf8yx4w/ertzkrFcDkdwAQoHcml+F9n4v8AiP8AHCLxZ4w8H3Xg6Hwxop020sZ3WSF7yaQmWWGQcOvlhVyOOcZOKaVtbkt30seofFbVo/C/gCS2s9Y07w3dXTRabp9xqUBmt/NcgLEYwDuDKGXFdhptmun6fa2qrGiwRLEFhQRoAoAwqjhRxwB0p11ZW98ipcwRXCK6yKsqBgGByGGe4PQ1PUFhRRRSGFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAVhePP+RH8Rf9g64/9FNW7WD483HwN4i2RvK/9nXOI413Mx8puAO5NNbgfB/jX4kWV58A/hN8NZdQaw0u40+PVvEl1Dy0NjHI2yMdi7sPlU9XEQ/ir6Q+DPw1vPGOt6f8RfGGljTBZ262/hTwww/d6LZgAK7L/wA92ULk/wAIAHYBfFf2N/2XJtelsfiN47tWeKIRjR9LuoyN4jUIk8in+EBRsB643dMZ+6K1m0tEYwTerCiiisTYKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAP/Z</string>
+
+    <!-- Setting -->
+    <string name="setting_vod">Vod</string>
+    <string name="setting_live">Live</string>
+    <string name="setting_wall">Wallpaper</string>
+    <string name="setting_player">Player setting</string>
+    <string name="setting_danmaku">Danmaku setting</string>
+    <string name="setting_enhance">Enhancements</string>
+    <string name="setting_debug_log">Debug log</string>
+    <string name="setting_manage_page">Management page</string>
+    <string name="setting_site_health_sort">Site health ranking</string>
+    <string name="setting_site_health_enable">Enable site health ranking</string>
+    <string name="setting_site_health_dialog_sort">Sort site dialog</string>
+    <string name="site_health_clear_done">Site health data cleared</string>
+    <string name="setting_web_home_extension">WebHome extensions</string>
+    <string name="web_home_extension_clear_done">WebHome extension cache cleared</string>
+    <string name="web_home_extension_empty">No extensions yet. Tap Add to create a local script or add an external source.</string>
+    <string name="web_home_extension_add_source">Add</string>
+    <string name="web_home_extension_debug">Debug</string>
+    <string name="web_home_extension_refresh">Refresh</string>
+    <string name="web_home_extension_clear_cache">Clear cache</string>
+    <string name="web_home_extension_user_sources">User sources</string>
+    <string name="web_home_extension_loaded_extensions">Loaded extensions</string>
+    <string name="web_home_extension_user_source_status">User source · %1$s</string>
+    <string name="web_home_extension_site_scope">Site: %1$s</string>
+    <string name="web_home_extension_add_file">File</string>
+    <string name="web_home_extension_add_link">Link</string>
+    <string name="web_home_extension_add_code">Code</string>
+    <string name="web_home_extension_add_form">Form</string>
+    <string name="web_home_extension_form_mode">Form</string>
+    <string name="web_home_extension_text_mode">Text (JSON)</string>
+    <string name="web_home_extension_source_type">Source type</string>
+    <string name="web_home_extension_choose_file">Choose file</string>
+    <string name="web_home_extension_edit_source">Edit source</string>
+    <string name="web_home_extension_edit_code">Edit local code</string>
+    <string name="web_home_extension_edit_form">Edit form</string>
+    <string name="web_home_extension_link_hint">Extension link</string>
+    <string name="web_home_extension_json_hint">User extension sources JSON</string>
+    <string name="web_home_extension_name_hint">Name</string>
+    <string name="web_home_extension_run_at_hint">Run at</string>
+    <string name="web_home_extension_run_at_start_short">Start</string>
+    <string name="web_home_extension_run_at_end_short">End</string>
+    <string name="web_home_extension_run_at_idle_short">Idle</string>
+    <string name="web_home_extension_match_hint">Site key or regex</string>
+    <string name="web_home_extension_code_hint">JavaScript / CSS injector code</string>
+    <string name="web_home_extension_local_code_default">Local extension %1$d</string>
+    <string name="web_home_extension_delete_source_title">Delete source</string>
+    <string name="web_home_extension_delete_source_message">Delete %1$s?</string>
+    <string name="web_home_extension_source_saved">Extension source saved and preview refresh requested</string>
+    <string name="web_home_extension_source_empty">Source or code cannot be empty</string>
+    <string name="web_home_extension_source_invalid">Invalid JSON source</string>
+    <string name="web_home_extension_summary">Sources %1$d · Installed %2$d · Matched %3$d · Ready %4$d · Site %5$s</string>
+    <string name="web_home_extension_source">Source: %1$s</string>
+    <string name="web_home_extension_inline_source">Inline config</string>
+    <string name="web_home_extension_unknown_site">None</string>
+    <string name="web_home_extension_match">Match: %1$s</string>
+    <string name="web_home_extension_exclude">Exclude: %1$s</string>
+    <string name="web_home_extension_depends">Depends: %1$s</string>
+    <string name="web_home_extension_last_log">Last log: %1$s</string>
+    <string name="web_home_extension_enable_confirm_title">Enable extension</string>
+    <string name="web_home_extension_enable_confirm_message">After enabling, this extension can call the WebHome SDK.\n\nName: %1$s\nSource: %2$s\nMatch: %3$s</string>
+    <string name="web_home_extension_status_ready">Ready</string>
+    <string name="web_home_extension_status_injected">Injected</string>
+    <string name="web_home_extension_status_disabled">Disabled</string>
+    <string name="web_home_extension_status_unmatched">Unmatched</string>
+    <string name="web_home_extension_status_skipped">Skipped</string>
+    <string name="web_home_extension_status_matched">Matched</string>
+    <string name="web_home_extension_debug_title">WebHome debug workspace</string>
+    <string name="web_home_extension_tab_web">Web</string>
+    <string name="web_home_extension_tab_console">Console</string>
+    <string name="web_home_extension_tab_elements">Elements</string>
+    <string name="web_home_extension_tab_network">Network</string>
+    <string name="web_home_extension_tab_code">Code</string>
+    <string name="web_home_extension_inspect_element">Inspect</string>
+    <string name="web_home_extension_inspect_hint">Click an element in the Web tab to inspect it</string>
+    <string name="web_home_extension_clear_panel">Clear</string>
+    <string name="web_home_extension_save_preview">Save &amp; preview</string>
+    <string name="web_home_extension_network_all">All</string>
+    <string name="web_home_extension_network_web">Resources</string>
+    <string name="web_home_extension_network_fetch">Fetch</string>
+    <string name="web_home_extension_network_xhr">XHR</string>
+    <string name="web_home_extension_network_script">Scripts</string>
+    <string name="web_home_extension_network_error">Errors</string>
+    <string name="web_home_extension_network_native">Native</string>
+    <string name="web_home_extension_network_detail">Request detail</string>
+    <string name="web_home_extension_network_detail_smaller">-</string>
+    <string name="web_home_extension_network_detail_bigger">+</string>
+    <string name="web_home_extension_network_filter">Filter URL / status / detail</string>
+    <string name="web_home_extension_network_empty">No requests captured for this filter</string>
+    <string name="web_home_extension_network_select">Select a request to view details.</string>
+    <string name="web_home_extension_network_clear">Clear requests</string>
+    <string name="setting_shell_proxy">Proxy</string>
+    <string name="setting_shell_proxy_config">Proxy</string>
+    <string name="setting_custom_csp">Site Injection</string>
+    <string name="setting_custom_csp_add">Add</string>
+    <string name="setting_custom_csp_count">%1$d/%2$d active</string>
+    <string name="setting_custom_csp_api">API / csp class</string>
+    <string name="setting_custom_csp_code">Code</string>
+    <string name="setting_custom_csp_down">Move down</string>
+    <string name="setting_custom_csp_ext">Ext</string>
+    <string name="setting_custom_csp_home">Home</string>
+    <string name="setting_custom_csp_home_page">WebHome URL</string>
+    <string name="setting_custom_csp_home_page_optional">WebHome URL (optional)</string>
+    <string name="setting_custom_csp_extensions_toggle">Extensions</string>
+    <string name="setting_custom_csp_extensions">extensions array</string>
+    <string name="setting_custom_csp_extensions_invalid">Invalid extensions JSON</string>
+    <string name="setting_custom_csp_webhome">WebHome</string>
+    <string name="setting_custom_csp_common">General CSP</string>
+    <string name="setting_custom_csp_live">Live</string>
+    <string name="setting_custom_csp_webhome_name">WebHome %1$d</string>
+    <string name="setting_custom_csp_common_name">General CSP %1$d</string>
+    <string name="setting_custom_csp_live_name">Live %1$d</string>
+    <string name="setting_custom_csp_key">Key</string>
+    <string name="setting_custom_csp_type">Type</string>
+    <string name="setting_custom_csp_player_type">Player type</string>
+    <string name="setting_custom_csp_unset">Unset</string>
+    <string name="setting_custom_csp_player_system">0 System</string>
+    <string name="setting_custom_csp_player_ijk">1 IJK</string>
+    <string name="setting_custom_csp_player_exo">2 EXO</string>
+    <string name="setting_custom_csp_live_url">Live URL</string>
+    <string name="setting_custom_csp_logo">Logo</string>
+    <string name="setting_custom_csp_epg">EPG</string>
+    <string name="setting_custom_csp_ua">UA</string>
+    <string name="setting_custom_csp_origin">Origin</string>
+    <string name="setting_custom_csp_referer">Referer</string>
+    <string name="setting_custom_csp_time_zone">Time zone</string>
+    <string name="setting_custom_csp_timeout">Timeout seconds</string>
+    <string name="setting_custom_csp_click">Click script</string>
+    <string name="setting_custom_csp_play_url">Play URL</string>
+    <string name="setting_custom_csp_hide">Hide</string>
+    <string name="setting_custom_csp_searchable">Search</string>
+    <string name="setting_custom_csp_changeable">Change</string>
+    <string name="setting_custom_csp_quick_search">Quick</string>
+    <string name="setting_custom_csp_insert">Insert position</string>
+    <string name="setting_custom_csp_insert_decrease">Decrease insert position</string>
+    <string name="setting_custom_csp_insert_increase">Increase insert position</string>
+    <string name="setting_custom_csp_import">File</string>
+    <string name="setting_custom_csp_json_hint">Raw JSON: full registry, sites/lives arrays, or one site/live object</string>
+    <string name="setting_custom_csp_json_invalid">Invalid site injection JSON</string>
+    <string name="setting_custom_csp_jar">Jar</string>
+    <string name="setting_custom_csp_link">Link</string>
+    <string name="setting_custom_csp_up">Move up</string>
+    <string name="setting_proxy_url">socks5://127.0.0.1:9978</string>
+    <string name="setting_proxy_hosts">Matched hosts</string>
+    <string name="setting_proxy_rules">Proxy rules</string>
+    <string name="setting_proxy_rules_raw">Raw rules</string>
+    <string name="setting_proxy_rules_hint">Raw JSON: {&quot;proxy&quot;:[{&quot;hosts&quot;:[&quot;example.com&quot;],&quot;urls&quot;:[&quot;socks5://127.0.0.1:1080&quot;]}]}</string>
+    <string name="setting_proxy_default_url">Default proxy URL</string>
+    <string name="setting_proxy_rule_url">Proxy URL</string>
+    <string name="setting_proxy_text_mode">Text</string>
+    <string name="setting_proxy_ui_mode">Edit</string>
+    <string name="setting_proxy_add_rule">Add rule</string>
+    <string name="setting_proxy_rule_count">%1$d rules</string>
+    <string name="setting_proxy_invalid">Invalid proxy URL</string>
+    <string name="setting_proxy_suggest">Auto suggest</string>
+    <string name="setting_proxy_test">Test proxy</string>
+    <string name="setting_proxy_select_site">Select source</string>
+    <string name="setting_proxy_no_site">No source available</string>
+    <string name="setting_proxy_no_suggest">No proxy host found</string>
+    <string name="setting_proxy_suggest_added">Added %1$d hosts, %2$d total</string>
+    <string name="setting_proxy_test_no_rule">No matched proxy rule</string>
+    <string name="setting_proxy_test_running">Testing proxy...</string>
+    <string name="setting_proxy_test_success">Proxy test passed: %1$s</string>
+    <string name="setting_proxy_test_failed">Proxy test failed: %1$s</string>
+    <string name="setting_one_key_sync">One-key sync</string>
+    <string name="setting_incognito">Incognito mode</string>
+    <string name="setting_drive_check">Drive link check</string>
+    <string name="setting_theme_color">Theme color</string>
+    <string name="setting_auto">Auto</string>
+    <string name="setting_custom">Custom</string>
+    <string name="setting_size">Image size</string>
+    <string name="setting_doh">DoH</string>
+    <string name="setting_proxy">Proxy</string>
+    <string name="setting_cache">Cache</string>
+    <string name="setting_backup">Backup</string>
+    <string name="setting_restore">Restore</string>
+    <string name="setting_version">Version</string>
+    <string name="setting_choose">Choose</string>
+    <string name="setting_delete">Delete</string>
+    <string name="setting_disable">Disable</string>
+    <string name="setting_enable">Enable</string>
+    <string name="setting_off">Off</string>
+    <string name="setting_on">On</string>
+
+    <!-- Backup & Restore -->
+    <string name="restore_select">Select backup</string>
+    <string name="restore_success">Restore successful</string>
+    <string name="restore_fail">Restore failed</string>
+    <string name="backup_success">Backup successful</string>
+    <string name="backup_fail">Backup failed</string>
+
+    <!-- Device Sync -->
+    <string name="device_select">Select devices</string>
+    <string name="device_offline">Device is offline</string>
+    <string name="sync_success">Sync completed</string>
+    <string name="sync_progress">Syncing...</string>
+    <string name="sync_failed">Sync failed</string>
+    <string name="sync_mode_to_remote">This device -> selected device</string>
+    <string name="sync_mode_from_remote">Selected device -> this device</string>
+    <string name="sync_local_device">This device</string>
+    <string name="sync_remote_device">Selected device</string>
+    <string name="sync_sender">Sender</string>
+    <string name="sync_receiver">Receiver</string>
+    <string name="sync_direction_change">Switch sync direction</string>
+    <string name="sync_change_device">Change</string>
+    <string name="sync_switch_short">Switch</string>
+    <string name="sync_push">Push</string>
+    <string name="sync_pull">Pull</string>
+    <string name="sync_select_all">Select all</string>
+    <string name="sync_select_none">Clear</string>
+    <string name="sync_item_config">Interfaces and source lists</string>
+    <string name="sync_item_spider">Jar/script saved data</string>
+    <string name="sync_item_webhome">WebHome saved data</string>
+    <string name="sync_item_search">Search records</string>
+    <string name="sync_item_history">Watch history</string>
+    <string name="sync_item_keep">Favorites</string>
+    <string name="sync_item_settings">App settings</string>
+    <string name="sync_device_mobile">Phone</string>
+    <string name="sync_device_tv">TV</string>
+    <string name="sync_discovering">Discovering devices...</string>
+    <string name="sync_no_device">No device found. Keep both devices on the same LAN with WebHTV open, then refresh.</string>
+    <string name="sync_selected">Selected: %1$s · %2$s</string>
+    <string name="sync_start">Start sync</string>
+    <string name="sync_cancel">Cancel sync</string>
+    <string name="sync_prepare_files">Preparing sync files...</string>
+    <string name="sync_prepare_progress">Compressing: %1$d files, %2$s, %3$s/s</string>
+    <string name="sync_wait_remote">Waiting for the selected device to send data...</string>
+    <string name="sync_upload_prepare">Ready to upload: %1$d files, %2$s, compressed %3$s</string>
+    <string name="sync_upload_progress">%1$d%% · %2$s / %3$s · %4$s/s · %5$d files</string>
+    <string name="sync_canceled">Sync canceled</string>
+    <string name="sync_select_device_first">Select a device first</string>
+    <string name="sync_failed_with_reason">Sync failed: %1$s</string>
+    <string name="sync_receive_success">Sync data received</string>
+    <string name="sync_paths_title">Sync folders</string>
+    <string name="sync_paths_edit">Edit</string>
+    <string name="sync_paths_desc">One external-storage relative path per line. TV, TVBox and TVData are synced by default. You can add local package folders; folder contents are synced with Jar/script saved data.</string>
+    <string name="sync_paths_hint">TV&#10;TVBox&#10;TVData</string>
+    <string name="sync_paths_up">Up</string>
+    <string name="sync_paths_refresh">Refresh</string>
+    <string name="sync_paths_enter">Open folder</string>
+    <string name="sync_paths_empty">No folders in this directory</string>
+    <string name="sync_paths_selected">Selected: %1$s</string>
+    <string name="sync_paths_selected_empty">No folders selected</string>
+
+    <!-- Player -->
+    <string name="player">Player</string>
+    <string name="player_render">Render</string>
+    <string name="player_scale">Scale</string>
+    <string name="player_libass">libass</string>
+    <string name="player_caption">Caption style</string>
+    <string name="player_background">Background play</string>
+    <string name="player_audio_decode">Audio software decode</string>
+    <string name="player_video_decode">Video software decode</string>
+    <string name="player_aac_track">Prefer aac track</string>
+    <string name="player_adblock">Remove ads</string>
+    <string name="player_tunnel">Tunnel mode</string>
+    <string name="player_buffer">Buffer time</string>
+    <string name="player_speed">Press speed</string>
+    <string name="player_ua">User-Agent</string>
+
+    <!-- Danmaku -->
+    <string name="danmaku_load">Danmaku load</string>
+    <string name="danmaku_api">Search API</string>
+    <string name="danmaku_auto_load">Auto search</string>
+    <string name="danmaku_spider_first">Spider first</string>
+
+    <!-- Search -->
+    <string name="search_keyword">Keywords…</string>
+    <string name="site_search_hint">Search sites…</string>
+    <string name="search_record">History</string>
+    <string name="search_suggest">Suggest</string>
+    <string name="search_hot">Hot</string>
+
+    <!-- Dialog -->
+    <string name="dialog_edit">Edit</string>
+    <string name="dialog_positive">OK</string>
+    <string name="dialog_negative">Cancel</string>
+    <string name="dialog_reset">Reset</string>
+    <string name="dialog_select_title">Select chapter</string>
+    <string name="dialog_config_hint">Please enter the config…</string>
+    <string name="dialog_config_name">Please enter the name…</string>
+    <string name="dialog_config_url">Please enter the url…</string>
+
+    <!-- Error -->
+    <string name="error_config_get">Configuration get failed</string>
+    <string name="error_play_next">It\'s the last episode!</string>
+    <string name="error_play_prev">It\'s the first episode!</string>
+    <string name="error_play_parse">Unable to parse url</string>
+    <string name="error_play_drm">This device does not support the required DRM scheme</string>
+    <string name="error_play_url">Unable to load url</string>
+    <string name="error_play_flag">No flag data</string>
+    <string name="error_play_timeout">Timed out</string>
+    <string name="error_play_tvbus">Error code: <xliff:g name="name">%s</xliff:g></string>
+    <string name="error_detail">No play data</string>
+    <string name="error_empty">Nothing here 👀</string>
+
+    <!-- Update -->
+    <string name="update_version">New version <xliff:g name="name">%s</xliff:g></string>
+    <string name="update_check">Checking for updates…</string>
+    <string name="update_confirm">Update</string>
+    <string name="update_export_done">Update downloaded to <xliff:g name="path">%s</xliff:g>. Open your file manager to install.</string>
+    <string name="update_export_failed">Update downloaded. Unable to export to public storage; please enable storage access and retry.</string>
+
+    <!-- Crash -->
+    <string name="crash_info">An unexpected error occurred.\nSorry for the inconvenience.</string>
+    <string name="crash_restart">Restart app</string>
+    <string name="crash_details">Error details</string>
+    <string name="crash_details_title">Error details</string>
+    <string name="crash_details_close">Close</string>
+
+    <!-- Hint -->
+    <string name="copied">Copied</string>
+    <string name="debug_log_dialog_message">Debug log service is running.\n\nLAN URL:\n%1$s\n\nLocal URL:\n%2$s\n\nIf this TV has no browser, open the LAN URL from a computer or phone on the same network.</string>
+    <string name="debug_log_open_browser">Open browser</string>
+    <string name="debug_log_copy_url">Copy URL</string>
+    <string name="debug_log_no_browser">No browser app found. Use the LAN URL from another device.</string>
+    <string name="debug_log_url_copied">Debug log URL copied</string>
+    <string name="manage_page_web">Web page</string>
+    <string name="manage_page_dialog_message">Management page is running.\n\nLAN URL:\n%1$s\n\nLocal URL:\n%2$s\n\nKeep this page open while managing files or settings. The service stops automatically after the browser page is closed for a while, or you can stop it manually.</string>
+    <string name="manage_page_open_browser">Open browser</string>
+    <string name="manage_page_copy_url">Copy URL</string>
+    <string name="manage_page_stop">Stop page</string>
+    <string name="manage_page_notification_title">Management page running</string>
+    <string name="manage_page_no_browser">No browser app found. Use the LAN URL from another device.</string>
+    <string name="manage_page_url_copied">Management page URL copied</string>
+    <string name="manage_page_battery_title">Background access</string>
+    <string name="manage_page_battery_message">This device may restrict network access after the app moves to the background, which can make the browser management page unreachable. Open settings only tries known background running or battery management pages for this device brand. If the system does not allow a direct page, use this manual path:\n\n%1$s</string>
+    <string name="manage_page_battery_allow">Open settings</string>
+    <string name="manage_page_open_anyway">Open anyway</string>
+    <string name="manage_page_battery_open_failed">No direct background settings page was found. Use the manual path shown in the dialog.</string>
+    <string name="manage_page_battery_guide_vivo">vivo/iQOO: Settings > Battery > Background power consumption management / High background power consumption > find this app > set it to allow high background power usage. If the direct page fails, search system Settings for Background power consumption management.</string>
+    <string name="manage_page_battery_guide_xiaomi">Xiaomi/Redmi/POCO: Settings > Apps > Permissions > Autostart > allow this app. Then set this app battery usage to unrestricted.</string>
+    <string name="manage_page_battery_guide_oppo">OPPO/realme/OnePlus: Settings > Apps > Autostart or associated launch > allow this app. Then allow background running in Battery > App battery management.</string>
+    <string name="manage_page_battery_guide_huawei">Huawei/Honor: Phone Manager or Settings > App launch > this app > disable automatic management, then allow autostart, secondary launch, and background running.</string>
+    <string name="manage_page_battery_guide_samsung">Samsung: Settings > Apps > this app > Battery > Unrestricted. Also make sure this app is not in sleeping/deep sleeping apps.</string>
+    <string name="manage_page_battery_guide_meizu">Meizu: Phone Manager > Permission/background management > this app > allow background running. Then set this app to unrestricted in power management.</string>
+    <string name="manage_page_battery_guide_default">Settings > Apps > this app > Battery > choose unrestricted or not optimized. If autostart/background running options exist, allow them for this app.</string>
+
+    <!-- UNIT -->
+    <string name="all">All</string>
+    <string name="yes">Yes</string>
+    <string name="none">None</string>
+    <string name="times">times</string>
+    <string name="lines">lines</string>
+
+    <string-array name="select_decode">
+        <item>Soft</item>
+        <item>Hard</item>
+    </string-array>
+
+    <string-array name="select_render">
+        <item>Surface</item>
+        <item>Texture</item>
+    </string-array>
+
+    <string-array name="select_size">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+        <item>Extra</item>
+    </string-array>
+
+    <string-array name="select_scale">
+        <item>Default</item>
+        <item>16:9</item>
+        <item>4:3</item>
+        <item>Fill</item>
+        <item>Zoom</item>
+    </string-array>
+
+    <string-array name="select_reset">
+        <item>Reset</item>
+        <item>Replay</item>
+    </string-array>
+
+    <string-array name="select_caption">
+        <item>Default</item>
+        <item>System</item>
+    </string-array>
+
+    <string-array name="select_track">
+        <item>Select audio track</item>
+        <item>Select video track</item>
+        <item>Select subtitle track</item>
+    </string-array>
+
+</resources>

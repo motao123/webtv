@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/menu_search"
+        app:iconTint="@color/white"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/refresh"
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/live_refresh"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/keep"
+        android:icon="@drawable/ic_action_keep"
+        android:title="@string/app_keep"
+        app:iconTint="@color/white"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/history"
+        android:icon="@drawable/ic_action_history"
+        android:title="@string/app_history"
+        app:iconTint="@color/white"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sync"
+        android:icon="@drawable/ic_action_sync"
+        android:title="@string/setting_one_key_sync"
+        app:iconTint="@color/white"
+        app:showAsAction="always" />
+
+</menu>

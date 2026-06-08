@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <title>解析</title>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script>
+        const jxs = "%s";
+        const url = "%s";
+        const list = jxs.split(";");
+        const container = document.getElementById('container');
+        list.forEach(item => {
+            const iframe = document.createElement('iframe');
+            iframe.src = item + url;
+            iframe.sandbox = 'allow-scripts allow-same-origin allow-forms';
+            container.appendChild(iframe);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+plugins {
+    alias libs.plugins.android.application apply false
+    alias libs.plugins.android.library apply false
+    alias libs.plugins.chaquo.python apply false
+}
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}
+
+project(':app').tasks.matching { it.name ==~ /assemble.+Release/ }.configureEach {
+    doLast {
+        copy {
+            from fileTree("$rootDir/app/build/outputs/apk") { include '**/release/*.apk' }
+            into "$rootDir/Release/apk"
+            eachFile { it.path = it.name }
+            includeEmptyDirs = false
+        }
+    }
+}

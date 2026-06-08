@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>androidx.media3</groupId>
+  <artifactId>media3-exoplayer-rtsp</artifactId>
+  <versioning>
+    <latest>1.10.1-fongmi</latest>
+    <release>1.10.1-fongmi</release>
+    <versions>
+      <version>1.10.1-fongmi</version>
+    </versions>
+    <lastUpdated>20260525085805</lastUpdated>
+  </versioning>
+</metadata>

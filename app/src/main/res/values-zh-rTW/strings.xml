@@ -1,0 +1,499 @@
+<resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
+
+    <!-- App -->
+    <string name="app_name">影視</string>
+
+    <!-- Live -->
+    <string name="live_pass">密碼</string>
+    <string name="live_refresh">刷新</string>
+    <string name="live_line">來源 <xliff:g name="name">%s</xliff:g></string>
+
+    <!-- Detail -->
+    <string name="detail_title"><xliff:g name="name">%s</xliff:g>：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_site">站源：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_year">年份：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_area">地區：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_type">類型：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_director">導演：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_actor">演員：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_content">簡介：<xliff:g name="name">%s</xliff:g></string>
+    <string name="detail_desc">簡介</string>
+
+    <!-- Keep -->
+    <string name="keep">收藏</string>
+    <string name="keep_add">已加入收藏</string>
+    <string name="keep_del">已取消收藏</string>
+
+    <!-- Play -->
+    <string name="play">播放</string>
+    <string name="pause">暫停</string>
+    <string name="play_op">片頭</string>
+    <string name="play_ed">片尾</string>
+    <string name="play_exo">EXO</string>
+    <string name="play_next">下集</string>
+    <string name="play_prev">上集</string>
+    <string name="play_stop">停止</string>
+    <string name="play_repeat">循環</string>
+    <string name="play_forward">→</string>
+    <string name="play_backward">←</string>
+    <string name="play_speed">1.00</string>
+    <string name="play_reset">刷新</string>
+    <string name="play_decode">硬解</string>
+    <string name="play_timer">定時</string>
+    <string name="play_title">章節</string>
+    <string name="play_scale">原始</string>
+    <string name="play_config">配置</string>
+    <string name="play_change">換源</string>
+    <string name="play_fullscreen">全螢幕</string>
+    <string name="play_exit_fullscreen">退出全螢幕</string>
+    <string name="play_invert">反轉</string>
+    <string name="play_across">跨類</string>
+    <string name="play_reverse">倒序</string>
+    <string name="play_track_text">字幕</string>
+    <string name="play_track_audio">音軌</string>
+    <string name="play_track_video">視軌</string>
+    <string name="offset_text">字幕偏移</string>
+    <string name="offset_audio">音軌偏移</string>
+    <string name="offset_setting">偏移設定</string>
+    <string name="play_forward_hint">已切換正序播放</string>
+    <string name="play_backward_hint">已切換倒序播放</string>
+    <string name="play_ready">準備播放：<xliff:g name="name">%s</xliff:g></string>
+    <string name="play_switch_flag">正在切換線路至「<xliff:g name="name">%s</xliff:g>」</string>
+    <string name="play_switch_site">正在切換站源至「<xliff:g name="name">%s</xliff:g>」</string>
+    <string name="play_switch_parse">正在切换解析至「<xliff:g name="name">%s</xliff:g>」</string>
+
+    <!-- Danmaku Setting -->
+    <string name="danmaku">彈幕</string>
+    <string name="danmaku_select">選擇彈幕</string>
+    <string name="danmaku_setting">彈幕設定</string>
+    <string name="danmaku_text_size">字體縮放</string>
+    <string name="danmaku_transparency">透明度</string>
+    <string name="danmaku_text_bold">粗體</string>
+    <string name="danmaku_style_mode">字體效果</string>
+    <string name="danmaku_style_none">無</string>
+    <string name="danmaku_style_shadow">陰影</string>
+    <string name="danmaku_style_stroke">描邊</string>
+    <string name="danmaku_style_projection">投影</string>
+    <string name="danmaku_shadow_transparency">陰影透明度</string>
+    <string name="danmaku_stroke_width">描邊寬度</string>
+    <string name="danmaku_projection_offset_x">投影水平偏移</string>
+    <string name="danmaku_projection_offset_y">投影垂直偏移</string>
+    <string name="danmaku_projection_transparency">投影透明度</string>
+    <string name="danmaku_color_mode">顏色模式</string>
+    <string name="danmaku_color_default">原色</string>
+    <string name="danmaku_color_colorful">彩色</string>
+    <string name="danmaku_color_gradient">漸層</string>
+    <string name="danmaku_color_override_hint">彈幕原始顏色將被忽略</string>
+    <string name="danmaku_auto">自動</string>
+    <string name="danmaku_duration">滾動時間</string>
+    <string name="danmaku_fixed_duration">固定顯示時間</string>
+    <string name="danmaku_time_offset">時間偏移</string>
+    <string name="danmaku_max_on_screen">最多同時顯示</string>
+    <string name="danmaku_scroll_area_ratio">滾動區域</string>
+    <string name="danmaku_max_scroll_lines">最大滾動行數</string>
+    <string name="danmaku_max_top_lines">最大頂部行數</string>
+    <string name="danmaku_max_bottom_lines">最大底部行數</string>
+    <string name="danmaku_line_spacing">垂直間距</string>
+    <string name="danmaku_scroll_gap_ratio">水平間距</string>
+    <string name="danmaku_show_scroll">滾動彈幕</string>
+    <string name="danmaku_show_top">頂部固定</string>
+    <string name="danmaku_show_bottom">底部固定</string>
+    <string name="danmaku_show_reverse">反向滾動</string>
+    <string name="danmaku_show_positioned">定位彈幕</string>
+    <string name="danmaku_show_subtitle">字幕型</string>
+    <string name="danmaku_show_special">特效型</string>
+    <string name="danmaku_section_appearance">外觀</string>
+    <string name="danmaku_section_display">顯示</string>
+    <string name="danmaku_section_timing">時間</string>
+    <string name="danmaku_section_density">密度</string>
+    <string name="danmaku_reset">重設</string>
+
+    <!-- Parse -->
+    <string name="parse">解析</string>
+    <string name="parse_god">超級解析</string>
+    <string name="parse_from">解析來自：<xliff:g name="name">%s</xliff:g></string>
+
+    <!-- Push -->
+    <string name="push">推送</string>
+
+    <!-- Setting -->
+    <string name="setting_vod">點播</string>
+    <string name="setting_live">直播</string>
+    <string name="setting_wall">壁紙</string>
+    <string name="setting_player">播放設定</string>
+    <string name="setting_danmaku">彈幕設定</string>
+    <string name="setting_enhance">增強功能</string>
+    <string name="setting_debug_log">調試日誌</string>
+    <string name="setting_manage_page">管理頁面</string>
+    <string name="setting_site_health_sort">站點健康排序</string>
+    <string name="setting_site_health_enable">啟用站點健康排序</string>
+    <string name="setting_site_health_dialog_sort">站點彈窗排序</string>
+    <string name="site_health_clear_done">站點健康記錄已清空</string>
+    <string name="setting_web_home_extension">WebHome 擴展</string>
+    <string name="web_home_extension_clear_done">WebHome 擴展快取已清空</string>
+    <string name="web_home_extension_empty">暫無擴展。點選新增建立本地代碼或加入外部源。</string>
+    <string name="web_home_extension_add_source">新增</string>
+    <string name="web_home_extension_debug">調試</string>
+    <string name="web_home_extension_refresh">重新整理</string>
+    <string name="web_home_extension_clear_cache">清快取</string>
+    <string name="web_home_extension_user_sources">使用者擴展源</string>
+    <string name="web_home_extension_loaded_extensions">已載入擴展</string>
+    <string name="web_home_extension_user_source_status">使用者源 · %1$s</string>
+    <string name="web_home_extension_site_scope">站點：%1$s</string>
+    <string name="web_home_extension_add_file">檔案</string>
+    <string name="web_home_extension_add_link">連結</string>
+    <string name="web_home_extension_add_code">代碼</string>
+    <string name="web_home_extension_add_form">表單</string>
+    <string name="web_home_extension_form_mode">表單</string>
+    <string name="web_home_extension_text_mode">文字(JSON)</string>
+    <string name="web_home_extension_source_type">來源方式</string>
+    <string name="web_home_extension_choose_file">選擇檔案</string>
+    <string name="web_home_extension_edit_source">編輯擴展源</string>
+    <string name="web_home_extension_edit_code">編輯本地代碼</string>
+    <string name="web_home_extension_edit_form">編輯表單</string>
+    <string name="web_home_extension_link_hint">擴展連結</string>
+    <string name="web_home_extension_json_hint">使用者擴展源 JSON</string>
+    <string name="web_home_extension_name_hint">名稱</string>
+    <string name="web_home_extension_run_at_hint">注入時機</string>
+    <string name="web_home_extension_run_at_start_short">開始</string>
+    <string name="web_home_extension_run_at_end_short">結束</string>
+    <string name="web_home_extension_run_at_idle_short">空閒</string>
+    <string name="web_home_extension_match_hint">站點 key 或正則</string>
+    <string name="web_home_extension_code_hint">JavaScript / CSS 注入代碼</string>
+    <string name="web_home_extension_local_code_default">本地擴展 %1$d</string>
+    <string name="web_home_extension_delete_source_title">刪除擴展源</string>
+    <string name="web_home_extension_delete_source_message">刪除 %1$s？</string>
+    <string name="web_home_extension_source_saved">擴展源已儲存，並已請求重新整理預覽</string>
+    <string name="web_home_extension_source_empty">擴展源或代碼不能為空</string>
+    <string name="web_home_extension_source_invalid">擴展源 JSON 格式無效</string>
+    <string name="web_home_extension_summary">訂閱 %1$d · 已安裝 %2$d · 已匹配 %3$d · 可注入 %4$d · 站點 %5$s</string>
+    <string name="web_home_extension_source">來源：%1$s</string>
+    <string name="web_home_extension_inline_source">內聯配置</string>
+    <string name="web_home_extension_unknown_site">無</string>
+    <string name="web_home_extension_match">匹配：%1$s</string>
+    <string name="web_home_extension_exclude">排除：%1$s</string>
+    <string name="web_home_extension_depends">依賴：%1$s</string>
+    <string name="web_home_extension_last_log">最近日誌：%1$s</string>
+    <string name="web_home_extension_enable_confirm_title">啟用擴展</string>
+    <string name="web_home_extension_enable_confirm_message">啟用後該擴展可以調用 WebHome 已開放的 SDK。\n\n名稱：%1$s\n來源：%2$s\n匹配：%3$s</string>
+    <string name="web_home_extension_status_ready">待注入</string>
+    <string name="web_home_extension_status_injected">已注入</string>
+    <string name="web_home_extension_status_disabled">已禁用</string>
+    <string name="web_home_extension_status_unmatched">未匹配</string>
+    <string name="web_home_extension_status_skipped">已跳過</string>
+    <string name="web_home_extension_status_matched">已匹配</string>
+    <string name="web_home_extension_debug_title">WebHome 調試工作台</string>
+    <string name="web_home_extension_tab_web">Web</string>
+    <string name="web_home_extension_tab_console">控制台</string>
+    <string name="web_home_extension_tab_elements">元素</string>
+    <string name="web_home_extension_tab_network">網路</string>
+    <string name="web_home_extension_tab_code">代碼</string>
+    <string name="web_home_extension_inspect_element">檢查元素</string>
+    <string name="web_home_extension_inspect_hint">點擊 Web 頁裡的元素進行檢查</string>
+    <string name="web_home_extension_clear_panel">清空</string>
+    <string name="web_home_extension_save_preview">儲存並預覽</string>
+    <string name="web_home_extension_network_all">全部</string>
+    <string name="web_home_extension_network_web">頁面資源</string>
+    <string name="web_home_extension_network_fetch">Fetch</string>
+    <string name="web_home_extension_network_xhr">XHR</string>
+    <string name="web_home_extension_network_script">腳本請求</string>
+    <string name="web_home_extension_network_error">錯誤</string>
+    <string name="web_home_extension_network_native">原生</string>
+    <string name="web_home_extension_network_detail">請求詳情</string>
+    <string name="web_home_extension_network_detail_smaller">-</string>
+    <string name="web_home_extension_network_detail_bigger">+</string>
+    <string name="web_home_extension_network_filter">過濾 URL / 狀態 / 詳情</string>
+    <string name="web_home_extension_network_empty">目前過濾條件下沒有請求</string>
+    <string name="web_home_extension_network_select">選擇一個請求查看詳情。</string>
+    <string name="web_home_extension_network_clear">清空請求</string>
+    <string name="setting_shell_proxy">Proxy</string>
+    <string name="setting_shell_proxy_config">Proxy</string>
+    <string name="setting_custom_csp">站點注入</string>
+    <string name="setting_custom_csp_add">新增</string>
+    <string name="setting_custom_csp_count">%1$d/%2$d 可用</string>
+    <string name="setting_custom_csp_api">API / CSP 類名</string>
+    <string name="setting_custom_csp_code">代碼</string>
+    <string name="setting_custom_csp_down">下移</string>
+    <string name="setting_custom_csp_ext">擴展參數</string>
+    <string name="setting_custom_csp_home">首頁</string>
+    <string name="setting_custom_csp_home_page">WebHome 位址</string>
+    <string name="setting_custom_csp_home_page_optional">WebHome 位址（可選）</string>
+    <string name="setting_custom_csp_extensions_toggle">擴展</string>
+    <string name="setting_custom_csp_extensions">extensions 陣列</string>
+    <string name="setting_custom_csp_extensions_invalid">extensions JSON 格式無效</string>
+    <string name="setting_custom_csp_webhome">WebHome</string>
+    <string name="setting_custom_csp_common">通用 CSP</string>
+    <string name="setting_custom_csp_live">直播</string>
+    <string name="setting_custom_csp_webhome_name">WebHome %1$d</string>
+    <string name="setting_custom_csp_common_name">通用 CSP %1$d</string>
+    <string name="setting_custom_csp_live_name">直播 %1$d</string>
+    <string name="setting_custom_csp_key">Key</string>
+    <string name="setting_custom_csp_type">類型</string>
+    <string name="setting_custom_csp_player_type">播放器類型</string>
+    <string name="setting_custom_csp_unset">不寫</string>
+    <string name="setting_custom_csp_player_system">0 系統</string>
+    <string name="setting_custom_csp_player_ijk">1 IJK</string>
+    <string name="setting_custom_csp_player_exo">2 EXO</string>
+    <string name="setting_custom_csp_live_url">直播位址</string>
+    <string name="setting_custom_csp_logo">Logo</string>
+    <string name="setting_custom_csp_epg">EPG</string>
+    <string name="setting_custom_csp_ua">UA</string>
+    <string name="setting_custom_csp_origin">Origin</string>
+    <string name="setting_custom_csp_referer">Referer</string>
+    <string name="setting_custom_csp_time_zone">時區</string>
+    <string name="setting_custom_csp_timeout">逾時秒</string>
+    <string name="setting_custom_csp_click">點擊腳本</string>
+    <string name="setting_custom_csp_play_url">播放前綴</string>
+    <string name="setting_custom_csp_hide">隱藏</string>
+    <string name="setting_custom_csp_searchable">搜尋</string>
+    <string name="setting_custom_csp_changeable">換源</string>
+    <string name="setting_custom_csp_quick_search">快搜</string>
+    <string name="setting_custom_csp_insert">插入位置</string>
+    <string name="setting_custom_csp_insert_decrease">減少插入位置</string>
+    <string name="setting_custom_csp_insert_increase">增加插入位置</string>
+    <string name="setting_custom_csp_import">檔案</string>
+    <string name="setting_custom_csp_json_hint">Raw JSON：完整配置、sites/lives 陣列或單個站點/直播物件</string>
+    <string name="setting_custom_csp_json_invalid">站點注入 JSON 格式無效</string>
+    <string name="setting_custom_csp_jar">Jar</string>
+    <string name="setting_custom_csp_link">連結</string>
+    <string name="setting_custom_csp_up">上移</string>
+    <string name="setting_proxy_url">socks5://127.0.0.1:9978</string>
+    <string name="setting_proxy_hosts">匹配網域</string>
+    <string name="setting_proxy_rules">Proxy 規則</string>
+    <string name="setting_proxy_rules_raw">Raw 規則</string>
+    <string name="setting_proxy_rules_hint">Raw JSON：{&quot;proxy&quot;:[{&quot;hosts&quot;:[&quot;example.com&quot;],&quot;urls&quot;:[&quot;socks5://127.0.0.1:1080&quot;]}]}</string>
+    <string name="setting_proxy_default_url">預設代理位址</string>
+    <string name="setting_proxy_rule_url">代理位址</string>
+    <string name="setting_proxy_text_mode">文字</string>
+    <string name="setting_proxy_ui_mode">編輯</string>
+    <string name="setting_proxy_add_rule">新增規則</string>
+    <string name="setting_proxy_rule_count">%1$d 條規則</string>
+    <string name="setting_proxy_invalid">代理地址無效</string>
+    <string name="setting_proxy_suggest">自動建議</string>
+    <string name="setting_proxy_test">測試代理</string>
+    <string name="setting_proxy_select_site">選擇站點</string>
+    <string name="setting_proxy_no_site">暫無可選站點</string>
+    <string name="setting_proxy_no_suggest">未發現可代理網域</string>
+    <string name="setting_proxy_suggest_added">已新增 %1$d 個網域，共 %2$d 個</string>
+    <string name="setting_proxy_test_no_rule">沒有命中的代理規則</string>
+    <string name="setting_proxy_test_running">正在測試代理...</string>
+    <string name="setting_proxy_test_success">代理測試通過：%1$s</string>
+    <string name="setting_proxy_test_failed">代理測試失敗：%1$s</string>
+    <string name="setting_one_key_sync">一鍵同步</string>
+    <string name="setting_incognito">無痕模式</string>
+    <string name="setting_drive_check">網盤檢測</string>
+    <string name="setting_theme_color">主題色彩</string>
+    <string name="setting_auto">自動</string>
+    <string name="setting_custom">自訂</string>
+    <string name="setting_size">圖片尺寸</string>
+    <string name="setting_doh">DoH</string>
+    <string name="setting_proxy">Proxy</string>
+    <string name="setting_cache">暫存</string>
+    <string name="setting_backup">備份</string>
+    <string name="setting_restore">還原</string>
+    <string name="setting_version">版本</string>
+    <string name="setting_choose">選擇</string>
+    <string name="setting_delete">刪除</string>
+    <string name="setting_disable">禁用</string>
+    <string name="setting_enable">啟用</string>
+    <string name="setting_off">關</string>
+    <string name="setting_on">開</string>
+
+    <!-- Backup & Restore -->
+    <string name="restore_select">選擇備份</string>
+    <string name="restore_success">還原成功</string>
+    <string name="restore_fail">還原失敗</string>
+    <string name="backup_success">備份成功</string>
+    <string name="backup_fail">備份失敗</string>
+
+    <!-- Device Sync -->
+    <string name="device_select">選擇設備</string>
+    <string name="device_offline">設備已離線</string>
+    <string name="sync_success">同步完成</string>
+    <string name="sync_progress">正在同步...</string>
+    <string name="sync_failed">同步失敗</string>
+    <string name="sync_mode_to_remote">本機 -> 選中設備</string>
+    <string name="sync_mode_from_remote">選中設備 -> 本機</string>
+    <string name="sync_local_device">本機</string>
+    <string name="sync_remote_device">選中設備</string>
+    <string name="sync_sender">發送</string>
+    <string name="sync_receiver">接收</string>
+    <string name="sync_direction_change">切換同步方向</string>
+    <string name="sync_change_device">更換設備</string>
+    <string name="sync_switch_short">切換</string>
+    <string name="sync_push">推送</string>
+    <string name="sync_pull">拉取</string>
+    <string name="sync_select_all">全選</string>
+    <string name="sync_select_none">取消</string>
+    <string name="sync_item_config">接口與站源列表</string>
+    <string name="sync_item_spider">Jar/腳本保存資料</string>
+    <string name="sync_item_webhome">WebHome 主頁資料</string>
+    <string name="sync_item_search">搜尋記錄</string>
+    <string name="sync_item_history">觀看記錄</string>
+    <string name="sync_item_keep">收藏資料</string>
+    <string name="sync_item_settings">應用設定</string>
+    <string name="sync_paths_title">同步目錄</string>
+    <string name="sync_paths_edit">編輯</string>
+    <string name="sync_paths_desc">每行一個外置儲存相對路徑，預設同步 TV、TVBox、TVData。可加入本地包目錄；目錄內容會隨 Jar/腳本保存資料一起同步。</string>
+    <string name="sync_paths_hint">TV&#10;TVBox&#10;TVData</string>
+    <string name="sync_paths_up">上級</string>
+    <string name="sync_paths_refresh">刷新</string>
+    <string name="sync_paths_enter">打開目錄</string>
+    <string name="sync_paths_empty">目前目錄沒有可選資料夾</string>
+    <string name="sync_paths_selected">已選：%1$s</string>
+    <string name="sync_paths_selected_empty">未選擇目錄</string>
+    <string name="sync_device_mobile">手機</string>
+    <string name="sync_device_tv">電視</string>
+    <string name="sync_discovering">正在發現設備...</string>
+    <string name="sync_no_device">未發現設備，請確認兩台設備在同一局域網並已打開 WebHTV，然後刷新。</string>
+    <string name="sync_selected">已選擇：%1$s · %2$s</string>
+    <string name="sync_start">開始同步</string>
+    <string name="sync_cancel">取消同步</string>
+    <string name="sync_prepare_files">正在準備同步文件...</string>
+    <string name="sync_prepare_progress">正在壓縮：%1$d 個文件，%2$s，%3$s/s</string>
+    <string name="sync_wait_remote">正在等待選中設備發送資料...</string>
+    <string name="sync_upload_prepare">準備上傳：%1$d 個文件，%2$s，壓縮後 %3$s</string>
+    <string name="sync_upload_progress">%1$d%% · %2$s / %3$s · %4$s/s · %5$d 個文件</string>
+    <string name="sync_canceled">同步已取消</string>
+    <string name="sync_select_device_first">請先選擇設備</string>
+    <string name="sync_failed_with_reason">同步失敗：%1$s</string>
+    <string name="sync_receive_success">已接收同步資料</string>
+
+    <!-- Player -->
+    <string name="player">播放核心</string>
+    <string name="player_render">渲染方式</string>
+    <string name="player_scale">縮放比例</string>
+    <string name="player_libass">字幕渲染</string>
+    <string name="player_caption">字幕樣式</string>
+    <string name="player_background">背景播放</string>
+    <string name="player_audio_decode">音訊軟解</string>
+    <string name="player_video_decode">視訊軟解</string>
+    <string name="player_aac_track">AAC優先</string>
+    <string name="player_adblock">智慧去廣</string>
+    <string name="player_tunnel">隧道模式</string>
+    <string name="player_buffer">緩衝時間</string>
+    <string name="player_speed">長按倍速</string>
+    <string name="player_ua">User-Agent</string>
+
+    <!-- Danmaku -->
+    <string name="danmaku_load">彈幕載入</string>
+    <string name="danmaku_api">搜尋接口</string>
+    <string name="danmaku_auto_load">自動搜尋</string>
+    <string name="danmaku_spider_first">爬蟲優先</string>
+
+    <!-- Search -->
+    <string name="search_keyword">關鍵字…</string>
+    <string name="site_search_hint">搜尋站點…</string>
+    <string name="search_record">歷史</string>
+    <string name="search_suggest">建議</string>
+    <string name="search_hot">熱搜</string>
+
+    <!-- Dialog -->
+    <string name="dialog_edit">修改</string>
+    <string name="dialog_positive">確定</string>
+    <string name="dialog_negative">取消</string>
+    <string name="dialog_reset">重置</string>
+    <string name="dialog_select_title">選擇章節</string>
+    <string name="dialog_config_hint">請輸入配置…</string>
+    <string name="dialog_config_name">請輸入名稱…</string>
+    <string name="dialog_config_url">請輸入網址…</string>
+
+    <!-- Error -->
+    <string name="error_config_get">配置取得失敗</string>
+    <string name="error_play_next">已經是最後一集了！</string>
+    <string name="error_play_prev">已經是第一集了！</string>
+    <string name="error_play_parse">播放網址解析失敗</string>
+    <string name="error_play_drm">本設備不支援所需的 DRM scheme</string>
+    <string name="error_play_url">播放網址載入失敗</string>
+    <string name="error_play_flag">暫無線路資料</string>
+    <string name="error_play_timeout">連線逾時</string>
+    <string name="error_play_tvbus">錯誤代碼：<xliff:g name="name">%s</xliff:g></string>
+    <string name="error_detail">暫無播放資料</string>
+    <string name="error_empty">這裡什麼都沒有 👀</string>
+
+    <!-- Update -->
+    <string name="update_version">發現新版本 <xliff:g name="name">%s</xliff:g></string>
+    <string name="update_check">正在檢查更新…</string>
+    <string name="update_confirm">更新</string>
+    <string name="update_export_done">已下載到 <xliff:g name="path">%s</xliff:g>，請用檔案管理員開啟安裝</string>
+    <string name="update_export_failed">下載完成，但匯出到公開目錄失敗；請開啟儲存權限後重試</string>
+
+    <!-- Crash -->
+    <string name="crash_info">發生意外錯誤\n抱歉給您帶來不便</string>
+    <string name="crash_restart">重新啟動</string>
+    <string name="crash_details">錯誤訊息</string>
+    <string name="crash_details_title">錯誤訊息</string>
+    <string name="crash_details_close">關閉</string>
+
+    <!-- Hint -->
+    <string name="copied">已複製</string>
+    <string name="debug_log_dialog_message">調試日誌服務已啟動。\n\n局域網地址：\n%1$s\n\n本機地址：\n%2$s\n\n電視端沒有瀏覽器也沒關係，請在同一局域網的電腦或手機瀏覽器中打開局域網地址。</string>
+    <string name="debug_log_open_browser">打開瀏覽器</string>
+    <string name="debug_log_copy_url">複製地址</string>
+    <string name="debug_log_no_browser">未找到可打開網頁的應用，請使用局域網地址訪問</string>
+    <string name="debug_log_url_copied">調試日誌地址已複製</string>
+    <string name="manage_page_web">瀏覽器頁面</string>
+    <string name="manage_page_dialog_message">管理頁面已啟動。\n\n局域網地址：\n%1$s\n\n本機地址：\n%2$s\n\n管理檔案或設定時請保持頁面打開。瀏覽器頁面關閉一段時間後服務會自動停止，也可以手動停止。</string>
+    <string name="manage_page_open_browser">打開瀏覽器</string>
+    <string name="manage_page_copy_url">複製地址</string>
+    <string name="manage_page_stop">停止頁面</string>
+    <string name="manage_page_notification_title">管理頁面運行中</string>
+    <string name="manage_page_no_browser">未找到可打開網頁的應用，請使用局域網地址訪問</string>
+    <string name="manage_page_url_copied">管理頁面地址已複製</string>
+    <string name="manage_page_battery_title">後台訪問權限</string>
+    <string name="manage_page_battery_message">目前設備可能會在 App 切到後台後限制網路，導致瀏覽器管理頁無法連接。點擊「打開設定」只會嘗試目前品牌已知的後台運行/耗電管理入口；如果系統不允許直達，請按下面路徑手動設定：\n\n%1$s</string>
+    <string name="manage_page_battery_allow">打開設定</string>
+    <string name="manage_page_open_anyway">仍然打開</string>
+    <string name="manage_page_battery_open_failed">未找到可直達的後台設定頁，請按彈窗中的系統路徑手動設定</string>
+    <string name="manage_page_battery_guide_vivo">vivo/iQOO：設定 → 電池 → 後台耗電管理/後台高耗電 → 找到本應用 → 改為「允許後台高耗電」。如果不能直達，請在系統設定裡搜尋「後台耗電管理」。</string>
+    <string name="manage_page_battery_guide_xiaomi">小米/Redmi/POCO：設定 → 應用設定 → 授權管理 → 自啟動管理 → 允許本應用；再到應用電池用量中選擇無限制。</string>
+    <string name="manage_page_battery_guide_oppo">OPPO/realme/一加：設定 → 應用 → 自啟動/關聯啟動 → 允許本應用；再到電池 → 應用耗電管理中允許後台運行。</string>
+    <string name="manage_page_battery_guide_huawei">華為/榮耀：手機管家或設定 → 應用啟動管理 → 找到本應用 → 關閉自動管理，並允許自啟動、關聯啟動、後台活動。</string>
+    <string name="manage_page_battery_guide_samsung">三星：設定 → 應用 → 本應用 → 電池 → 選擇不受限制；同時在電池 → 後台使用限制中不要加入休眠應用。</string>
+    <string name="manage_page_battery_guide_meizu">魅族：手機管家 → 權限管理/後台管理 → 找到本應用 → 允許後台運行；再到電量管理中把本應用設為不限制。</string>
+    <string name="manage_page_battery_guide_default">設定 → 應用 → 本應用 → 電池 → 選擇不受限制/不最佳化；如果有自啟動或後台運行選項，也請允許本應用。</string>
+
+    <!-- UNIT -->
+    <string name="all">全部</string>
+    <string name="yes">有</string>
+    <string name="none">無</string>
+    <string name="times">倍</string>
+    <string name="lines">行</string>
+
+    <string-array name="select_decode">
+        <item>軟解</item>
+        <item>硬解</item>
+    </string-array>
+
+    <string-array name="select_size">
+        <item>小</item>
+        <item>中</item>
+        <item>大</item>
+        <item>特大</item>
+    </string-array>
+
+    <string-array name="select_scale">
+        <item>原始</item>
+        <item>16:9</item>
+        <item>4:3</item>
+        <item>填充</item>
+        <item>裁剪</item>
+    </string-array>
+
+    <string-array name="select_reset">
+        <item>刷新</item>
+        <item>重播</item>
+    </string-array>
+
+    <string-array name="select_caption">
+        <item>預設</item>
+        <item>系統</item>
+    </string-array>
+
+    <string-array name="select_track">
+        <item>選擇音軌</item>
+        <item>選擇視軌</item>
+        <item>選擇字幕</item>
+    </string-array>
+
+</resources>

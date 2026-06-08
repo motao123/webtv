@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:scrollbars="none">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/config"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:nextFocusLeft="@id/change"
+            android:text="@string/play_config" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/home"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            tools:text="首頁" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/action"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:text="@string/play" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/player"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:text="@string/play_exo" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/decode"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:text="@string/play_decode" />
+
+        <com.fongmi.android.tv.ui.custom.CustomUpDownView
+            android:id="@+id/speed"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:fontFeatureSettings="tnum"
+            android:text="@string/play_speed"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/scale"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:text="@string/play_scale" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/line"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:visibility="gone"
+            tools:text="來源 1"
+            tools:visibility="visible" />
+
+        <com.fongmi.android.tv.ui.custom.CustomUpDownView
+            android:id="@+id/text"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:tag="3"
+            android:text="@string/play_track_text"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/audio"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:tag="1"
+            android:text="@string/play_track_audio" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/video"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:tag="2"
+            android:text="@string/play_track_video" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/invert"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:text="@string/play_invert" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/across"
+            style="@style/Control"
+            android:layout_marginEnd="12dp"
+            android:text="@string/play_across" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/change"
+            style="@style/Control"
+            android:nextFocusRight="@id/config"
+            android:text="@string/play_change" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</HorizontalScrollView>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+    <title>管理页面</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0,viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="css/ui.css">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/manage.js" defer></script>
+</head>
+
+<body class="manage-page local-mode">
+    <div id="app" class="manage-app">
+        <header class="manage-top">
+            <div class="manage-heading">
+                <div class="manage-kicker">WebHTV</div>
+                <div class="manage-title">管理页面</div>
+                <div class="manage-subtitle" id="manageTargetText">本机管理 · 当前 App 设备</div>
+            </div>
+            <div class="manage-top-actions">
+                <span id="serviceStatus" class="status-pill">页面运行中</span>
+                <div class="segmented">
+                    <button id="modeLocal" class="segment active" onclick="setManageMode('local')">本机</button>
+                    <button id="modeRemote" class="segment" onclick="setManageMode('remote')">远端</button>
+                </div>
+            </div>
+        </header>
+
+        <section id="keepAliveHint" class="keepalive-card">
+            <div class="status-dot warn-dot"></div>
+            <div class="keepalive-text">
+                <strong>后台访问受限</strong>
+                <span id="backgroundGuideText">App 进入后台后可能断开连接，请允许后台高耗电或后台运行。</span>
+            </div>
+            <button id="backgroundSettingsBtn" class="md-btn md-btn-tonal md-btn-compact" onclick="openBackgroundSettings()" type="button">后台设置</button>
+        </section>
+
+        <section id="remotePicker" class="target-strip remote-picker">
+            <div class="target-main">
+                <div id="targetStatusDot" class="status-dot pending-dot"></div>
+                <div class="target-text">
+                    <div class="target-label" id="targetStatusText">远端设备</div>
+                    <div id="targetDeviceText" class="target-device">请选择设备</div>
+                </div>
+            </div>
+            <div class="target-actions">
+                <button id="changeDeviceBtn" class="md-btn md-btn-tonal md-btn-compact" onclick="toggleDevicePanel()" type="button">选择设备</button>
+                <button class="md-btn md-btn-tonal md-btn-compact" onclick="scanDevices()" type="button">发现</button>
+            </div>
+            <div id="deviceList" class="device-list"></div>
+        </section>
+
+        <main class="manage-body">
+            <section id="viewFiles" class="manage-view active">
+                <input type="file" id="file_uploader" onchange="onFileSelected()" multiple />
+                <div class="file-workspace">
+                    <div class="file-hero">
+                        <div class="file-hero-main">
+                            <div class="manage-title">文件管理</div>
+                            <div class="manage-subtitle">管理当前目标设备的外置存储目录</div>
+                        </div>
+                        <div class="file-hero-actions">
+                            <button class="md-btn md-btn-filled" onclick="uploadFile()">上传文件</button>
+                            <button class="md-btn md-btn-tonal" onclick="showNewFolderDialog()">新建目录</button>
+                        </div>
+                    </div>
+
+                    <div class="file-control-bar">
+                        <div id="fileBreadcrumb" class="file-breadcrumb"></div>
+                        <div class="file-control-actions">
+                            <button id="fileUpBtn" class="file-tool-btn" onclick="listFile(currentParent)" type="button">上级</button>
+                            <button class="file-tool-btn" onclick="listFile(currentRoot)" type="button">刷新</button>
+                        </div>
+                    </div>
+
+                    <div id="fileSelectionBar" class="file-selection-bar">
+                        <label class="file-select-all"><input id="fileSelectAll" type="checkbox" onchange="toggleSelectAll(this.checked)"><span id="fileSelectionText">未选择</span></label>
+                        <div class="file-selection-actions">
+                            <button id="fileZipBtn" class="md-btn md-btn-filled md-btn-compact" onclick="downloadSelectedArchive()" disabled>打包下载</button>
+                            <button id="fileClearBtn" class="md-btn md-btn-tonal md-btn-compact" onclick="clearFileSelection()" disabled>清空选择</button>
+                        </div>
+                    </div>
+
+                    <div class="file-list-shell">
+                        <div class="file-list-head">
+                            <div class="file-head-name">名称</div>
+                            <div>修改时间</div>
+                            <div>大小</div>
+                            <div>操作</div>
+                        </div>
+                        <div id="file_list" class="file-list cloud-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="viewSync" class="manage-view">
+                <div class="workspace-panel">
+                    <div class="workspace-hero">
+                        <div>
+                            <div class="manage-title">一键同步</div>
+                            <div class="manage-subtitle">发现设备、选择方向和同步内容，目录树用于 Jar/脚本保存数据</div>
+                        </div>
+                        <button class="md-btn md-btn-filled" onclick="startSyncManage()" type="button">开始同步</button>
+                    </div>
+                    <div class="sync-grid">
+                        <div class="manage-card sync-device-card">
+                            <div class="manage-card-title">同步设备</div>
+                            <div class="sync-route">
+                                <div class="sync-node"><span class="node-role">本机</span><strong>当前设备</strong></div>
+                                <button id="syncDirectionBtn" class="sync-direction-btn" onclick="toggleSyncMode()" type="button">推送</button>
+                                <div class="sync-node"><span class="node-role">选中设备</span><strong id="syncTargetText">未选择</strong></div>
+                            </div>
+                            <div class="segmented sync-mode">
+                                <button id="syncModePush" class="segment active" onclick="setSyncMode('push')" type="button">本机 → 远端</button>
+                                <button id="syncModePull" class="segment" onclick="setSyncMode('pull')" type="button">远端 → 本机</button>
+                            </div>
+                        </div>
+                        <div class="manage-card sync-options-card">
+                            <div class="card-line">
+                                <div class="manage-card-title">同步内容</div>
+                                <button class="file-action" onclick="toggleSyncSelection()" type="button" id="syncSelectBtn">取消</button>
+                            </div>
+                            <div class="option-grid">
+                                <label class="option-check"><input id="syncOptConfig" type="checkbox" checked><span><strong>接口与站源列表</strong><small>接口配置、站源、直播源</small></span></label>
+                                <label class="option-check"><input id="syncOptSpider" type="checkbox" checked onchange="updateSyncPathsVisible()"><span><strong>Jar/脚本保存数据</strong><small>包含下方选中的同步目录</small></span></label>
+                                <label class="option-check"><input id="syncOptWebHome" type="checkbox" checked><span><strong>WebHome 主页数据</strong><small>WebHome 缓存与主页状态</small></span></label>
+                                <label class="option-check"><input id="syncOptSearch" type="checkbox" checked><span><strong>搜索记录</strong><small>关键词与热词</small></span></label>
+                                <label class="option-check"><input id="syncOptHistory" type="checkbox" checked><span><strong>观看记录</strong><small>播放历史与进度</small></span></label>
+                                <label class="option-check"><input id="syncOptKeep" type="checkbox" checked><span><strong>收藏数据</strong><small>收藏夹内容</small></span></label>
+                                <label class="option-check"><input id="syncOptSettings" type="checkbox"><span><strong>应用设置</strong><small>播放、渲染、代理等偏好</small></span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="syncPathsPanel" class="manage-card sync-path-card">
+                        <div class="card-line">
+                            <div>
+                                <div class="manage-card-title">同步目录</div>
+                                <div class="manage-subtitle">默认包含 TV、TVBox、TVData，可自动识别已配置的本地接口包目录</div>
+                            </div>
+                            <div class="card-actions">
+                                <button class="md-btn md-btn-tonal md-btn-compact" onclick="detectSyncPaths()" type="button">自动识别本地包</button>
+                                <button class="md-btn md-btn-tonal md-btn-compact" onclick="loadSyncManage(true)" type="button">刷新</button>
+                                <button class="md-btn md-btn-filled md-btn-compact" onclick="saveSyncPaths()" type="button">保存目录</button>
+                            </div>
+                        </div>
+                        <div id="syncPathChips" class="chip-list"></div>
+                        <div class="sync-tree-shell">
+                            <div class="file-path" id="syncTreePath">/</div>
+                            <div id="syncTree"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="viewCsp" class="manage-view">
+                <input type="file" id="csp_file_uploader" accept=".html,.htm,.txt,.json,.js" onchange="onCspFileSelected()" />
+                <div class="manage-header">
+                    <div>
+                        <div class="manage-title">站点注入</div>
+                        <div class="manage-subtitle" id="cspSummary">读取中</div>
+                    </div>
+                    <button class="md-btn md-btn-filled" onclick="saveCspManage()">保存</button>
+                </div>
+                <div class="md-toolbar">
+                    <button class="md-btn md-btn-tonal" onclick="addCspItem('webHome')">新增 WebHome</button>
+                    <button class="md-btn md-btn-tonal" onclick="addCspItem('csp')">新增通用 CSP</button>
+                    <button class="md-btn md-btn-tonal" onclick="addCspItem('live')">新增直播</button>
+                    <button class="md-btn md-btn-tonal" onclick="loadCspManage(true)">刷新</button>
+                </div>
+                <div class="manage-card manage-form-card">
+                    <label class="check-row"><input id="cspEnabled" type="checkbox" onchange="updateCspGlobal()"><span>启用站点注入</span></label>
+                    <div class="field-row compact insert-row">
+                        <label class="field-label">插入位置</label>
+                        <button class="step-btn" onclick="stepCspInsert(-1)" type="button">-</button>
+                        <span id="cspInsertText" class="insert-value">1</span>
+                        <button class="step-btn" onclick="stepCspInsert(1)" type="button">+</button>
+                    </div>
+                </div>
+                <div id="cspList"></div>
+                <div class="manage-card">
+                    <div class="manage-card-title">JSON 配置</div>
+                    <textarea id="cspRaw" class="code-area" spellcheck="false"></textarea>
+                </div>
+            </section>
+
+            <section id="viewProxy" class="manage-view">
+                <div class="workspace-panel">
+                    <div class="workspace-hero">
+                        <div>
+                            <div class="manage-title">壳代理 Proxy</div>
+                            <div class="manage-subtitle" id="proxySummary">读取中</div>
+                        </div>
+                        <button class="md-btn md-btn-filled" onclick="saveProxyManage()" type="button">保存</button>
+                    </div>
+                    <div class="manage-card manage-form-card">
+                        <div class="card-line">
+                            <button id="proxyEnabled" class="toggle-pill on" onclick="toggleProxyEnabled()" type="button">启用</button>
+                            <div class="segmented">
+                                <button id="proxyModeForm" class="segment active" onclick="setProxyMode('form')" type="button">表单</button>
+                                <button id="proxyModeText" class="segment" onclick="setProxyMode('text')" type="button">文本</button>
+                            </div>
+                        </div>
+                        <label class="form-label" for="proxyUrl">默认代理地址</label>
+                        <input id="proxyUrl" class="md-input" type="text" placeholder="例如 socks5://127.0.0.1:9978" />
+                        <div id="proxyFormPanel" class="proxy-rule-panel">
+                            <div class="card-line">
+                                <div class="manage-card-title">代理规则</div>
+                                <button class="md-btn md-btn-tonal md-btn-compact" onclick="addProxyRule()" type="button">新增规则</button>
+                            </div>
+                            <div id="proxyRuleList" class="proxy-rule-list"></div>
+                        </div>
+                        <div id="proxyTextPanel" class="proxy-text-panel">
+                            <label class="form-label" for="proxyRules">JSON 或行文本规则</label>
+                            <textarea id="proxyRules" class="code-area" spellcheck="false" placeholder="每行一条规则：域名 代理地址&#10;也支持 JSON：{&quot;proxy&quot;:[{&quot;hosts&quot;:[&quot;*&quot;],&quot;urls&quot;:[&quot;socks5://127.0.0.1:9978&quot;]}]}"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="viewSearch" class="manage-view remote-only">
+                <div class="manage-header">
+                    <div>
+                        <div class="manage-title">远端搜索</div>
+                        <div class="manage-subtitle">让选中设备打开搜索结果页</div>
+                    </div>
+                </div>
+                <div class="manage-card action-panel">
+                    <label class="form-label" for="remoteKeyword">搜索关键词</label>
+                    <div class="action-row">
+                        <input id="remoteKeyword" class="md-input" type="search" placeholder="输入片名、演员或关键词" />
+                        <button class="md-btn md-btn-filled" onclick="remoteSearch()" type="button">搜索</button>
+                    </div>
+                </div>
+            </section>
+
+            <section id="viewPush" class="manage-view remote-only">
+                <div class="manage-header">
+                    <div>
+                        <div class="manage-title">远端推送</div>
+                        <div class="manage-subtitle">把播放地址推送到选中设备</div>
+                    </div>
+                </div>
+                <div class="manage-card action-panel">
+                    <label class="form-label" for="remotePushUrl">播放地址</label>
+                    <div class="action-row">
+                        <input id="remotePushUrl" class="md-input" type="url" placeholder="http(s)、magnet、ed2k 或其他可播放地址" />
+                        <button class="md-btn md-btn-filled" onclick="remotePush()" type="button">推送</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <nav class="md-nav-bar manage-nav">
+            <button id="navFiles" class="md-nav-item active" onclick="showManageView('files')"><span class="md-nav-label">文件</span></button>
+            <button id="navSync" class="md-nav-item" onclick="showManageView('sync')"><span class="md-nav-label">同步</span></button>
+            <button id="navCsp" class="md-nav-item" onclick="showManageView('csp')"><span class="md-nav-label">站点</span></button>
+            <button id="navProxy" class="md-nav-item" onclick="showManageView('proxy')"><span class="md-nav-label">Proxy</span></button>
+            <button id="navSearch" class="md-nav-item remote-only" onclick="showManageView('search')"><span class="md-nav-label">搜索</span></button>
+            <button id="navPush" class="md-nav-item remote-only" onclick="showManageView('push')"><span class="md-nav-label">推送</span></button>
+        </nav>
+    </div>
+
+    <div id="fileInfoDialog" class="md-dialog-overlay">
+        <div class="md-dialog">
+            <div class="md-dialog-title">文件路径</div>
+            <div class="md-dialog-body" id="fileUrl"></div>
+            <div class="md-dialog-actions">
+                <button onclick="closeDialog('fileInfoDialog')" class="md-dialog-btn">关闭</button>
+                <button onclick="downloadFile()" class="md-dialog-btn">下载</button>
+            </div>
+        </div>
+    </div>
+    <div id="uploadTip" class="md-dialog-overlay">
+        <div class="md-dialog">
+            <div class="md-dialog-title">确认上传？</div>
+            <div class="md-dialog-body" id="uploadTipContent"></div>
+            <div class="md-dialog-actions">
+                <button onclick="confirmUpload(0)" class="md-dialog-btn">取消</button>
+                <button onclick="confirmUpload(1)" class="md-dialog-btn">确定</button>
+            </div>
+        </div>
+    </div>
+    <div id="newFolder" class="md-dialog-overlay">
+        <div class="md-dialog">
+            <div class="md-dialog-title">新增目录</div>
+            <div class="md-dialog-body"><input id="newFolderContent" class="md-input" type="text" placeholder="请输入目录名称" /></div>
+            <div class="md-dialog-actions">
+                <button onclick="confirmNewFolder(0)" class="md-dialog-btn">取消</button>
+                <button onclick="confirmNewFolder(1)" class="md-dialog-btn">确定</button>
+            </div>
+        </div>
+    </div>
+    <div id="delFolder" class="md-dialog-overlay">
+        <div class="md-dialog">
+            <div class="md-dialog-title">删除目录</div>
+            <div class="md-dialog-body" id="delFolderContent"></div>
+            <div class="md-dialog-actions">
+                <button onclick="confirmDelFolder(0)" class="md-dialog-btn">取消</button>
+                <button onclick="confirmDelFolder(1)" class="md-dialog-btn error">删除</button>
+            </div>
+        </div>
+    </div>
+    <div id="delFile" class="md-dialog-overlay">
+        <div class="md-dialog">
+            <div class="md-dialog-title">删除文件</div>
+            <div class="md-dialog-body" id="delFileContent"></div>
+            <div class="md-dialog-actions">
+                <button onclick="confirmDelFile(0)" class="md-dialog-btn">取消</button>
+                <button onclick="confirmDelFile(1)" class="md-dialog-btn error">删除</button>
+            </div>
+        </div>
+    </div>
+    <div id="cspCodeDialog" class="md-dialog-overlay">
+        <div class="md-dialog editor-dialog">
+            <div class="md-dialog-title">WebHome 代码</div>
+            <div class="md-dialog-body"><textarea id="cspCodeContent" class="code-area modal-code" spellcheck="false" placeholder="粘贴 HTML 代码"></textarea></div>
+            <div class="md-dialog-actions">
+                <button onclick="confirmCspCode(0)" class="md-dialog-btn">取消</button>
+                <button onclick="confirmCspCode(1)" class="md-dialog-btn">确定</button>
+            </div>
+        </div>
+    </div>
+    <div id="cspLinkDialog" class="md-dialog-overlay">
+        <div class="md-dialog">
+            <div class="md-dialog-title">WebHome 链接</div>
+            <div class="md-dialog-body"><input id="cspLinkContent" class="md-input" type="url" placeholder="https://example.com/nostr.html" /></div>
+            <div class="md-dialog-actions">
+                <button onclick="confirmCspLink(0)" class="md-dialog-btn">取消</button>
+                <button onclick="confirmCspLink(1)" class="md-dialog-btn">确定</button>
+            </div>
+        </div>
+    </div>
+    <div id="warnToast"><div class="md-snackbar" id="warnToastContent"></div></div>
+    <div id="loadingToast"><div class="md-progress-wrap"><svg class="md-progress" viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/></svg></div></div>
+</body>
+</html>

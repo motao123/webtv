@@ -1,0 +1,36 @@
+plugins {
+    alias libs.plugins.android.library
+}
+
+android {
+    namespace = 'com.github.catvod.crawler'
+
+    compileSdk libs.versions.compileSdk.get().toInteger()
+
+    defaultConfig {
+        minSdk libs.versions.minSdk.get().toInteger()
+        targetSdk libs.versions.targetSdk.get().toInteger()
+    }
+
+    compileOptions {
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+}
+
+dependencies {
+    api libs.annotation
+    api libs.brotli
+    api libs.bundles.okhttp
+    api libs.gson
+    api libs.guava
+    api libs.juniversalchardet
+    api libs.logger
+    api libs.preference
+    api libs.sardine
+    api libs.smbj
+    api libs.startup
+    api libs.zxing.core
+    coreLibraryDesugaring libs.desugar
+}

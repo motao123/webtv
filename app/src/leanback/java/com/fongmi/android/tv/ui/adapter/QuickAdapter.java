@@ -1,0 +1,94 @@
+package com.fongmi.android.tv.ui.adapter;
+
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.fongmi.android.tv.bean.Vod;
+import com.fongmi.android.tv.databinding.AdapterQuickBinding;
+import com.fongmi.android.tv.setting.SiteHealthStore;
+import com.fongmi.android.tv.utils.ResUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class QuickAdapter extends RecyclerView.Adapter<QuickAdapter.ViewHolder> {
+
+    private final OnClickListener mListener;
+    private final List<Vod> mItems;
+    private final int width;
+
+    public QuickAdapter(OnClickListener listener) {
+        mListener = listener;
+        mItems = new ArrayList<>();
+        int space = ResUtil.dp2px(24) + ResUtil.dp2px(32);
+        width = (ResUtil.getScreenWidth() - space) / 4;
+    }
+
+    public void addAll(List<Vod> items) {
+        int start = mItems.size();
+        mItems.addAll(items);
+        notifyItemRangeInserted(start, items.size());
+    }
+
+    public void remove(int position) {
+        mItems.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void clear() {
+        mItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public Vod get(int position) {
+        return mItems.get(position);
+    }
+
+    public int getBestPosition() {
+        int position = 0;
+        for (int i = 1; i < mItems.size(); i++) {
+            if (SiteHealthStore.compareVods(mItems.get(i), mItems.get(position)) < 0) position = i;
+        }
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return mItems.size();
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewHolder holder = new ViewHolder(AdapterQuickBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        holder.binding.getRoot().getLayoutParams().width = width;
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Vod item = mItems.get(position);
+        holder.binding.name.setText(item.getName());
+        holder.binding.site.setText(item.getSiteName());
+        holder.binding.remark.setText(item.getRemarks());
+        holder.binding.getRoot().setOnClickListener(v -> mListener.onItemClick(item));
+    }
+
+    public interface OnClickListener {
+
+        void onItemClick(Vod item);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        private final AdapterQuickBinding binding;
+
+        ViewHolder(@NonNull AdapterQuickBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+    }
+}
