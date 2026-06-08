@@ -107,11 +107,11 @@ public class JarLoader {
                     return;
                 }
                 load(key, file);
-            } else {
-                SpiderDebug.log("jar", "skipped unrecognized jar key=%s url=%s", key, jar);
             } else if (jar.startsWith("file")) {
                 File file = Path.local(jar);
                 if (Path.exists(file) && (hash.isEmpty() || verify(file, hashType, hash))) load(key, file);
+            } else {
+                SpiderDebug.log("jar", "skipped unrecognized jar key=%s url=%s", key, jar);
             }
         }
     }
