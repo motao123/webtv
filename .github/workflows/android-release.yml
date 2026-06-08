@@ -51,6 +51,9 @@ jobs:
       - name: List build variants
         run: ./gradlew :app:tasks --all 2>&1 | grep -E "assemble.*Release$" | head -20
 
+      - name: Build Python interpreter (Chaquopy)
+        run: ./gradlew :chaquo:buildPython
+
       - name: Build mobile-arm64
         run: ./gradlew :app:assembleMobileArm64_v8a${{ inputs.build_type || 'Release' }}
 
