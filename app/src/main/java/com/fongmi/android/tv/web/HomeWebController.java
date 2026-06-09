@@ -206,10 +206,20 @@ public class HomeWebController {
             if ("file".equalsIgnoreCase(scheme) || "content".equalsIgnoreCase(scheme)) return true;
             String host = uri.getHost();
             if ("127.0.0.1".equals(host) || "localhost".equalsIgnoreCase(host) || "::1".equals(host)) return true;
-            return sameOrigin(url, VodConfig.getUrl());
+            if (sameOrigin(url, VodConfig.getUrl())) return true;
+            return matchesAllowedOrigin(url);
         } catch (Throwable e) {
             return false;
         }
+    }
+
+    private boolean matchesAllowedOrigin(String url) {
+        String origin = originOf(url);
+        if (TextUtils.isEmpty(origin)) return false;
+        for (String allowed : VodConfig.get().getAllowedOrigins()) {
+            if (!TextUtils.isEmpty(allowed) && origin.equals(allowed)) return true;
+        }
+        return false;
     }
 
     private boolean sameOrigin(String a, String b) {

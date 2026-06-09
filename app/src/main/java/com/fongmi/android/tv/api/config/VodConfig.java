@@ -41,6 +41,7 @@ public class VodConfig extends BaseConfig {
     private List<Site> sites;
     private List<String> ads;
     private List<String> flags;
+    private List<String> allowedOrigins;
     private List<Parse> parses;
 
     public static VodConfig get() {
@@ -90,6 +91,7 @@ public class VodConfig extends BaseConfig {
         flags = null;
         rules = null;
         parses = null;
+        allowedOrigins = null;
         WebHomeExtensionRegistry.get().setGlobalSources(null, "");
         BaseLoader.get().clear();
         RuleConfig.get().invalidate();
@@ -162,6 +164,7 @@ public class VodConfig extends BaseConfig {
         setFlags(Json.safeListString(object, "flags"));
         setHosts(Json.safeListString(object, "hosts"));
         setAds(Json.safeListString(object, "ads"));
+        setAllowedOrigins(Json.safeListString(object, "allowedOrigins"));
     }
 
     private void initLive(Config config, JsonObject object) {
@@ -262,6 +265,14 @@ public class VodConfig extends BaseConfig {
     private void setAds(List<String> ads) {
         this.ads = ads;
         RuleConfig.get().invalidate();
+    }
+
+    public List<String> getAllowedOrigins() {
+        return allowedOrigins == null ? Collections.emptyList() : allowedOrigins;
+    }
+
+    private void setAllowedOrigins(List<String> allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
     }
 
     public Parse getParse() {
