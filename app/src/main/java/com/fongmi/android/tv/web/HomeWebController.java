@@ -64,6 +64,7 @@ public class HomeWebController {
     private long lastKeyAt;
     private boolean sdkReady;
     private boolean paused;
+    private volatile boolean trusted;
 
     public HomeWebController(Activity activity, WebView webView, Listener listener) {
         this(activity, webView, listener, false);
@@ -118,13 +119,17 @@ public class HomeWebController {
         if (reload) {
             sdkReady = false;
             injectedExtensions.clear();
+            refreshTrust();
             webView.loadUrl(force ? reloadUrl(homePage) : homePage);
+        } else {
+            refreshTrust();
         }
         show();
         return true;
     }
 
     public void reload() {
+        refreshTrust();
         if (TextUtils.isEmpty(homePage)) {
             webView.reload();
         } else {
@@ -184,9 +189,13 @@ public class HomeWebController {
     }
 
     public boolean isTrustedHomePage() {
+        return trusted;
+    }
+
+    private void refreshTrust() {
         String url = webView.getUrl();
         if (TextUtils.isEmpty(url)) url = homePage;
-        return isTrustedHomeUrl(url);
+        trusted = isTrustedHomeUrl(url);
     }
 
     private boolean isTrustedHomeUrl(String url) {
@@ -358,6 +367,7 @@ public class HomeWebController {
                 sdkReady = false;
                 injectedExtensions.clear();
                 markDocumentStartInjected();
+                refreshTrust();
                 listener.onWebLoading();
             }
 
@@ -365,6 +375,7 @@ public class HomeWebController {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 SpiderDebug.log("webhome-webview", "page finished url=%s title=%s", url, view.getTitle());
+                refreshTrust();
                 injectSdk();
                 focusWebView("page-finished");
                 listener.onWebReady();
@@ -377,6 +388,7 @@ public class HomeWebController {
                 listener.onWebConsole("ERROR " + error.getErrorCode() + " " + error.getDescription() + " " + request.getUrl());
                 if (request.isForMainFrame()) {
                     homePage = null;
+                    trusted = false;
                     Notify.show(error.getDescription().toString());
                     listener.onWebError();
                 }
@@ -398,9 +410,11 @@ public class HomeWebController {
                 SpiderDebug.log("webhome-webview", "render process gone didCrash=%s priority=%s", detail.didCrash(), detail.rendererPriorityAtExit());
                 recreateWebView();
                 if (!TextUtils.isEmpty(homePage)) {
+                    refreshTrust();
                     listener.onWebLoading();
                     webView.loadUrl(reloadUrl(homePage, true));
                 } else {
+                    trusted = false;
                     listener.onWebError();
                 }
                 return true;
