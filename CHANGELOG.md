@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.5.4 — Security Audit & Hardening (2026-06-10)
+## 5.5.7 — Security Audit & Hardening (2026-06-10)
 
 基于 v5.5.3 的代码安全审计修复。修复 2 个严重漏洞、5 个高危漏洞、7 个中危漏洞。
 
