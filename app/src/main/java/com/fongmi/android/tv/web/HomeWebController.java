@@ -203,7 +203,7 @@ public class HomeWebController {
             Uri uri = Uri.parse(url);
             String scheme = uri.getScheme();
             if (TextUtils.isEmpty(scheme)) return false;
-            if ("file".equalsIgnoreCase(scheme) || "content".equalsIgnoreCase(scheme)) return true;
+            if ("file".equalsIgnoreCase(scheme)) return true;
             String host = uri.getHost();
             if ("127.0.0.1".equals(host) || "localhost".equalsIgnoreCase(host) || "::1".equals(host)) return true;
             if (sameOrigin(url, VodConfig.getUrl())) return true;
@@ -406,6 +406,8 @@ public class HomeWebController {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                Uri uri = request.getUrl();
+                if ("intent".equalsIgnoreCase(uri.getScheme())) return true;
                 return false;
             }
 

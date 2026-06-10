@@ -233,7 +233,6 @@ public class Path {
             file.setReadable(true);
             file.setWritable(true);
             file.setExecutable(true);
-            Shell.exec("chmod 777 " + file);
             return file;
         } catch (IOException e) {
             return file;

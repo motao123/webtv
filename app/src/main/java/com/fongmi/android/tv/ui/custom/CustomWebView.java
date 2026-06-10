@@ -88,7 +88,7 @@ public class CustomWebView extends WebView implements DialogInterface.OnDismissL
         setting.setUserAgentString(Setting.getUa());
         setting.setMediaPlaybackRequiresUserGesture(false);
         setting.setJavaScriptCanOpenWindowsAutomatically(false);
-        setting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        setting.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         setWebChromeClient(webChromeClient());
         setWebViewClient(webViewClient());
     }
@@ -148,13 +148,14 @@ public class CustomWebView extends WebView implements DialogInterface.OnDismissL
             }
 
             @Override
-            @SuppressLint("WebViewClientOnReceivedSslError")
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
+                SpiderDebug.log("webview-parse", "SSL error primary=%s url=%s", error.getPrimaryError(), error.getUrl());
+                handler.cancel();
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if ("intent".equalsIgnoreCase(request.getUrl().getScheme())) return true;
                 return false;
             }
         };

@@ -199,9 +199,19 @@ public class Local implements Process {
         return name;
     }
 
+    private static final long MAX_UNZIP_ENTRY_SIZE = 100 * 1024 * 1024; // 100MB per entry
+    private static final long MAX_UNZIP_TOTAL_SIZE = 500 * 1024 * 1024;  // 500MB total
+    private static final int MAX_UNZIP_ENTRIES = 1000;
+
     private void unzip(File zip, File dir) throws IOException {
         try (ZipFile zipFile = new ZipFile(zip)) {
+            int count = 0;
+            long totalSize = 0;
             for (ZipEntry entry : java.util.Collections.list(zipFile.entries())) {
+                if (++count > MAX_UNZIP_ENTRIES) throw new IOException("Too many entries in zip archive");
+                long size = entry.getSize();
+                if (size > MAX_UNZIP_ENTRY_SIZE) throw new IOException("Entry too large: " + entry.getName());
+                if (size > 0 && (totalSize += size) > MAX_UNZIP_TOTAL_SIZE) throw new IOException("Total uncompressed size too large");
                 if (entry.isDirectory()) {
                     safeFile(new File(dir, entry.getName())).mkdirs();
                     continue;

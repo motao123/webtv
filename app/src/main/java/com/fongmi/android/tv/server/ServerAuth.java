@@ -16,6 +16,9 @@ public class ServerAuth {
         return TOKEN;
     }
 
+    // Note: token in query string may leak via Referer headers and logs.
+    // Prefer Authorization: Bearer header for API calls where possible.
+    // This method exists because QR-code / link-based access requires URL-embedded auth.
     public static String withToken(String url) {
         return url + (url.contains("?") ? "&" : "?") + "token=" + TOKEN;
     }
@@ -32,7 +35,7 @@ public class ServerAuth {
     }
 
     private static boolean protectedPath(String url) {
-        return url.startsWith("/manage/") || url.startsWith("/file") || url.startsWith("/upload") || url.startsWith("/newFolder") || url.startsWith("/delFolder") || url.startsWith("/delFile") || url.startsWith("/debug/") || url.startsWith("/cache") || url.startsWith("/action") || url.startsWith("/proxy") || url.startsWith("/webResource") || url.startsWith("/pan/check");
+        return url.startsWith("/manage/") || url.startsWith("/file") || url.startsWith("/upload") || url.startsWith("/newFolder") || url.startsWith("/delFolder") || url.startsWith("/delFile") || url.startsWith("/debug/") || url.startsWith("/cache") || url.startsWith("/action") || url.startsWith("/proxy") || url.startsWith("/webResource") || url.startsWith("/pan/check") || url.startsWith("/parse");
     }
 
     private static boolean bearer(NanoHTTPD.IHTTPSession session) {

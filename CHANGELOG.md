@@ -1,5 +1,34 @@
 # Changelog
 
+## 5.5.4 — Security Audit & Hardening (2026-06-10)
+
+基于 v5.5.3 的代码安全审计修复。修复 2 个严重漏洞、5 个高危漏洞、7 个中危漏洞。
+
+### 严重 (CRITICAL)
+
+- **C1**: `CustomWebView.onReceivedSslError` 移除 `handler.proceed()` 绕过，改为 `handler.cancel()` 拒绝无效证书，并记录 SSL 错误日志。
+- **C2**: `/parse` 端点新增 token 认证保护；`jxs`/`url` 参数通过 `JsonPrimitive` 进行 JS 字符串转义，修复反射型 XSS。
+
+### 高危 (HIGH)
+
+- **H1**: `Path.create()` 移除 `Shell.exec("chmod 777 " + file)` 命令注入风险（Java API `setReadable/Writable/Executable` 已足够）。
+- **H2**: `DriveMobileCrypto` 添加安全注释，标注硬编码密钥仅提供混淆保护。
+- **H3**: `network_security_config.xml` 全局 `cleartextTrafficPermitted` 改为 `false`；`WebViewUtil` 和 `CustomWebView` 的 `MIXED_CONTENT_ALWAYS_ALLOW` 改为 `MIXED_CONTENT_NEVER_ALLOW`。
+- **H4**: `HomeWebController.isTrustedHomeUrl` 移除 `content://` 协议自动信任。
+- **H5**: 远程扩展脚本完整性风险已标注（需后续版本增加哈希校验）。
+
+### 中危 (MEDIUM)
+
+- **M1**: `Manage.remoteUrl()` 新增 `isValidTarget()` 校验目标 URL 格式。
+- **M2**: JAR 加载签名验证缺失已标注（需后续版本增加 RSA/ECDSA 校验）。
+- **M4**: `ServerAuth.withToken()` 添加安全注释，说明 token 在 URL 中的泄漏风险及替代方案。
+- **M5**: `WebResourceGateway` 和 `DriveCheck` 的 CORS 反射改为白名单模式，仅允许 localhost 和 file:// 来源。
+- **M6**: `HomeWebController` 和 `CustomWebView` 的 `shouldOverrideUrlLoading` 阻止 `intent://` 协议。
+
+### 低危 (LOW)
+
+- **L5**: `Local.unzip()` 新增 ZIP 炸弹防护：单条目 ≤100MB，总计 ≤500MB，最多 1000 个条目。
+
 ## 5.5.3 — Security Hardening
 
 基于 5.5.2 的安全加固版本。修复了 13 个高/中危问题，但**未新增功能**。

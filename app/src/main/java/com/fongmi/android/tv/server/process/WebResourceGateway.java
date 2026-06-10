@@ -112,11 +112,16 @@ public class WebResourceGateway implements Process {
 
     private Response cors(Response response, IHTTPSession session) {
         String origin = session.getHeaders().get("origin");
-        response.addHeader("Access-Control-Allow-Origin", TextUtils.isEmpty(origin) ? "*" : origin);
+        response.addHeader("Access-Control-Allow-Origin", isAllowedOrigin(origin) ? origin : "");
         response.addHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS");
         response.addHeader("Access-Control-Allow-Headers", "*");
         response.addHeader("Access-Control-Expose-Headers", "*");
         response.addHeader("Access-Control-Max-Age", "86400");
         return response;
+    }
+
+    private boolean isAllowedOrigin(String origin) {
+        if (TextUtils.isEmpty(origin) || "null".equals(origin)) return true;
+        return origin.startsWith("http://127.0.0.1") || origin.startsWith("http://localhost") || origin.startsWith("https://localhost") || origin.startsWith("http://[::1]") || origin.startsWith("file://");
     }
 }

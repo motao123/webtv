@@ -11,6 +11,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 class DriveMobileCrypto {
 
+    // NOTE: This key provides obfuscation only, not true confidentiality.
+    // Anyone who extracts the APK can recover this key and decrypt all data.
+    // A proper fix requires protocol-level changes (e.g. TLS + asymmetric crypto).
     private static final byte[] KEY = "PVGDwmcvfs1uV3d1".getBytes(StandardCharsets.UTF_8);
     private static final int BLOCK_SIZE = 16;
 

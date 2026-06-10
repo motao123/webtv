@@ -31,6 +31,7 @@ import java.io.FilterInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -263,12 +264,24 @@ public class Manage implements Process {
     }
 
     private String remoteUrl(String target, String path) {
+        if (!isValidTarget(target)) throw new IllegalArgumentException("Invalid target host");
         String base = target.replaceAll("/+$", "");
         String token = remoteToken(base);
         String cleanBase = stripQuery(base);
         String remote = cleanBase + path;
         if (TextUtils.isEmpty(token) || remote.contains("token=")) return remote;
         return remote + (remote.contains("?") ? "&" : "?") + "token=" + URLEncoder.encode(token, StandardCharsets.UTF_8);
+    }
+
+    private boolean isValidTarget(String target) {
+        if (TextUtils.isEmpty(target)) return false;
+        try {
+            String host = URI.create(target).getHost();
+            if (TextUtils.isEmpty(host)) return false;
+            return true;
+        } catch (Throwable e) {
+            return false;
+        }
     }
 
     private String remoteToken(String target) {
