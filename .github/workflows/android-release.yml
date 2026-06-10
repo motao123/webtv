@@ -44,7 +44,7 @@ jobs:
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
           if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
-            echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+            echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
             echo "storeFile=release.keystore" >> local.properties
             echo "keyAlias=$KEY_ALIAS" >> local.properties
             echo "storePassword=$KEY_PASSWORD" >> local.properties
