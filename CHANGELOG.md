@@ -1,26 +1,34 @@
 # Changelog
 
-## 5.5.15 — Backup & CustomCsp Storage Fix (2026-06-11)
+## 5.5.17 — Backup & CustomCsp Storage Fix (2026-06-11)
 
 修复备份/恢复和自定义 CSP 功能在 Android 11+ 上静默失败的问题。
 
 ### 修复
 
-- **Path.tv()**: 备份文件从外部存储 `Environment.getExternalStorageDirectory()` 迁移到内部存储 `Context.getFilesDir()`，无需 `MANAGE_EXTERNAL_STORAGE` 权限
-- **CustomCspSetting**: CSP 配置目录从 `Path.root("TV/CustomCsp")` 迁移到 `Path.files()`，自定义 CSP 站点的 registry.json 和 index.html 可正常读写
+- **Path.tv()**: 备份文件从外部存储迁移到内部存储，无需 `MANAGE_EXTERNAL_STORAGE` 权限
+- **CustomCspSetting**: CSP 配置目录从 `Path.root("TV/CustomCsp")` 迁移到 `Path.files()`
 
 ### 原因
 
 v5.5.7 安全审计移除了 `MANAGE_EXTERNAL_STORAGE` 权限，v5.5.10 将 `hasFileAccess()` 在 Android 11+ 改为始终返回 `true`。但由于该权限实际未被授予，写入外部存储的操作静默失败，用户点击备份/恢复按钮后无任何效果。
 
-## 5.5.14 — CI Build Fix (2026-06-10)
+## 5.5.16 — EventBus Annotation Processor Cleanup (2026-06-10)
+
+移除 EventBus 注解处理器依赖，彻底解决 `No option eventBusIndex passed to annotation processor` 编译错误。
+
+## 5.5.15 — CI Build Fix (2026-06-10)
 
 修复 EventBus 注解处理器导致的编译错误。
 
 ### 修复
 
 - **EpgParser**: 合并重复的 `getEpg()` 方法，XXE 安全校验统一走一个入口
-- **EventBus**: `Startup.java` 改用 `EventBus.getDefault()`，移除 `eventBusIndex` 注解处理器参数和依赖
+- **EventBus**: `Startup.java` 改用 `EventBus.getDefault()`，移除 `eventBusIndex` 注解处理器参数
+
+## 5.5.14 — P1/P2 Security & Stability Fixes (2026-06-10)
+
+修复 14 个安全和稳定性问题。
 
 ## 5.5.13 — P0 Security Fixes (2026-06-10)
 
