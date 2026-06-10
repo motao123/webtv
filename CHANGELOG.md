@@ -13,7 +13,7 @@
 
 - **H1**: `Path.create()` 移除 `Shell.exec("chmod 777 " + file)` 命令注入风险（Java API `setReadable/Writable/Executable` 已足够）。
 - **H2**: `DriveMobileCrypto` 添加安全注释，标注硬编码密钥仅提供混淆保护。
-- **H3**: `network_security_config.xml` 全局 `cleartextTrafficPermitted` 改为 `false`；`WebViewUtil` 和 `CustomWebView` 的 `MIXED_CONTENT_ALWAYS_ALLOW` 改为 `MIXED_CONTENT_NEVER_ALLOW`。
+- **H3**: `network_security_config.xml` 基础配置 `cleartextTrafficPermitted` 改为 `true`（影视源、直播流需HTTP）；配置源/JAR端点强制HTTPS；`WebViewUtil` 和 `CustomWebView` 的 `MIXED_CONTENT_ALWAYS_ALLOW` 改为 `MIXED_CONTENT_NEVER_ALLOW`。
 - **H4**: `HomeWebController.isTrustedHomeUrl` 移除 `content://` 协议自动信任。
 - **H5**: 远程扩展脚本完整性风险已标注（需后续版本增加哈希校验）。
 
