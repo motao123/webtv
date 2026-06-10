@@ -43,7 +43,20 @@ jobs:
       - name: Write local.properties
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
+          if [ -n "$KEYSTORE_BASE64" ] && [ -n "$KEY_ALIAS" ] && [ -n "$KEY_PASSWORD" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > release.keystore
+            echo "storeFile=release.keystore" >> local.properties
+            echo "keyAlias=$KEY_ALIAS" >> local.properties
+            echo "storePassword=$KEY_PASSWORD" >> local.properties
+            echo "Signing configured with release keystore"
+          else
+            echo "No signing secrets — APK signed with debug key (cannot update existing install)"
+          fi
           cat local.properties
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Make gradlew executable
         run: chmod +x gradlew
