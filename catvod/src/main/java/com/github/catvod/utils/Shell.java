@@ -1,5 +1,6 @@
 package com.github.catvod.utils;
 
+import com.github.catvod.crawler.SpiderDebug;
 import com.orhanobut.logger.Logger;
 
 import java.io.BufferedReader;
@@ -19,7 +20,7 @@ public class Shell {
             Logger.t(TAG).d("Shell command '%s' with exit code '%s'", command, p.waitFor());
             return Util.substring(sb.toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
             return "";
         }
     }

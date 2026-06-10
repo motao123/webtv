@@ -45,32 +45,32 @@ public class OkHttp {
         return Loader.INSTANCE;
     }
 
-    public static OkDns dns() {
+    public static synchronized OkDns dns() {
         if (get().dns != null) return get().dns;
         return get().dns = new OkDns();
     }
 
-    public static ResponseInterceptor responseInterceptor() {
+    public static synchronized ResponseInterceptor responseInterceptor() {
         if (get().responseInterceptor != null) return get().responseInterceptor;
         return get().responseInterceptor = new ResponseInterceptor();
     }
 
-    public static RequestInterceptor requestInterceptor() {
+    public static synchronized RequestInterceptor requestInterceptor() {
         if (get().requestInterceptor != null) return get().requestInterceptor;
         return get().requestInterceptor = new RequestInterceptor();
     }
 
-    public static AuthInterceptor authInterceptor() {
+    public static synchronized AuthInterceptor authInterceptor() {
         if (get().authInterceptor != null) return get().authInterceptor;
         return get().authInterceptor = new AuthInterceptor();
     }
 
-    public static OkAuthenticator authenticator() {
+    public static synchronized OkAuthenticator authenticator() {
         if (get().authenticator != null) return get().authenticator;
         return get().authenticator = new OkAuthenticator(selector());
     }
 
-    public static OkProxySelector selector() {
+    public static synchronized OkProxySelector selector() {
         if (get().selector != null) return get().selector;
         return get().selector = new OkProxySelector();
     }
@@ -120,7 +120,7 @@ public class OkHttp {
         try (Response res = newCall(url).execute()) {
             return res.body().string();
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
             return "";
         }
     }
@@ -130,7 +130,7 @@ public class OkHttp {
         try (Response res = newCall(url, headers).execute()) {
             return res.body().string();
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
             return "";
         }
     }

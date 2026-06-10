@@ -11,6 +11,7 @@ import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.player.Source;
 import com.fongmi.android.tv.utils.UrlUtil;
 import com.forcetech.Util;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.google.common.net.HttpHeaders;
 
@@ -54,7 +55,7 @@ public class Force implements Source.Extractor, ServiceConnection {
         try {
             if (!set.isEmpty()) App.get().unbindService(this);
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         } finally {
             set.clear();
         }

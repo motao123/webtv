@@ -17,6 +17,7 @@ import com.fongmi.android.tv.utils.Github;
 import com.fongmi.android.tv.utils.Notify;
 import com.fongmi.android.tv.utils.ResUtil;
 import com.fongmi.android.tv.utils.Task;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Path;
 
@@ -71,7 +72,7 @@ public class Updater implements Download.Callback, UpdateListener {
             if (code <= BuildConfig.VERSION_CODE) return;
             App.post(() -> show(activity, name, desc));
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 

@@ -3,6 +3,7 @@ package com.fongmi.android.tv.api.loader;
 import com.fongmi.android.tv.App;
 import com.fongmi.chaquo.Loader;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.crawler.SpiderNull;
 
 import java.util.Map;
@@ -37,7 +38,7 @@ public class PyLoader {
                 spider.init(App.get(), ext);
                 return spider;
             } catch (Throwable e) {
-                e.printStackTrace();
+                SpiderDebug.log(e);
                 return new SpiderNull();
             }
         });

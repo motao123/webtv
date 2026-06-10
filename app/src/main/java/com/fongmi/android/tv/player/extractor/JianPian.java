@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.fongmi.android.tv.player.Source;
 import com.fongmi.android.tv.utils.FileUtil;
 import com.fongmi.android.tv.utils.UrlUtil;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Path;
 import com.p2p.P2PClass;
 
@@ -50,7 +51,7 @@ public class JianPian implements Source.Extractor {
             path = path.replace("xg://", "ftp://").replace("xgplay://", "ftp://");
             p2p.P2Pdoxstart(path.getBytes("GBK"));
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -60,7 +61,7 @@ public class JianPian implements Source.Extractor {
             if (p2p == null || path == null) return;
             p2p.P2Pdoxpause(path.getBytes("GBK"));
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         } finally {
             path = null;
         }

@@ -4,6 +4,7 @@ import com.fongmi.android.tv.App;
 import com.fongmi.quickjs.crawler.Loader;
 import com.fongmi.quickjs.utils.Module;
 import com.github.catvod.crawler.Spider;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.crawler.SpiderNull;
 
 import java.util.Map;
@@ -39,7 +40,7 @@ public class JsLoader {
                 spider.init(App.get(), ext);
                 return spider;
             } catch (Throwable e) {
-                e.printStackTrace();
+                SpiderDebug.log(e);
                 return new SpiderNull();
             }
         });

@@ -6,6 +6,7 @@ import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.bean.drive.DriveCheckItem;
 import com.fongmi.android.tv.bean.drive.DriveCheckResponse;
 import com.fongmi.android.tv.bean.drive.DriveCheckResult;
+import com.fongmi.android.tv.utils.Task;
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Prefers;
 import com.google.gson.JsonObject;
@@ -28,8 +29,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -112,17 +111,12 @@ public class DriveCheckService {
     }
 
     private void checkBatch(List<DriveCheckItem> items, DriveCheckResult[] results, int start, int end) {
-        ExecutorService executor = Executors.newFixedThreadPool(Math.max(1, end - start));
         List<Future<?>> futures = new ArrayList<>();
-        try {
-            for (int index = start; index < end; index++) {
-                final int itemIndex = index;
-                futures.add(executor.submit(() -> results[itemIndex] = checkOneSafely(items.get(itemIndex))));
-            }
-            for (Future<?> future : futures) waitFuture(future);
-        } finally {
-            executor.shutdownNow();
+        for (int index = start; index < end; index++) {
+            final int itemIndex = index;
+            futures.add(Task.largeExecutor().submit(() -> results[itemIndex] = checkOneSafely(items.get(itemIndex))));
         }
+        for (Future<?> future : futures) waitFuture(future);
     }
 
     private void waitFuture(Future<?> future) {

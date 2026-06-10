@@ -374,6 +374,7 @@ public class PlayerManager implements ParseCallback {
         SpiderDebug.log("player", "setMediaItem timeout=%d spec=%s", timeout, debugSpec());
         setDanmakus(spec.getDanmakus());
         engine.start(spec.checkUa());
+        setSpeed(PlayerSetting.getDefaultSpeed());
         App.post(runnable, timeout);
         callback.onPrepare();
         initTrack = false;

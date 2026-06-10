@@ -66,7 +66,10 @@ public class Server {
                 Proxy.set(i);
                 break;
             } catch (Throwable e) {
-                nano = null;
+                if (nano != null) {
+                    nano.stop();
+                    nano = null;
+                }
             }
         }
     }

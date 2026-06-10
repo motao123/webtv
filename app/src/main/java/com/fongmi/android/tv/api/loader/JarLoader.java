@@ -67,7 +67,7 @@ public class JarLoader {
             Method method = clz.getMethod("init", Context.class);
             method.invoke(clz, App.get());
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -77,7 +77,7 @@ public class JarLoader {
             Method method = clz.getMethod("proxy", Map.class);
             methods.put(key, method);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -137,7 +137,7 @@ public class JarLoader {
             parseJar(jaKey, jar);
             return loaders.get(jaKey);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
             return null;
         }
     }
@@ -155,7 +155,7 @@ public class JarLoader {
                 spider.init(App.get(), ext);
                 return spider;
             } catch (Throwable e) {
-                e.printStackTrace();
+                SpiderDebug.log(e);
                 return new SpiderNull();
             }
         });
@@ -194,7 +194,7 @@ public class JarLoader {
         try {
             return method == null ? null : (Object[]) method.invoke(null, params);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
             return null;
         }
     }

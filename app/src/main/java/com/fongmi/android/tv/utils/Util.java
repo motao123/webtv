@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.BuildConfig;
 import com.fongmi.android.tv.R;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Shell;
 
 import java.net.NetworkInterface;
@@ -94,7 +95,7 @@ public class Util {
             manager.setPrimaryClip(ClipData.newPlainText("", text));
             Notify.show(R.string.copied);
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 

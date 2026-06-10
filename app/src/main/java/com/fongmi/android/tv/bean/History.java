@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.media3.common.C;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import com.fongmi.android.tv.App;
@@ -15,6 +16,8 @@ import com.fongmi.android.tv.R;
 import com.fongmi.android.tv.api.config.VodConfig;
 import com.fongmi.android.tv.db.AppDatabase;
 import com.fongmi.android.tv.impl.Diffable;
+import com.fongmi.android.tv.utils.Task;
+import com.github.catvod.crawler.SpiderDebug;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,7 +27,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-@Entity
+@Entity(indices = {
+    @Index(value = {"cid", "createTime"}),
+    @Index(value = {"cid", "vodName"})
+})
 public class History implements Diffable<History> {
 
     @NonNull
@@ -126,8 +132,23 @@ public class History implements Diffable<History> {
         }
     }
 
+    public static List<History> search(String keyword) {
+        try {
+            return AppDatabase.get().getHistoryDao().search(VodConfig.getCid(), keyword);
+        } catch (Exception e) {
+            return Collections.emptyList();
+        }
+    }
+
     public static void delete(int cid) {
         AppDatabase.get().getHistoryDao().delete(cid);
+    }
+
+    public static void cleanExpired() {
+        Task.execute(() -> {
+            int deleted = AppDatabase.get().getHistoryDao().deleteExpired(System.currentTimeMillis() - Constant.HISTORY_TIME);
+            if (deleted > 0) SpiderDebug.log("history", "cleaned %s expired records", deleted);
+        });
     }
 
     public static void sync(List<History> targets) {

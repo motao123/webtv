@@ -41,7 +41,6 @@ public class Proxy implements Process {
             if (rs.length > 3 && rs[3] != null) for (Map.Entry<String, String> entry : ((Map<String, String>) rs[3]).entrySet()) response.addHeader(entry.getKey(), entry.getValue());
             return response;
         } catch (Throwable e) {
-            e.printStackTrace();
             SpiderDebug.log("proxy", e);
             return Nano.error(e.getMessage());
         }

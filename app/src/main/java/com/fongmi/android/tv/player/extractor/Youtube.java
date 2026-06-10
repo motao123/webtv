@@ -8,6 +8,7 @@ import com.fongmi.android.tv.bean.Vod;
 import com.fongmi.android.tv.event.RefreshEvent;
 import com.fongmi.android.tv.impl.NewPipeImpl;
 import com.fongmi.android.tv.player.Source;
+import com.github.catvod.crawler.SpiderDebug;
 import com.fongmi.android.tv.utils.UrlUtil;
 
 import org.schabi.newpipe.extractor.ListExtractor;
@@ -167,7 +168,7 @@ public class Youtube implements Source.Extractor {
                 try {
                     add(extractor, episodes, extractor.getPage(page.getNextPage()));
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    SpiderDebug.log(e);
                 }
             }
         }

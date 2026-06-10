@@ -35,7 +35,7 @@ import java.util.List;
 @Database(entities = {Keep.class, Site.class, Live.class, Track.class, Config.class, Device.class, History.class}, version = AppDatabase.VERSION)
 public abstract class AppDatabase extends RoomDatabase {
 
-    public static final int VERSION = 35;
+    public static final int VERSION = 36;
     public static final String NAME = "tv";
     public static final String SYMBOL = "@@@";
 
@@ -96,7 +96,10 @@ public abstract class AppDatabase extends RoomDatabase {
                 .addMigrations(Migrations.MIGRATION_32_33)
                 .addMigrations(Migrations.MIGRATION_33_34)
                 .addMigrations(Migrations.MIGRATION_34_35)
+                .addMigrations(Migrations.MIGRATION_35_36)
                 .fallbackToDestructiveMigration(true)
+                // TODO: Remove allowMainThreadQueries - requires migrating all DAO calls to async (Task.execute/Coroutine)
+                // Mitigated by: History table indexes (cid+createTime, cid+vodName) added in v36
                 .allowMainThreadQueries().build();
     }
 

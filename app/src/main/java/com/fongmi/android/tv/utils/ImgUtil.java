@@ -25,11 +25,12 @@ import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.R;
 import com.fongmi.android.tv.api.config.VodConfig;
 import com.fongmi.android.tv.impl.CustomTarget;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Json;
 import com.google.common.net.HttpHeaders;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,13 +38,24 @@ import jahirfiquitiva.libs.textdrawable.TextDrawable;
 
 public class ImgUtil {
 
-    private static final Set<String> failed = Collections.synchronizedSet(new HashSet<>());
+    private static final int MAX_FAILED = 500;
+    private static final Set<String> failed = Collections.synchronizedSet(new LinkedHashSet<String>() {
+        @Override
+        public boolean add(String s) {
+            if (size() >= MAX_FAILED) {
+                java.util.Iterator<String> it = iterator();
+                it.next();
+                it.remove();
+            }
+            return super.add(s);
+        }
+    });
 
     public static void logo(ImageView view) {
         try {
             Glide.with(view).load(UrlUtil.convert(VodConfig.get().getConfig().getLogo())).circleCrop().override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).error(R.drawable.ic_logo).into(view);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -51,7 +63,7 @@ public class ImgUtil {
         try {
             Glide.with(App.get()).asBitmap().load(getUrl(url)).override(ResUtil.dp2px(96), ResUtil.dp2px(96)).error(R.drawable.artwork).into(target);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -59,7 +71,7 @@ public class ImgUtil {
         try {
             Glide.with(context).load(getUrl(url)).override(ResUtil.getScreenWidth(), ResUtil.getScreenHeight()).error(R.drawable.artwork).into(target);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -85,7 +97,7 @@ public class ImgUtil {
             if (vod) builder.centerCrop().into(view);
             else builder.fitCenter().into(view);
         } catch (Throwable e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 

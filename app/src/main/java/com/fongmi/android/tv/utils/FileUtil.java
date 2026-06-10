@@ -10,6 +10,7 @@ import androidx.core.content.FileProvider;
 import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.R;
 import com.fongmi.android.tv.impl.Callback;
+import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.utils.Path;
 
 import java.io.BufferedInputStream;
@@ -50,7 +51,7 @@ public class FileUtil {
             int read;
             while ((read = is.read(buffer)) > 0) os.write(buffer, 0, read);
         } catch (IOException e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         } finally {
             Path.clear(target);
         }
@@ -62,7 +63,7 @@ public class FileUtil {
             int read;
             while ((read = is.read(buffer)) != -1) os.write(buffer, 0, read);
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 
@@ -76,7 +77,7 @@ public class FileUtil {
                 else Path.copy(zip.getInputStream(entry), out);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            SpiderDebug.log(e);
         }
     }
 

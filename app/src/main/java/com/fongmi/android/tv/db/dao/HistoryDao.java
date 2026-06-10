@@ -22,6 +22,9 @@ public abstract class HistoryDao extends BaseDao<History> {
     @Query("SELECT * FROM History WHERE cid = :cid AND vodName = :vodName ORDER BY createTime DESC")
     public abstract List<History> findByName(int cid, String vodName);
 
+    @Query("SELECT * FROM History WHERE cid = :cid AND vodName LIKE '%' || :keyword || '%' ORDER BY createTime DESC LIMIT 60")
+    public abstract List<History> search(int cid, String keyword);
+
     @Query("DELETE FROM History WHERE cid = :cid AND `key` = :key")
     public abstract void delete(int cid, String key);
 
@@ -30,4 +33,7 @@ public abstract class HistoryDao extends BaseDao<History> {
 
     @Query("DELETE FROM History")
     public abstract void delete();
+
+    @Query("DELETE FROM History WHERE createTime < :before")
+    public abstract int deleteExpired(long before);
 }
