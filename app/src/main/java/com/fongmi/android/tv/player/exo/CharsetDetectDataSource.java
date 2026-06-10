@@ -106,7 +106,7 @@ public class CharsetDetectDataSource implements DataSource {
     }
 
     @Override
-    public void close() {
+    public void close() throws IOException {
         upstream.close();
         buffer.reset();
         convertedStream = null;

@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.5.18 — Build Fix (2026-06-11)
+
+修复 CI 编译错误：`CharsetDetectDataSource.close()` 添加 `throws IOException` 声明。
+
 ## 5.5.17 — Backup & CustomCsp Storage Fix (2026-06-11)
 
 修复备份/恢复和自定义 CSP 功能在 Android 11+ 上静默失败的问题。
