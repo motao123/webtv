@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.5.10 — Storage Permission Loop Fix (2026-06-10)
+
+修复每次启动都跳转「所有文件访问」权限页面但无法授权的问题。
+
+### 修复
+
+- **Setting.hasFileManager()**: 始终返回 `false`（v5.5.7 已移除 `MANAGE_EXTERNAL_STORAGE`，PermissionX 无法处理未声明的权限）
+- **Setting.hasFileAccess()**: Android 11+ 直接返回 `true`（应用内部存储无需权限，文件选择器走 SAF）
+- 仅在 Android 10 及以下请求旧版 `READ/WRITE_EXTERNAL_STORAGE` 权限
+
 ## 5.5.9 — Build Fix (2026-06-10)
 
 修复 v5.5.8 编译错误。

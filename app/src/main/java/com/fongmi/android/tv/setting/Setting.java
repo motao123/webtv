@@ -260,6 +260,7 @@ public class Setting {
     }
 
     public static boolean hasFileAccess() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) return true;
         return hasLegacyReadAccess();
     }
 
@@ -270,7 +271,6 @@ public class Setting {
     }
 
     public static boolean hasFileManager() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return false;
-        return new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION, Uri.parse("package:" + App.get().getPackageName())).resolveActivity(App.get().getPackageManager()) != null;
+        return false;
     }
 }
