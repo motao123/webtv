@@ -51,7 +51,7 @@ public class Path {
     }
 
     public static File tv() {
-        return mkdir(new File(root() + File.separator + "TV"));
+        return mkdir(new File(files() + File.separator + "TV"));
     }
 
     public static File so() {

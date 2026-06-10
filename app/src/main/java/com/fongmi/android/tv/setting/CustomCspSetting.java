@@ -119,7 +119,7 @@ public class CustomCspSetting {
     }
 
     public static File dir() {
-        File dir = Path.root(DIR);
+        File dir = new File(Path.files(), DIR);
         if (!dir.exists()) dir.mkdirs();
         return dir;
     }
@@ -129,7 +129,7 @@ public class CustomCspSetting {
     }
 
     public static String localUrl(String id, String name) {
-        return "file://" + DIR + "/" + id + "/" + name;
+        return "file://" + file(id, name).getAbsolutePath();
     }
 
     public static Result inject(List<Site> sites) {
