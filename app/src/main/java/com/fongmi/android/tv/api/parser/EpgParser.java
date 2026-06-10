@@ -73,6 +73,8 @@ public class EpgParser {
 
     public static Epg getEpg(String xml, String key, ZoneId zoneId) {
         try {
+            if (xml.contains("<!DOCTYPE")) throw new SecurityException("DOCTYPE is not allowed in EPG XML");
+            System.setProperty("javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING", "true");
             Tv tv = new Persister().read(Tv.class, xml, false);
             String rawDate = tv.getDate();
             String date = rawDate.isEmpty() ? LocalDate.now(zoneId).format(Formatters.DATE) : parseFull(rawDate, zoneId).atZoneSameInstant(zoneId).format(Formatters.DATE);
@@ -137,22 +139,6 @@ public class EpgParser {
         Tv tv = new Persister().read(Tv.class, xml, false);
         Map<String, List<Tv.Channel>> map = tv.getChannel().stream().collect(Collectors.groupingBy(Tv.Channel::getId));
         return new XmlData(tv, map);
-    }
-
-    public static Epg getEpg(String xml, String key, ZoneId zoneId) {
-        try {
-            if (xml.contains("<!DOCTYPE")) throw new SecurityException("DOCTYPE is not allowed in EPG XML");
-            System.setProperty("javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING", "true");
-            Tv tv = new Persister().read(Tv.class, xml, false);
-            String rawDate = tv.getDate();
-            String date = rawDate.isEmpty() ? LocalDate.now(zoneId).format(Formatters.DATE) : parseFull(rawDate, zoneId).atZoneSameInstant(zoneId).format(Formatters.DATE);
-            Epg epg = Epg.create(key, date);
-            tv.getProgramme().forEach(programme -> epg.getList().add(getEpgData(programme, zoneId)));
-            return epg;
-        } catch (Exception e) {
-            Log.w(TAG, "getEpg parse failed key=" + key + ": " + e.getMessage());
-            return new Epg();
-        }
     }
 
     private static ProgrammeResult processProgramme(XmlData data, Map<String, Channel> liveChannelMap, ZoneId zoneId) {
