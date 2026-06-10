@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.5.12 — Fix GitHub Release CI (2026-06-10)
+
+修复 Release 创建 401 认证错误，改用 `gh release create` CLI。
+
 ## 5.5.11 — Release Signing (2026-06-10)
 
 启用 release keystore 签名，用户可直接覆盖安装无需卸载。
