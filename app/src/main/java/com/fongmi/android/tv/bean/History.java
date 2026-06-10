@@ -151,6 +151,30 @@ public class History implements Diffable<History> {
         });
     }
 
+    public static int countSince(long since) {
+        try {
+            return AppDatabase.get().getHistoryDao().countSince(since);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public static long totalDurationSince(long since) {
+        try {
+            return AppDatabase.get().getHistoryDao().totalDurationSince(since);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public static String formatDuration(long millis) {
+        if (millis <= 0) return "0分钟";
+        long hours = millis / 3600000;
+        long minutes = (millis % 3600000) / 60000;
+        if (hours > 0) return hours + "小时" + minutes + "分钟";
+        return minutes + "分钟";
+    }
+
     public static void sync(List<History> targets) {
         targets.forEach(target -> {
             List<History> items = findByName(target.getVodName());

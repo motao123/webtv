@@ -96,6 +96,10 @@
             android:theme="@style/Theme.Crash" />
 
         <receiver
+            android:name=".receiver.EpgReminderReceiver"
+            android:exported="false" />
+
+        <receiver
             android:name=".receiver.ActionReceiver"
             android:exported="false">
             <intent-filter>

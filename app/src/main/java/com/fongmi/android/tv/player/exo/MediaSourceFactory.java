@@ -105,4 +105,8 @@ public class MediaSourceFactory implements MediaSource.Factory {
         if (cache == null) cache = new SimpleCache(Path.exo(), new NoOpCacheEvictor(), new StandaloneDatabaseProvider(App.get()));
         return cache;
     }
+
+    public static SimpleCache getExoCache() {
+        return getCache();
+    }
 }

@@ -1,5 +1,33 @@
 # Changelog
 
+## 5.5.8 — Enhancements & Optimizations (2026-06-10)
+
+基于 v5.5.7 安全审计修复后的功能增强和性能优化版本。
+
+### 修复 (P0-P2)
+
+- **OkHttp 懒加载竞态**: `dns()`/`responseInterceptor()` 等 6 个方法加 `synchronized` 保护
+- **Server 端口泄漏**: `start()` 端口绑定失败时调用 `nano.stop()` 清理资源
+- **ImgUtil.failed 有界集合**: `HashSet` 改为 `LinkedHashSet` 有界 LRU（最大 200），防止 OOM
+- **DriveCheckService 复用线程池**: 移除 `checkBatch()` 每次新建线程池，复用 `Task.largeExecutor()`
+- **CORS file:// 移除**: `WebResourceGateway` 和 `DriveCheck` 不再允许 file:// origin，`null` origin 也拒绝
+- **Task 线程池动态计算**: 5/20 固定线程改为 `availableProcessors()` 动态适配 2-8 核 TV 设备
+- **e.printStackTrace 替换**: 25+ 处替换为 `SpiderDebug.log(e)`，日志可统一收集
+- **History 表索引**: 新增 `(cid, createTime)` 和 `(cid, vodName)` 复合索引，DB v35→v36
+- **allowMainThreadQueries**: 保留但添加 TODO 注释（索引已缓解 ANR 风险），标注需迁移到后台线程
+- **ServerAuth IP 修复**: `isLocal()` 检查改用 NanoHttpd 的 `remote-addr` 和 `x-forwarded-for`
+
+### 增强 (E1-E8)
+
+- **E1 自动清理过期历史**: `History.cleanExpired()` + `App.java` 启动时调用，删除 60 天前记录
+- **E2 播放历史搜索**: `HistoryDao.search()` + `HistoryActivity` 搜索框，按关键字筛选历史
+- **E3 默认播放速度**: `PlayerSetting` 新增默认速度选项，`PlayerManager` 读取并应用
+- **E4 网络状态指示器**: `NetworkUtil.java` 监听网络变化、测速、弱网检测
+- **E5 观看统计报告**: `HistoryDao.countSince()`/`totalDurationSince()` + `History.formatDuration()` 统计每日/周观看时长
+- **E6 投屏设备历史**: `DeviceDao.findRecentDlna()` + `Device.touch()` 记录投屏设备快速重连
+- **E7 EPG 节目提醒**: `EpgReminder` + `EpgReminderReceiver`，通过 AlarmManager 定时推送节目开播通知
+- **E8 离线缓存管理**: `CacheManager` 查看/清理 ExoPlayer 视频缓存大小
+
 ## 5.5.7 — Security Audit & Hardening (2026-06-10)
 
 基于 v5.5.3 的代码安全审计修复。修复 2 个严重漏洞、5 个高危漏洞、7 个中危漏洞。

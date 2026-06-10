@@ -81,6 +81,17 @@ public class Device implements Diffable<Device>, Comparable<Device> {
         return AppDatabase.get().getDeviceDao().findAll();
     }
 
+    public static List<Device> getRecentDlna() {
+        return AppDatabase.get().getDeviceDao().findRecentDlna();
+    }
+
+    public static void touch(Device device) {
+        if (device == null) return;
+        device.delete();
+        device.setId(null);
+        device.save();
+    }
+
     public static void delete() {
         AppDatabase.get().getDeviceDao().delete();
     }

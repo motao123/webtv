@@ -36,4 +36,10 @@ public abstract class HistoryDao extends BaseDao<History> {
 
     @Query("DELETE FROM History WHERE createTime < :before")
     public abstract int deleteExpired(long before);
+
+    @Query("SELECT COUNT(*) FROM History WHERE createTime > :since")
+    public abstract int countSince(long since);
+
+    @Query("SELECT COALESCE(SUM(duration), 0) FROM History WHERE createTime > :since AND duration > 0")
+    public abstract long totalDurationSince(long since);
 }

@@ -18,4 +18,7 @@ public abstract class DeviceDao extends BaseDao<Device> {
 
     @Query("DELETE FROM Device WHERE uuid = :uuid")
     public abstract void delete(String uuid);
+
+    @Query("SELECT * FROM Device WHERE type = 2 ORDER BY id DESC LIMIT 10")
+    public abstract List<Device> findRecentDlna();
 }
