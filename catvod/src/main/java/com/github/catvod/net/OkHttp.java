@@ -32,14 +32,14 @@ public class OkHttp {
 
     private static final long TIMEOUT = TimeUnit.SECONDS.toMillis(30);
 
-    private ResponseInterceptor responseInterceptor;
-    private RequestInterceptor requestInterceptor;
-    private AuthInterceptor authInterceptor;
-    private OkAuthenticator authenticator;
-    private OkProxySelector selector;
-    private OkHttpClient client;
-    private OkHttpClient player;
-    private OkDns dns;
+    private volatile ResponseInterceptor responseInterceptor;
+    private volatile RequestInterceptor requestInterceptor;
+    private volatile AuthInterceptor authInterceptor;
+    private volatile OkAuthenticator authenticator;
+    private volatile OkProxySelector selector;
+    private volatile OkHttpClient client;
+    private volatile OkHttpClient player;
+    private volatile OkDns dns;
 
     public static OkHttp get() {
         return Loader.INSTANCE;
@@ -292,7 +292,7 @@ public class OkHttp {
         }
     }
 
-    public void clear() {
+    public synchronized void clear() {
         cancelAll();
         dns().clear();
         selector().clear();

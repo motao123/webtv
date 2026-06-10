@@ -57,12 +57,20 @@ public class FileUtil {
         }
     }
 
+    private static final long GZIP_MAX_BYTES = 50L * 1024 * 1024;
+
     public static void gzipDecompress(File target, File path) {
         byte[] buffer = new byte[16384];
+        long total = 0;
         try (GZIPInputStream is = new GZIPInputStream(new BufferedInputStream(new FileInputStream(target))); BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(path))) {
             int read;
-            while ((read = is.read(buffer)) != -1) os.write(buffer, 0, read);
+            while ((read = is.read(buffer)) != -1) {
+                total += read;
+                if (total > GZIP_MAX_BYTES) throw new IOException("GZIP decompressed size exceeds limit " + GZIP_MAX_BYTES);
+                os.write(buffer, 0, read);
+            }
         } catch (Exception e) {
+            Path.clear(path);
             SpiderDebug.log(e);
         }
     }
@@ -123,6 +131,16 @@ public class FileUtil {
     private static String getMimeType(String fileName) {
         String mimeType = URLConnection.guessContentTypeFromName(fileName);
         return TextUtils.isEmpty(mimeType) ? "*/*" : mimeType;
+    }
+
+    public static String readText(File file) {
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] data = new byte[(int) file.length()];
+            int read = fis.read(data);
+            return new String(data, 0, read, java.nio.charset.StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     public static String byteCountToDisplaySize(long size) {

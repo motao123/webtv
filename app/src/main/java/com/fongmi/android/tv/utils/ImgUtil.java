@@ -38,16 +38,18 @@ import jahirfiquitiva.libs.textdrawable.TextDrawable;
 
 public class ImgUtil {
 
-    private static final int MAX_FAILED = 500;
+    private static final int MAX_FAILED = 200;
     private static final Set<String> failed = Collections.synchronizedSet(new LinkedHashSet<String>() {
         @Override
         public boolean add(String s) {
-            if (size() >= MAX_FAILED) {
-                java.util.Iterator<String> it = iterator();
-                it.next();
-                it.remove();
+            synchronized (this) {
+                if (size() >= MAX_FAILED) {
+                    java.util.Iterator<String> it = iterator();
+                    it.next();
+                    it.remove();
+                }
+                return super.add(s);
             }
-            return super.add(s);
         }
     });
 

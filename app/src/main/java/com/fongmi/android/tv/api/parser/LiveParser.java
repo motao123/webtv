@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 public class LiveParser {
 
-    private static final Pattern M3U = Pattern.compile("^(?!.*#genre#).*#EXTM3U.*", Pattern.MULTILINE);
+    private static final Pattern M3U = Pattern.compile("^#EXTM3U", Pattern.MULTILINE);
     private static final Pattern HTTP_USER_AGENT = Pattern.compile(".*http-user-agent=\"(.?|.+?)\".*");
     private static final Pattern CATCHUP_REPLACE = Pattern.compile(".*catchup-replace=\"(.?|.+?)\".*");
     private static final Pattern CATCHUP_SOURCE = Pattern.compile(".*catchup-source=\"(.?|.+?)\".*");

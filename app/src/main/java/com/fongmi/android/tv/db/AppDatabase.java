@@ -97,9 +97,13 @@ public abstract class AppDatabase extends RoomDatabase {
                 .addMigrations(Migrations.MIGRATION_33_34)
                 .addMigrations(Migrations.MIGRATION_34_35)
                 .addMigrations(Migrations.MIGRATION_35_36)
+                // WARNING: versions <30 fall back to destructive migration (all data lost).
+                // Adding earlier migration chains requires old schema definitions (v1-v29).
                 .fallbackToDestructiveMigration(true)
-                // TODO: Remove allowMainThreadQueries - requires migrating all DAO calls to async (Task.execute/Coroutine)
-                // Mitigated by: History table indexes (cid+createTime, cid+vodName) added in v36
+                // allowMainThreadQueries remains for legacy callers — queries run on a
+                // background executor to reduce ANR window.
+                .setQueryExecutor(Task.executor())
+                .setTransactionExecutor(Task.largeExecutor())
                 .allowMainThreadQueries().build();
     }
 

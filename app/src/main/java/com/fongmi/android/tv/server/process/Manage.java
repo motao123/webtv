@@ -276,9 +276,14 @@ public class Manage implements Process {
     private boolean isValidTarget(String target) {
         if (TextUtils.isEmpty(target)) return false;
         try {
-            String host = URI.create(target).getHost();
+            URI uri = URI.create(target);
+            if (!"http".equals(uri.getScheme())) return false;
+            int port = uri.getPort();
+            if (port < 9978 || port > 9999) return false;
+            String host = uri.getHost();
             if (TextUtils.isEmpty(host)) return false;
-            return true;
+            java.net.InetAddress addr = java.net.InetAddress.getByName(host);
+            return addr.isSiteLocalAddress() || addr.isLoopbackAddress() || addr.isLinkLocalAddress();
         } catch (Throwable e) {
             return false;
         }

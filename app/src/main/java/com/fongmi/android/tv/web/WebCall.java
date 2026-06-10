@@ -30,6 +30,7 @@ import okhttp3.Response;
 
 public class WebCall {
 
+    private static final long MAX_BODY_BYTES = 32L * 1024 * 1024;
     private static final OkHttpClient CLIENT = new OkHttpClient.Builder().followRedirects(true).followSslRedirects(true).dns(OkHttp.dns()).proxySelector(OkHttp.selector()).proxyAuthenticator(OkHttp.authenticator()).build();
 
     public static String request(JsonObject payload) {
@@ -147,6 +148,7 @@ public class WebCall {
 
     private static RequestBody getBody(String method, String body, Headers headers) {
         if ("GET".equals(method) || "HEAD".equals(method)) return null;
+        if (body != null && body.length() > MAX_BODY_BYTES) throw new IllegalArgumentException("Body exceeds " + MAX_BODY_BYTES + " bytes");
         String type = headers.get("Content-Type");
         MediaType mediaType = MediaType.parse(TextUtils.isEmpty(type) ? "text/plain; charset=utf-8" : type);
         return RequestBody.create(body == null ? "" : body, mediaType);
@@ -210,8 +212,13 @@ public class WebCall {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try (InputStream stream = input) {
             byte[] buffer = new byte[8192];
+            long total = 0;
             int read;
-            while ((read = stream.read(buffer)) != -1) out.write(buffer, 0, read);
+            while ((read = stream.read(buffer)) != -1) {
+                total += read;
+                if (total > MAX_BODY_BYTES) throw new IOException("Response body exceeds " + MAX_BODY_BYTES + " bytes");
+                out.write(buffer, 0, read);
+            }
         }
         return out.toByteArray();
     }

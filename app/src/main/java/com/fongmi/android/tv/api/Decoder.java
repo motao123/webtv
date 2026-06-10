@@ -20,7 +20,14 @@ import okhttp3.Response;
 
 public class Decoder {
 
+    /**
+     * &quot;CBC&quot; mode in this file is stream obfuscation (not cryptographic encryption).
+     * The key and IV are embedded in the ciphertext payload and serve only to
+     * deter casual tampering, not to provide secrecy against an attacker who
+     * can inspect the APK. Do not rely on this for confidentiality.
+     */
     private static final Pattern JS_URI = Pattern.compile("\"(\\.|\\.\\.)/(.?|.+?)\\.js\\?(.?|.+?)\"");
+    private static final int AES_BLOCK = 16;
 
     public static String getJson(String url, String tag) throws Exception {
         try (Response res = OkHttp.newCall(url, tag).execute()) {
@@ -81,6 +88,7 @@ public class Decoder {
     }
 
     private static String padEnd(String key) {
+        if (key.length() >= AES_BLOCK) return key.substring(0, AES_BLOCK);
         return key + "0000000000000000".substring(key.length());
     }
 }

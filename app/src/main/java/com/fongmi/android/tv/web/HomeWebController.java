@@ -26,6 +26,7 @@ import androidx.webkit.WebViewFeature;
 import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.R;
 import com.github.catvod.crawler.SpiderDebug;
+import com.github.catvod.Proxy;
 import com.fongmi.android.tv.api.config.VodConfig;
 import com.fongmi.android.tv.bean.Site;
 import com.fongmi.android.tv.server.Server;
@@ -37,6 +38,7 @@ import com.fongmi.android.tv.utils.WebViewUtil;
 import com.fongmi.android.tv.web.ext.WebHomeExtension;
 import com.fongmi.android.tv.web.ext.WebHomeExtensionRegistry;
 
+import java.net.IDN;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
@@ -192,6 +194,13 @@ public class HomeWebController {
         return trusted;
     }
 
+    public String getTrustedOrigin() {
+        String url = webView.getUrl();
+        if (TextUtils.isEmpty(url)) url = homePage;
+        if (TextUtils.isEmpty(url)) return "";
+        return originOf(url);
+    }
+
     private void refreshTrust() {
         String url = webView.getUrl();
         if (TextUtils.isEmpty(url)) url = homePage;
@@ -203,14 +212,25 @@ public class HomeWebController {
             Uri uri = Uri.parse(url);
             String scheme = uri.getScheme();
             if (TextUtils.isEmpty(scheme)) return false;
-            if ("file".equalsIgnoreCase(scheme)) return true;
+            if ("file".equalsIgnoreCase(scheme)) return isAllowedFilePath(uri.getPath());
             String host = uri.getHost();
-            if ("127.0.0.1".equals(host) || "localhost".equalsIgnoreCase(host) || "::1".equals(host)) return true;
+            if ("127.0.0.1".equals(host) || "localhost".equalsIgnoreCase(host) || "::1".equals(host)) {
+                int port = uri.getPort();
+                return port == -1 || port == Proxy.getPort();
+            }
             if (sameOrigin(url, VodConfig.getUrl())) return true;
             return matchesAllowedOrigin(url);
         } catch (Throwable e) {
             return false;
         }
+    }
+
+    private boolean isAllowedFilePath(String path) {
+        if (TextUtils.isEmpty(path)) return false;
+        String appDir = App.get().getFilesDir().getParent();
+        if (path.startsWith(appDir)) return true;
+        if (path.startsWith("/android_asset/")) return true;
+        return false;
     }
 
     private boolean matchesAllowedOrigin(String url) {
@@ -235,7 +255,8 @@ public class HomeWebController {
             String host = uri.getHost();
             if (TextUtils.isEmpty(scheme) || TextUtils.isEmpty(host)) return "";
             int port = uri.getPort();
-            return scheme.toLowerCase(Locale.ROOT) + "://" + host.toLowerCase(Locale.ROOT) + (port == -1 ? "" : ":" + port);
+            String ascii = IDN.toASCII(host, IDN.ALLOW_UNASSIGNED);
+            return scheme.toLowerCase(Locale.ROOT) + "://" + ascii.toLowerCase(Locale.ROOT) + (port == -1 ? "" : ":" + port);
         } catch (Throwable e) {
             return "";
         }

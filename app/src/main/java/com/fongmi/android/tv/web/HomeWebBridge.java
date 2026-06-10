@@ -262,9 +262,20 @@ public class HomeWebBridge {
     }
 
     private String cacheKey(JsonObject payload) {
-        String rule = Json.safeString(payload, "rule");
-        String key = Json.safeString(payload, "key");
-        return "cache_" + (TextUtils.isEmpty(rule) ? "" : rule + "_") + key;
+        String rule = sanitize(Json.safeString(payload, "rule"));
+        String key = sanitize(Json.safeString(payload, "key"));
+        String originHash = Integer.toHexString(controller.getTrustedOrigin().hashCode());
+        return "cache_" + originHash + "_" + (TextUtils.isEmpty(rule) ? "" : rule + "_") + key;
+    }
+
+    private static String sanitize(String value) {
+        if (value == null) return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_' || c == '-' || c == '.') sb.append(c);
+        }
+        return sb.toString();
     }
 
     private String device() {

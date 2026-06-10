@@ -93,6 +93,10 @@ public class ManageService extends Service {
         return ServerAuth.withToken(Server.get().getAddress(false) + PATH);
     }
 
+    public static String getDisplayUrl() {
+        return Server.get().getAddress(false) + PATH;
+    }
+
     public static long getLastAccess() {
         return lastAccess;
     }
@@ -381,7 +385,7 @@ public class ManageService extends Service {
         return new NotificationCompat.Builder(this, Notify.DEFAULT)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(getString(R.string.manage_page_notification_title))
-                .setContentText(getLanUrl())
+                .setContentText(getDisplayUrl())
                 .setContentIntent(openIntent())
                 .setOngoing(true)
                 .setSilent(true)
