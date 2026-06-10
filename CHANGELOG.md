@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.5.9 — Build Fix (2026-06-10)
+
+修复 v5.5.8 编译错误。
+
+### 修复
+
+- **CacheManager**: 移除 `Path.mkdir()` 私有方法调用（`Path.exo()` 已自动创建目录）
+- **EpgReminder**: `buildNotification()` 改为 `public static`，修复跨包访问权限
+
 ## 5.5.8 — Enhancements & Optimizations (2026-06-10)
 
 基于 v5.5.7 安全审计修复后的功能增强和性能优化版本。

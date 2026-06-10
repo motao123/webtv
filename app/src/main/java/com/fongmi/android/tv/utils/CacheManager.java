@@ -18,10 +18,7 @@ public class CacheManager {
     }
 
     public static void clearCache() {
-        Task.execute(() -> {
-            Path.clear(Path.exo());
-            Path.mkdir(Path.exo());
-        });
+        Task.execute(() -> Path.clear(Path.exo()));
     }
 
     private static long getDirSize(File dir) {

@@ -50,7 +50,7 @@ public class EpgReminder {
         pi.cancel();
     }
 
-    static Notification buildNotification(String channelName, String programTitle, String startTime) {
+    public static Notification buildNotification(String channelName, String programTitle, String startTime) {
         return new NotificationCompat.Builder(App.get(), CHANNEL_EPG)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle(channelName + " - " + programTitle)
