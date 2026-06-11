@@ -47,7 +47,7 @@ public class Updater implements Download.Callback, UpdateListener {
     }
 
     private String getJson() {
-        return Github.getJson(BuildConfig.FLAVOR_mode);
+        return Github.getJson(BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_abi);
     }
 
     private String getApk() {
@@ -80,7 +80,7 @@ public class Updater implements Download.Callback, UpdateListener {
             App.post(() -> show(activity, name, desc));
         } catch (Exception e) {
             SpiderDebug.log(e);
-            App.post(() -> Notify.show(R.string.update_check));
+            App.post(() -> Notify.show(R.string.update_failed));
         }
     }
 

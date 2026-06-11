@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.5.27 — Fix Update JSON Asset Path (2026-06-11)
+
+修复点击版本更新后只显示“正在检测更新”但没有后续结果的问题。
+
+### 修复
+
+- **JSON 文件名**: 更新检查改为读取当前 ABI 对应的 `mobile-arm64_v8a.json` / `leanback-arm64_v8a.json`，不再请求不存在的 `mobile.json`
+- **GitHub 路径**: GitHub Release assets 直接走 `latest/download/*.json`，CNB 镜像仍走 `/apk/*.json`
+- **失败提示**: 更新检查异常时显示 `Update check failed`，不再重复显示 `Checking for updates…`
+
 ## 5.5.26 — Fix WebHome Bridge Diagnostics Crash (2026-06-11)
 
 修复同意更新源后 WebHome 调用 Bridge 时闪退的问题。

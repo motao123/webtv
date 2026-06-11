@@ -54,7 +54,7 @@
 
 ## 下载 APK
 
-到 [Releases](https://github.com/motao123/webtv/releases) 下载最新版本：**v5.5.26**。
+到 [Releases](https://github.com/motao123/webtv/releases) 下载最新版本：**v5.5.27**。
 
 | 设备类型 | 推荐 APK |
 | --- | --- |

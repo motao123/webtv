@@ -57,7 +57,8 @@ public class Github {
     }
 
     private static String getUrl(String name) {
-        return getUrl() + "/apk/" + name;
+        String base = getUrl();
+        return base + (base.contains("/releases/") ? "/" : "/apk/") + name;
     }
 
     public static String getJson(String name) {
