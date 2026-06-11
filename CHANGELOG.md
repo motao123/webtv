@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.5.36 — Clean Gitee Removal (2026-06-11)
+
+清理 Gitee 镜像残留，更新 README 版本号。
+
 ## 5.5.35 — Remove Gitee Mirror (2026-06-11)
 
 移除 Gitee 镜像同步，仅保留 GitHub + cnb.cool 双源。
