@@ -143,6 +143,15 @@ jobs:
             --notes-file dist/release-notes.md \
             dist/*.apk dist/*.json
 
+      - name: Check CNB mirror availability
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          if [ -z "${{ secrets.CNB_TOKEN }}" ]; then
+            echo "::warning title=CNB Mirror Sync Disabled::CNB_TOKEN secret is not configured. Update mirror (cnb.cool) will NOT receive new APKs. Go to Settings → Secrets → Actions to add it."
+          else
+            echo "CNB_TOKEN configured, mirror sync will run."
+          fi
+
       - name: Sync to CNB mirror
         if: startsWith(github.ref, 'refs/tags/v') && env.CNB_TOKEN != ''
         continue-on-error: true

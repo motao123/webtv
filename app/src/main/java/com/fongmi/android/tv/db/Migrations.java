@@ -57,4 +57,11 @@ public class Migrations {
             database.execSQL("CREATE INDEX IF NOT EXISTS `index_History_cid_vodName` ON `History` (`cid`, `vodName`)");
         }
     };
+
+    public static final Migration MIGRATION_36_37 = new Migration(36, 37) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("CREATE TABLE IF NOT EXISTS EpgReminderRecord (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `channelName` TEXT, `programTitle` TEXT, `programStart` TEXT, `triggerAtMillis` INTEGER NOT NULL)");
+        }
+    };
 }

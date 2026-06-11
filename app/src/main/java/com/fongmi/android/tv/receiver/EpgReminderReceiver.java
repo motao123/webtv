@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.fongmi.android.tv.utils.EpgReminder;
 import com.fongmi.android.tv.utils.Notify;
+import com.fongmi.android.tv.utils.Task;
 
 public class EpgReminderReceiver extends BroadcastReceiver {
 
@@ -13,7 +14,7 @@ public class EpgReminderReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent == null) return;
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            EpgReminder.onBootCompleted();
+            Task.execute(EpgReminder::rebuildFromStorage);
             return;
         }
         String channelName = intent.getStringExtra("channelName");

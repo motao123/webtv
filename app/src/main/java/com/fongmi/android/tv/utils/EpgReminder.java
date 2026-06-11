@@ -12,20 +12,15 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.bean.EpgData;
+import com.fongmi.android.tv.bean.EpgReminderRecord;
+import com.fongmi.android.tv.db.AppDatabase;
 import com.fongmi.android.tv.receiver.EpgReminderReceiver;
+
+import java.util.List;
 
 public class EpgReminder {
 
     private static final String CHANNEL_EPG = "epg_reminder";
-    private static volatile Runnable bootCallback;
-
-    public static void setBootCallback(Runnable callback) {
-        bootCallback = callback;
-    }
-
-    public static void onBootCompleted() {
-        if (bootCallback != null) bootCallback.run();
-    }
 
     public static void createChannel() {
         try {
@@ -47,6 +42,15 @@ public class EpgReminder {
         intent.putExtra("programStart", program.getStart());
         PendingIntent pi = PendingIntent.getBroadcast(ctx, program.getTitle().hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, triggerAtMillis, pi);
+        try {
+            EpgReminderRecord record = new EpgReminderRecord();
+            record.setChannelName(channelName);
+            record.setProgramTitle(program.getTitle());
+            record.setProgramStart(program.getStart());
+            record.setTriggerAtMillis(triggerAtMillis);
+            AppDatabase.get().getEpgReminderDao().insert(record);
+        } catch (Exception ignored) {
+        }
     }
 
     public static void cancel(String title) {
@@ -57,6 +61,34 @@ public class EpgReminder {
         PendingIntent pi = PendingIntent.getBroadcast(ctx, title.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         am.cancel(pi);
         pi.cancel();
+        try {
+            AppDatabase.get().getEpgReminderDao().delete(title);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static void rebuildFromStorage() {
+        try {
+            long now = System.currentTimeMillis();
+            AppDatabase.get().getEpgReminderDao().deleteExpired(now);
+            List<EpgReminderRecord> records = AppDatabase.get().getEpgReminderDao().findPending(now);
+            for (EpgReminderRecord r : records) {
+                if (r.getTriggerAtMillis() <= now + 30000) {
+                    AppDatabase.get().getEpgReminderDao().delete(r.getProgramTitle());
+                    continue;
+                }
+                Context ctx = App.get();
+                AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+                if (am == null || !am.canScheduleExactAlarms()) continue;
+                Intent intent = new Intent(ctx, EpgReminderReceiver.class);
+                intent.putExtra("channelName", r.getChannelName());
+                intent.putExtra("programTitle", r.getProgramTitle());
+                intent.putExtra("programStart", r.getProgramStart());
+                PendingIntent pi = PendingIntent.getBroadcast(ctx, r.getProgramTitle().hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, r.getTriggerAtMillis(), pi);
+            }
+        } catch (Exception ignored) {
+        }
     }
 
     public static Notification buildNotification(String channelName, String programTitle, String startTime) {

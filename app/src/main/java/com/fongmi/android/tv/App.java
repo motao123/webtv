@@ -18,6 +18,7 @@ import com.fongmi.android.tv.setting.ProxySetting;
 import com.fongmi.android.tv.setting.Setting;
 import com.fongmi.android.tv.utils.NsdDeviceDiscovery;
 import com.fongmi.android.tv.utils.Notify;
+import com.fongmi.android.tv.utils.EpgReminder;
 import com.fongmi.hook.Hook;
 import com.github.catvod.crawler.DebugLogStore;
 import com.github.catvod.crawler.SpiderDebug;
@@ -101,6 +102,7 @@ public class App extends Application implements Application.ActivityLifecycleCal
         Server.get().start();
         History.cleanExpired();
         NsdDeviceDiscovery.register();
+        EpgReminder.rebuildFromStorage();
         SpiderDebug.log("startup", "background services ready cost=%sms", System.currentTimeMillis() - time);
     }
 

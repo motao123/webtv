@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.5.32 — EPG Reminder Persistence & CNB Sync Warning (2026-06-11)
+
+EPG 节目提醒持久化到数据库，设备重启后自动重建闹钟。
+
+### 新增
+
+- **EPG 持久化**: 节目提醒保存到 Room 数据库，重启和 BOOT_COMPLETED 时自动重建所有未过期的提醒闹钟
+- **CNB 同步警告**: CI 中 CNB_TOKEN 未配置时显示可见的 workflow annotation 提示
+
+### 修复
+
+- **清理死代码**: 删除未使用的 `CharsetDetectDataSource.java`
+
 ## 5.5.31 — Code Cleanup & CNB Sync Robustness (2026-06-11)
 
 代码整洁和 CI 稳定性改进。
