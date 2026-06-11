@@ -479,6 +479,7 @@ public class LiveActivity extends PlaybackActivity implements GroupAdapter.OnCli
         player().reset();
         player().stop();
         showError(msg);
+        if (mChannel != null) mViewModel.getUrl(mChannel);
         startFlow();
     }
 

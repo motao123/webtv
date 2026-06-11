@@ -765,6 +765,7 @@ public class LiveActivity extends PlaybackActivity implements CustomKeyDown.List
         player().reset();
         player().stop();
         showError(msg);
+        if (mChannel != null) mViewModel.getUrl(mChannel);
         startFlow();
     }
 

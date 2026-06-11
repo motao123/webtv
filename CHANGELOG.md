@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.5.29 — Fix Live TV URL Refresh on Error (2026-06-11)
+
+修复电视直播源 token 过期后无法自动刷新的问题。
+
+### 修复
+
+- **直播错误重试**: `LiveActivity.onError` 播放失败时先调用 `mViewModel.getUrl(mChannel)` 从 Spider/DIYP 源重新获取新 URL（带新鲜 token），再进入自动换台流程
+- **BAD_HTTP_STATUS 重试**: `ExoPlayerEngine` 把 HTTP 错误码加入可重试列表
+
 ## 5.5.28 — Fix Live TV BAD HTTP STATUS (2026-06-11)
 
 修复电视直播显示 `Bad HTTP Status` 无法播放的问题。
