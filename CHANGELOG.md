@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.28 — Fix Live TV BAD HTTP STATUS (2026-06-11)
+
+修复电视直播显示 `Bad HTTP Status` 无法播放的问题。
+
+### 修复
+
+- **HTTP 错误重试**: `ExoPlayerEngine.handleError` 将 `ERROR_CODE_IO_BAD_HTTP_STATUS`（HTTP 605 等）加入可重试列表，不再直接判定为 FATAL，给直播源 token 刷新留一次机会
+
 ## 5.5.27 — Fix Update JSON Asset Path (2026-06-11)
 
 修复点击版本更新后只显示“正在检测更新”但没有后续结果的问题。
