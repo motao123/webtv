@@ -62,6 +62,7 @@ public class HomeWebController {
     private Site site;
     private String documentStartKey;
     private String homePage;
+    private volatile String trustedOrigin = "";
     private long pauseAt;
     private long lastKeyAt;
     private boolean sdkReady;
@@ -195,15 +196,13 @@ public class HomeWebController {
     }
 
     public String getTrustedOrigin() {
-        String url = webView.getUrl();
-        if (TextUtils.isEmpty(url)) url = homePage;
-        if (TextUtils.isEmpty(url)) return "";
-        return originOf(url);
+        return trustedOrigin;
     }
 
     private void refreshTrust() {
         String url = webView.getUrl();
         if (TextUtils.isEmpty(url)) url = homePage;
+        trustedOrigin = TextUtils.isEmpty(url) ? "" : originOf(url);
         trusted = isTrustedHomeUrl(url);
     }
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.26 — Fix WebHome Bridge Diagnostics Crash (2026-06-11)
+
+修复同意更新源后 WebHome 调用 Bridge 时闪退的问题。
+
+### 修复
+
+- **WebView 线程安全**: `HomeWebBridge` 诊断不再从后台线程读取 `WebView.getUrl()`，改用 `HomeWebController` 在主线程维护的 origin 缓存
+
 ## 5.5.25 — Fix Update Source Version Detection (2026-06-11)
 
 修复点击版本更新时误提示 `Already up to date` 的问题。
