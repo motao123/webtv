@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.34 — Gitee Mirror Sync (2026-06-11)
+
+新增 Gitee 镜像同步和更新源选项。
+
+### 新增
+
+- **Gitee 镜像**: CI 自动推送 APK 到 `https://gitee.com/pigfei/webtv`，国内用户多一个高速下载渠道
+
 ## 5.5.33 — Fix DB Migration Crash (2026-06-11)
 
 修复 5.5.32 数据库迁移导致闪退的问题。
