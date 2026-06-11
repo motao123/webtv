@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.5.21 — IP-based Update Mirror & CI Sync (2026-06-11)
+
+新增 IP 地理位置检测，自动选择 GitHub（国际）或 cnb.cool（中国大陆）更新源。
+
+### 新增
+
+- **GeoIP 检测**: 通过 `ip-api.com` 检测用户所在国家，中国大陆用户自动使用 cnb.cool 镜像
+- **手动切换**: `Setting.putMirror()` 支持 `auto`/`github`/`cnb` 三种模式
+- **CI 同步**: GitHub Actions 发布后自动推送 APK + JSON 到 cnb.cool 镜像仓库
+
 ## 5.5.20 — Fix Live Stream Loading Stuck (2026-06-11)
 
 修复电视直播一直加载不显示画面的问题。

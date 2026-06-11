@@ -126,6 +126,39 @@ jobs:
             --notes-file dist/release-notes.md \
             dist/*.apk
 
+      - name: Generate update JSON manifests
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION="${{ github.ref_name }}-${{ github.sha }}"
+          SHORT_SHA="$(echo "${{ github.sha }}" | cut -c1-7)"
+          for apk in dist/*.apk; do
+            base=$(basename "$apk" .apk)
+            cat > "dist/${base}.json" << JSONEOF
+          {
+            "name": "${{ github.ref_name }}",
+            "desc": "${{ github.ref_name }} — $SHORT_SHA",
+            "code": ${{ github.run_number }}
+          }
+          JSONEOF
+            echo "Generated dist/${base}.json"
+          done
+
+      - name: Sync to CNB mirror
+        if: startsWith(github.ref, 'refs/tags/v') && env.CNB_TOKEN != ''
+        env:
+          CNB_TOKEN: ${{ secrets.CNB_TOKEN }}
+        run: |
+          git clone --depth 1 "https://cnb:$CNB_TOKEN@cnb.cool/${{ github.repository }}.git" cnb-mirror || \
+          git clone --depth 1 "https://cnb:$CNB_TOKEN@cnb.cool/${{ github.repository_owner }}/release.git" cnb-mirror
+          mkdir -p cnb-mirror/apk
+          cp dist/*.apk dist/*.json cnb-mirror/apk/ 2>/dev/null || true
+          cd cnb-mirror
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add apk/
+          git commit -m "${{ github.ref_name }}" || true
+          git push origin HEAD:main
+
       - name: Upload APKs as workflow artifact
         if: always()
         uses: actions/upload-artifact@v4

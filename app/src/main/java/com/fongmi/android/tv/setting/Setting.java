@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 
 import com.fongmi.android.tv.App;
 import com.fongmi.android.tv.BuildConfig;
+import com.fongmi.android.tv.utils.Github;
 import com.fongmi.android.tv.utils.WebViewUtil;
 import com.github.catvod.crawler.DebugLogStore;
 import com.github.catvod.crawler.SpiderDebug;
@@ -219,6 +220,15 @@ public class Setting {
 
     public static void putUpdate(boolean update) {
         Prefers.put("update", update);
+    }
+
+    public static String getMirror() {
+        return Prefers.getString("update_mirror", "auto");
+    }
+
+    public static void putMirror(String mirror) {
+        Prefers.put("update_mirror", mirror);
+        Github.setMirror(mirror);
     }
 
     public static boolean isAdblock() {
