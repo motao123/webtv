@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
 
-    <!-- Default: deny cleartext HTTP. Media/live streams that require HTTP must be
-         individually whitelisted via domain-config below. -->
-    <base-config cleartextTrafficPermitted="false">
+    <!-- Base: allow cleartext HTTP for media/live streams (most live TV uses HTTP) -->
+    <base-config cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>

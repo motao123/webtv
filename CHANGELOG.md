@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.19 — Fix Live Stream HTTP Blocked (2026-06-11)
+
+修复直播流 `Network Connection Failed`：`base-config cleartextTrafficPermitted` 恢复为 `true`，允许 HTTP 直播流。
+
+### 原因
+
+P0 安全提交将 `cleartextTrafficPermitted` 改为 `false`，意图是只允许 HTTPS。但绝大多数直播源使用 HTTP 协议且域名不固定，无法预先配置白名单。
+
 ## 5.5.18 — Build Fix (2026-06-11)
 
 修复 CI 编译错误：`CharsetDetectDataSource.close()` 添加 `throws IOException` 声明。
