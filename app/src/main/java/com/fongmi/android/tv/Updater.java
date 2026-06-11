@@ -1,37 +1,31 @@
 package com.fongmi.android.tv;
 
-import android.content.ContentValues;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 
 import com.fongmi.android.tv.impl.UpdateListener;
 import com.fongmi.android.tv.setting.Setting;
 import com.fongmi.android.tv.ui.dialog.UpdateDialog;
-import com.fongmi.android.tv.utils.Download;
 import com.fongmi.android.tv.utils.Github;
 import com.fongmi.android.tv.utils.Notify;
 import com.fongmi.android.tv.utils.ResUtil;
 import com.fongmi.android.tv.utils.Task;
 import com.github.catvod.crawler.SpiderDebug;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.Path;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.OutputStream;
+public class Updater implements UpdateListener {
 
-public class Updater implements Download.Callback, UpdateListener {
+    private static final String GITHUB_RELEASE = "https://github.com/motao123/webtv/releases/latest";
+    private static final String CNB_RELEASE = "https://cnb.cool/code_free/webtv/-/git/raw/main/apk";
 
-    private Download download;
     private UpdateDialog dialog;
     private FragmentActivity activity;
 
@@ -42,16 +36,8 @@ public class Updater implements Download.Callback, UpdateListener {
         return new Updater();
     }
 
-    private File getFile() {
-        return Path.cache("update.apk");
-    }
-
     private String getJson() {
         return Github.getJson(BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_abi);
-    }
-
-    private String getApk() {
-        return Github.getApk(BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_abi);
     }
 
     public Updater force() {
@@ -68,7 +54,6 @@ public class Updater implements Download.Callback, UpdateListener {
 
     private void doInBackground(FragmentActivity activity) {
         try {
-            download = Download.create(getApk(), getFile());
             JSONObject object = new JSONObject(OkHttp.string(getJson()));
             String name = object.optString("name");
             String desc = object.optString("desc");
@@ -86,105 +71,49 @@ public class Updater implements Download.Callback, UpdateListener {
 
     private void show(FragmentActivity activity, String version, String desc) {
         dismiss();
-        dialog = UpdateDialog.create().title(ResUtil.getString(R.string.update_version, version)).desc(desc).listener(this).show(activity);
+        String apkName = BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_abi + ".apk";
+        String githubUrl = GITHUB_RELEASE;
+        String cnbUrl = CNB_RELEASE + "/" + apkName;
+        dialog = UpdateDialog.create()
+                .title(ResUtil.getString(R.string.update_version, version))
+                .desc(desc + "\n\n" + ResUtil.getString(R.string.update_manual_msg))
+                .listener(this)
+                .show(activity);
     }
 
     @Override
     public void onConfirm(View view) {
-        view.setEnabled(false);
-        Notify.show(R.string.update_downloading);
-        download.start(this);
+        String apkName = BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_abi + ".apk";
+        String url = Github.getApk(BuildConfig.FLAVOR_mode + "-" + BuildConfig.FLAVOR_abi);
+        copyAndOpen(url);
+        dismiss();
     }
 
     @Override
     public void onCancel(View view) {
         Setting.putUpdate(false);
-        if (download != null) download.cancel();
         dismiss();
+    }
+
+    private void copyAndOpen(String url) {
+        try {
+            ClipboardManager cm = (ClipboardManager) App.get().getSystemService(Context.CLIPBOARD_SERVICE);
+            cm.setPrimaryClip(ClipData.newPlainText("update", url));
+        } catch (Exception ignored) {
+        }
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            App.get().startActivity(intent);
+        } catch (Exception e) {
+            Notify.show(ResUtil.getString(R.string.update_failed));
+        }
     }
 
     private void dismiss() {
         try {
             if (dialog != null) dialog.dismiss();
         } catch (Exception ignored) {
-        }
-    }
-
-    @Override
-    public void progress(int progress) {
-        if (dialog != null) dialog.setProgress(progress);
-    }
-
-    @Override
-    public void error(String msg) {
-        Notify.show(msg);
-        dismiss();
-    }
-
-    @Override
-    public void success(File file) {
-        Task.execute(() -> {
-            if (install(file)) {
-                App.post(() -> {
-                    Notify.show(R.string.update_confirm);
-                    dismiss();
-                });
-                return;
-            }
-            String path = exportToDownloads(file);
-            App.post(() -> {
-                if (path != null) Notify.show(ResUtil.getString(R.string.update_export_done, path));
-                else Notify.show(R.string.update_export_failed);
-                dismiss();
-            });
-        });
-    }
-
-    private boolean install(File file) {
-        try {
-            Intent intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Uri uri = FileProvider.getUriForFile(App.get(), App.get().getPackageName() + ".provider", file);
-                intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            } else {
-                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-            }
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            App.get().startActivity(intent);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    private String exportToDownloads(File file) {
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.MediaColumns.DISPLAY_NAME, file.getName());
-                values.put(MediaStore.MediaColumns.MIME_TYPE, "application/vnd.android.package-archive");
-                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
-                Uri uri = App.get().getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-                if (uri == null) return null;
-                try (OutputStream os = App.get().getContentResolver().openOutputStream(uri); FileInputStream is = new FileInputStream(file)) {
-                    if (os == null) return null;
-                    byte[] buffer = new byte[16384];
-                    int read;
-                    while ((read = is.read(buffer)) > 0) os.write(buffer, 0, read);
-                }
-                return Environment.DIRECTORY_DOWNLOADS + "/" + file.getName();
-            }
-            File legacy = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), file.getName());
-            if (!legacy.getParentFile().exists() && !legacy.getParentFile().mkdirs()) return null;
-            try (FileInputStream is = new FileInputStream(file); java.io.FileOutputStream os = new java.io.FileOutputStream(legacy)) {
-                byte[] buffer = new byte[16384];
-                int read;
-                while ((read = is.read(buffer)) > 0) os.write(buffer, 0, read);
-            }
-            return legacy.getAbsolutePath();
-        } catch (Exception e) {
-            return null;
         }
     }
 }

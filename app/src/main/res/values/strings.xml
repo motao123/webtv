@@ -421,6 +421,10 @@
     <string name="update_downloading">Downloading update…</string>
     <string name="update_export_done">Update downloaded to <xliff:g name="path">%s</xliff:g>. Open your file manager to install.</string>
     <string name="update_export_failed">Update downloaded. Unable to export to public storage; please enable storage access and retry.</string>
+    <string name="update_manual_title">Download update</string>
+    <string name="update_manual_msg">Copy the link below and open it in your browser to download</string>
+    <string name="update_github">GitHub</string>
+    <string name="update_cnb">CNB (国内快)</string>
 
     <!-- Crash -->
     <string name="crash_info">An unexpected error occurred.\nSorry for the inconvenience.</string>

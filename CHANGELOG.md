@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.5.37 — Manual Update Flow (2026-06-11)
+
+简化为手动下载更新：不再尝试 App 内下载安装，直接复制链接到浏览器下载。
+
+### 改动
+
+- **更新流程**: 检测到新版本后，确认按钮 → 复制下载链接到剪贴板 → 打开浏览器下载安装
+- **移除**: 移除 App 内下载、FileProvider 安装、导出到 Downloads 等复杂逻辑
+
 ## 5.5.36 — Clean Gitee Removal (2026-06-11)
 
 清理 Gitee 镜像残留，更新 README 版本号。
