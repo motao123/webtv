@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public class Github {
 
     private static final String GITHUB = "https://raw.githubusercontent.com/FongMi/Release/fongmi";
-    private static final String CNB = "https://cnb.cool/fongmi/release/-/git/raw/main";
+    private static final String CNB = "https://cnb.cool/code_free/webtv/-/git/raw/main";
     private static final String GEO_URL = "https://ip-api.com/json?fields=countryCode";
     private static final String PREF_MIRROR = "update_mirror";
 

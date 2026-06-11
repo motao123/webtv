@@ -148,8 +148,7 @@ jobs:
         env:
           CNB_TOKEN: ${{ secrets.CNB_TOKEN }}
         run: |
-          git clone --depth 1 "https://cnb:$CNB_TOKEN@cnb.cool/${{ github.repository }}.git" cnb-mirror || \
-          git clone --depth 1 "https://cnb:$CNB_TOKEN@cnb.cool/${{ github.repository_owner }}/release.git" cnb-mirror
+          git clone --depth 1 "https://cnb:$CNB_TOKEN@cnb.cool/code_free/webtv.git" cnb-mirror
           mkdir -p cnb-mirror/apk
           cp dist/*.apk dist/*.json cnb-mirror/apk/ 2>/dev/null || true
           cd cnb-mirror
