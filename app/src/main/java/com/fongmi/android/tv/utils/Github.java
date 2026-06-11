@@ -10,7 +10,6 @@ public class Github {
 
     private static final String GITHUB = "https://github.com/motao123/webtv/releases/latest/download";
     private static final String CNB = "https://cnb.cool/code_free/webtv/-/git/raw/main";
-    private static final String GITEE = "https://gitee.com/pigfei/webtv/raw/main";
     private static final String GEO_URL = "https://ip-api.com/json?fields=countryCode";
     private static final String PREF_MIRROR = "update_mirror";
 
@@ -25,7 +24,6 @@ public class Github {
         Prefers.put(PREF_MIRROR, mirror);
         if ("github".equals(mirror)) baseUrl = GITHUB;
         else if ("cnb".equals(mirror)) baseUrl = CNB;
-        else if ("gitee".equals(mirror)) baseUrl = GITEE;
         else baseUrl = null;
     }
 
