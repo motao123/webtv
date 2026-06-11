@@ -1,101 +1,154 @@
+<div align="center">
+
 # WebHomeTV
 
-WebHomeTV 是基于 FongMi / CatVod 生态二次开发的 Android 影音应用，保留原有点播、直播、Spider、解析、投屏、本地 HTTP 服务等能力，并重点增强了 **WebHome 自定义首页**、**App Native SDK**、**网盘链接检测**、**站点健康排序** 和 **Nostr/TMDB 推荐首页**。
+**为 Android TV / 手机打造的 WebHome 影音客户端**
 
-这个项目的核心目标不是替换 CSP/Spider 体系，而是让 CSP 站点首页可以变成一个真正可开发的网页应用：开发者可以用 HTML/CSS/JavaScript 定制首页，再通过 App 暴露的 Native 能力完成搜索、播放、跨域请求、资源代理、最近观看、网盘检测和状态同步。
+把传统 TVBox / FongMi / CatVod 生态，升级成可以用网页首页驱动的现代影音 App。
 
-## 用户使用指南
+[![Release](https://img.shields.io/github/v/release/motao123/webtv?label=release)](https://github.com/motao123/webtv/releases)
+[![Android](https://img.shields.io/badge/Android-5.0%2B-3DDC84)](#用户使用指南)
+[![TV](https://img.shields.io/badge/Android%20TV-Leanback-4285F4)](#下载-apk)
+[![License](https://img.shields.io/badge/Project-WebHomeTV-8A2BE2)](#webhometv)
 
-本应用是 **Android 客户端**，装到电视盒子或手机上使用，不在服务器上跑。
+</div>
 
-### 一、下载 APK
+---
 
-到 [Releases](https://github.com/motao123/webtv/releases) 下载最新版本（当前 v5.5.24 - 安全增强版），按你的设备类型选：
+## 项目简介
 
-| 你的设备 | 下载哪个 |
-|---|---|
-| 电视盒子 / Android TV（绝大多数） | `leanback-arm64_v8a.apk` |
-| 老款电视盒子（2018 年前） | `leanback-armeabi_v7a.apk` |
-| 手机（推荐） | `mobile-arm64_v8a.apk` |
-| 老手机 | `mobile-armeabi_v7a.apk` |
+`WebHomeTV` 是基于 **FongMi / CatVod** 生态二次开发的 Android 影音应用。
 
-> arm64 是目前主流，**不确定就下 arm64**。
+它保留原有的点播、直播、Spider、解析、投屏、本地 HTTP 服务等能力，同时重点增强：
 
-### 二、安装到设备
+- **WebHome 自定义首页**：用 HTML / CSS / JavaScript 做自己的影视首页
+- **App Native SDK**：网页可调用 App 的搜索、播放、跨域请求、历史、缓存等能力
+- **WebHome Bridge 安全分级**：可信 origin 才能使用完整能力
+- **网盘链接检测**：支持网盘链接有效性检测和播放链路接入
+- **站点健康排序**：根据站点可用性自动优化搜索、详情、播放优先级
+- **一键同步**：局域网设备间同步配置、站点、历史、收藏和设置
+- **安全加固**：Token 鉴权、远程依赖 hash 校验、JAR 首次加载确认、IP 访问控制
+- **更新加速**：根据用户网络自动选择 GitHub / cnb.cool 更新源
 
-#### 方法 1：U 盘（电视盒子最常用）
+简单说：
 
-1. 把下载好的 APK 放到 U 盘根目录
-2. U 盘插到电视盒子 USB 口
-3. 用电视盒子自带文件管理器（或装个 ES 文件浏览器 / X-plore）打开 U 盘
-4. 点 APK → 「安装」
-5. 第一次会提示授权「未知来源」，按提示开启
+> 这不是一个普通影视壳子，而是一个可以把 CSP 首页变成“小型网页应用”的 Android 影音客户端。
 
-#### 方法 2：手机直接装
+---
 
-手机浏览器下载 APK 后点开安装，提示「未知来源」时按提示授权即可。
+## 核心亮点
 
-#### 方法 3：电脑 ADB 推送
+| 能力 | 说明 |
+| --- | --- |
+| WebHome 首页 | 每个 CSP 站点都可以配置独立网页首页 |
+| Native SDK | 网页可通过 `window.fm` 调用 App 原生播放、搜索、请求、缓存等能力 |
+| 直播 / 点播 | 继续兼容原 FongMi / CatVod 播放体系 |
+| Spider 扩展 | 支持 Java / JS / Python Spider 能力 |
+| 网盘检测 | WebHome 可调用 App 内置网盘链接检测接口 |
+| 投屏 / DLNA | 保留投屏和远程播放控制能力 |
+| 本地管理页 | 局域网访问 App 管理页面，支持同步、文件、调试等能力 |
+| 自动更新 | GitHub / cnb.cool 双源更新，适配大陆网络环境 |
+| 安全策略 | 本地服务 token、IP allowlist、远程 JAR 确认、Bridge 权限分级 |
+
+---
+
+## 下载 APK
+
+到 [Releases](https://github.com/motao123/webtv/releases) 下载最新版本：**v5.5.24**。
+
+| 设备类型 | 推荐 APK |
+| --- | --- |
+| Android TV / 电视盒子，主流新设备 | `leanback-arm64_v8a.apk` |
+| Android TV / 老电视盒子 | `leanback-armeabi_v7a.apk` |
+| Android 手机，主流新设备 | `mobile-arm64_v8a.apk` |
+| Android 老手机 | `mobile-armeabi_v7a.apk` |
+
+> 不确定 CPU 架构时，优先下载 `arm64_v8a`。2018 年后的设备大多都是 arm64。
+
+---
+
+## 安装方式
+
+### 电视盒子 / Android TV
+
+1. 下载 `leanback-*.apk`
+2. 放到 U 盘，插入电视盒子
+3. 用文件管理器打开 APK
+4. 按提示允许“安装未知应用”
+5. 完成安装
+
+### 手机
+
+1. 下载 `mobile-*.apk`
+2. 直接点击安装
+3. 按提示允许浏览器安装未知应用
+
+### ADB 安装
 
 ```bash
-adb install leanback-arm64_v8a.apk        # 电视盒子
-adb install mobile-arm64_v8a.apk         # 手机
+adb install leanback-arm64_v8a.apk
+adb install mobile-arm64_v8a.apk
 ```
 
-#### 方法 4：设备自带浏览器
+---
 
-在电视盒子/手机的浏览器里直接打开 release 链接下载，省去拷贝步骤。
+## 首次使用
 
-### 三、首次打开
+首次启动后需要配置 CSP 站点源，也就是影视内容来源。
 
-启动后 App 会让你**配置 CSP 站点源**（也就是你想看的影视内容来自哪），可以填：
+可以填写：
 
-- 公开的 TVBox CSP 配置地址（自行搜索）
-- 自建的 `api.json` 链接
+- 公开 TVBox / FongMi / CatVod 配置地址
+- 自建 `api.json` 地址
+- 带 WebHome 首页的自定义配置
 
-详细字段说明见 [应用完整开发文档.md](docs/应用完整开发文档.md)。
+配置字段说明见：[应用完整开发文档.md](docs/应用完整开发文档.md)
 
-### 四、检查更新
+---
 
-- 进入 App → 设置 → 「版本检查」手动触发
-- v5.5.3 起**移除了启动时自动弹窗**，需要主动点
+## 更新说明
 
-### 五、常见问题
+进入 App：
 
-**装不上，提示「禁止安装」**
-→ 设置 → 安全 → 允许「未知来源」/「安装未知应用」
+```text
+设置 → 版本检查
+```
 
-**装到电视上遥控器不好用 / 不能进详情**
-→ 装错 APK 了。电视上要装 `leanback-...`，手机 APK 装到电视上会出现这种问题，卸载重装 leanback 版。
+更新逻辑：
 
-**打开闪退**
-→ 检查 Android 版本（要求 5.0+）；或换 `armeabi_v7a` 版本试试（少数 arm64 设备兼容有问题）。
+- 没有新版本：提示已是最新版本
+- 有新版本：显示更新内容，确认后下载 APK
+- 下载完成：调用系统安装器安装
+- 安装失败：导出到 Downloads，用户可手动安装
+- 中国大陆网络：优先使用 cnb.cool 镜像源
+- 其他地区网络：优先使用 GitHub 更新源
 
-**不知道选 arm64 还是 armv7**
-→ 2018 年后出的设备基本都是 arm64，先下 arm64。
+---
 
-**想卸载干净**
-→ 设置 → 应用 → WebHomeTV → 卸载。
+## 增强功能
 
-### 增强功能
+| 功能 | 说明 |
+| --- | --- |
+| 网盘检测 | 检测阿里云盘、夸克等网盘链接可用性，辅助播放链路判断 |
+| 站点健康排序 | 根据站点成功率自动优化搜索、详情、播放排序 |
+| 一键同步 | 局域网同步配置、站源、WebHome、搜索记录、历史、收藏和设置 |
+| 站点注入 | 添加自定义 WebHome 或通用 CSP 站点，控制启用状态和插入位置 |
+| APP 代理 | 配置代理地址和域名规则，改善特定站点网络访问 |
+| 调试日志 | 本机和局域网日志入口，方便排查播放、代理、站源、WebHome 问题 |
+| WebHome 调试台 | 查看 Console、Network、DOM、Bridge origin、调用计数和拒绝记录 |
+| 安全加固 | TLS 校验、远程 JAR 确认、本地服务 token、IP allowlist、Bridge 权限分级 |
+| 观看统计 | 基于历史记录统计观看次数和观看时长 |
+| 投屏设备历史 | 记录最近投屏设备，方便快速重连 |
+| EPG 节目提醒 | 通过系统闹钟推送节目开播提醒 |
+| 离线缓存管理 | 查看和清理 ExoPlayer 播放缓存 |
 
-- **网盘检测**：对网盘相关能力进行可用性检测，帮助确认当前环境是否支持网盘播放或解析。
-- **站点健康排序**：自动学习站点搜索、详情和播放成功率，搜索与换源优先使用更可用的站点；站点弹窗默认保留用户配置顺序，可在弹窗内单独开启健康排序。
-- **一键同步**：支持在同一局域网设备间同步配置、站源数据、WebHome 数据、搜索记录、观看历史、收藏和应用设置。
-- **站点注入**：支持添加自定义 WebHome 或通用 CSP 站点，并可配置启用状态、插入位置、首页、搜索和换源等行为。
-- **APP代理**：支持配置代理地址和域名匹配规则，可按当前站点自动建议代理域名，并用于改善特定站点、接口或播放链路的网络访问。
-- **调试日志**：提供本机和局域网日志查看入口，便于排查播放、代理、站源和 WebHome 相关问题。
-- **安全加固**：恢复 TLS 证书校验、远程 JAR 强制哈希、本地服务 token 鉴权、文件接口路径校验、WebHome Bridge 权限分级，详见 [安全加固](#安全加固) 章节。
-- **观看统计**：基于观看历史统计每日/周观看时长，支持 `History.countSince()` / `totalDurationSince()` / `formatDuration()`。
-- **投屏设备历史**：记录最近投屏的 DLNA 设备，支持快速重连。
-- **EPG 节目提醒**：通过系统闹钟定时推送当前频道节目开播通知。
-- **离线缓存管理**：查看/清理 ExoPlayer 视频播放缓存大小。
+---
 
 ## 效果演示
 
 https://github.com/user-attachments/assets/7249b787-a720-406c-8365-acaa0995cb6a
 
-```
+```json
 {
   "key": "Nostr",
   "name": "Nostr推荐",
@@ -105,18 +158,19 @@ https://github.com/user-attachments/assets/7249b787-a720-406c-8365-acaa0995cb6a
 }
 ```
 
-## 文档
+---
+
+## 文档入口
 
 完整开发说明见：
 
 [**应用完整开发文档.md**](docs/应用完整开发文档.md)
 
-
-这份文档包含：
+文档包含：
 
 - App 配置字段
 - Spider 开发
-- JS/Python Spider 运行时
+- JS / Python Spider 运行时
 - 本地 HTTP 服务
 - WebHome SDK 参数和返回值
 - 透明背景实现建议
@@ -128,6 +182,7 @@ https://github.com/user-attachments/assets/7249b787-a720-406c-8365-acaa0995cb6a
 - Android Intent、DLNA、MediaSession
 - CORS、Cookie 和网络策略
 
+---
 ## 二开重点
 
 ### 1. CSP 站点支持自定义 WebHome 首页
