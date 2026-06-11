@@ -1,12 +1,14 @@
 package com.fongmi.android.tv;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentActivity;
 
 import com.fongmi.android.tv.impl.UpdateListener;
@@ -31,6 +33,7 @@ public class Updater implements Download.Callback, UpdateListener {
 
     private final Download download;
     private UpdateDialog dialog;
+    private FragmentActivity activity;
 
     private Updater() {
         this.download = Download.create(getApk(), getFile());
@@ -59,6 +62,7 @@ public class Updater implements Download.Callback, UpdateListener {
     }
 
     public void start(FragmentActivity activity) {
+        this.activity = activity;
         if (!Setting.getUpdate()) return;
         Task.execute(() -> doInBackground(activity));
     }
@@ -69,10 +73,14 @@ public class Updater implements Download.Callback, UpdateListener {
             String name = object.optString("name");
             String desc = object.optString("desc");
             int code = object.optInt("code");
-            if (code <= BuildConfig.VERSION_CODE) return;
+            if (code <= BuildConfig.VERSION_CODE) {
+                App.post(() -> Notify.show(R.string.update_latest));
+                return;
+            }
             App.post(() -> show(activity, name, desc));
         } catch (Exception e) {
             SpiderDebug.log(e);
+            App.post(() -> Notify.show(R.string.update_check));
         }
     }
 
@@ -84,6 +92,7 @@ public class Updater implements Download.Callback, UpdateListener {
     @Override
     public void onConfirm(View view) {
         view.setEnabled(false);
+        Notify.show(R.string.update_downloading);
         download.start(this);
     }
 
@@ -115,12 +124,37 @@ public class Updater implements Download.Callback, UpdateListener {
     @Override
     public void success(File file) {
         Task.execute(() -> {
+            if (install(file)) {
+                App.post(this::dismiss);
+                return;
+            }
             String path = exportToDownloads(file);
             App.post(() -> {
-                Notify.show(path == null ? R.string.update_export_failed : R.string.update_export_done);
+                if (path != null) Notify.show(ResUtil.getString(R.string.update_export_done, path));
+                else Notify.show(R.string.update_export_failed);
                 dismiss();
             });
         });
+    }
+
+    private boolean install(File file) {
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri uri;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                uri = FileProvider.getUriForFile(App.get(), App.get().getPackageName() + ".provider", file);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            } else {
+                uri = Uri.fromFile(file);
+            }
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            App.get().startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private String exportToDownloads(File file) {
