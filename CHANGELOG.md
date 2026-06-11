@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.5.33 — Fix DB Migration Crash (2026-06-11)
+
+修复 5.5.32 数据库迁移导致闪退的问题。
+
+### 修复
+
+- **DB 初始化加固**: `AppDatabase.get()` 首次创建失败时自动删除旧数据库重新创建，避免迁移异常导致闪退
+
 ## 5.5.32 — EPG Reminder Persistence & CNB Sync Warning (2026-06-11)
 
 EPG 节目提醒持久化到数据库，设备重启后自动重建闹钟。
