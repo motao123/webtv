@@ -31,12 +31,11 @@ import java.io.OutputStream;
 
 public class Updater implements Download.Callback, UpdateListener {
 
-    private final Download download;
+    private Download download;
     private UpdateDialog dialog;
     private FragmentActivity activity;
 
     private Updater() {
-        this.download = Download.create(getApk(), getFile());
     }
 
     public static Updater create() {
@@ -69,6 +68,7 @@ public class Updater implements Download.Callback, UpdateListener {
 
     private void doInBackground(FragmentActivity activity) {
         try {
+            download = Download.create(getApk(), getFile());
             JSONObject object = new JSONObject(OkHttp.string(getJson()));
             String name = object.optString("name");
             String desc = object.optString("desc");
@@ -99,7 +99,7 @@ public class Updater implements Download.Callback, UpdateListener {
     @Override
     public void onCancel(View view) {
         Setting.putUpdate(false);
-        download.cancel();
+        if (download != null) download.cancel();
         dismiss();
     }
 

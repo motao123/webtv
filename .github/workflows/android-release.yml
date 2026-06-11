@@ -93,6 +93,23 @@ jobs:
           find app/build/outputs/apk -name "*.apk" -type f -exec cp -v {} dist/ \;
           ls -la dist/
 
+      - name: Generate update JSON manifests
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION_CODE="$(grep -m1 'versionCode' app/build.gradle | awk '{print $2}')"
+          SHORT_SHA="$(echo "${{ github.sha }}" | cut -c1-7)"
+          for apk in dist/*.apk; do
+            base=$(basename "$apk" .apk)
+            cat > "dist/${base}.json" << JSONEOF
+          {
+            "name": "${{ github.ref_name }}",
+            "desc": "${{ github.ref_name }} — $SHORT_SHA",
+            "code": $VERSION_CODE
+          }
+          JSONEOF
+            echo "Generated dist/${base}.json code=$VERSION_CODE"
+          done
+
       - name: Write release notes
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
@@ -124,24 +141,7 @@ jobs:
           gh release create "${{ github.ref_name }}" \
             --title "${{ github.ref_name }}" \
             --notes-file dist/release-notes.md \
-            dist/*.apk
-
-      - name: Generate update JSON manifests
-        if: startsWith(github.ref, 'refs/tags/v')
-        run: |
-          VERSION="${{ github.ref_name }}-${{ github.sha }}"
-          SHORT_SHA="$(echo "${{ github.sha }}" | cut -c1-7)"
-          for apk in dist/*.apk; do
-            base=$(basename "$apk" .apk)
-            cat > "dist/${base}.json" << JSONEOF
-          {
-            "name": "${{ github.ref_name }}",
-            "desc": "${{ github.ref_name }} — $SHORT_SHA",
-            "code": ${{ github.run_number }}
-          }
-          JSONEOF
-            echo "Generated dist/${base}.json"
-          done
+            dist/*.apk dist/*.json
 
       - name: Sync to CNB mirror
         if: startsWith(github.ref, 'refs/tags/v') && env.CNB_TOKEN != ''

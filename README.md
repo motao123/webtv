@@ -4,7 +4,7 @@
 
 **为 Android TV / 手机打造的 WebHome 影音客户端**
 
-基于 `fish2018/webhtv` 二次开发，把传统 TVBox / FongMi / CatVod 生态升级成可以用网页首页驱动的现代影音 App。
+把传统 TVBox / FongMi / CatVod 生态升级成可以用网页首页驱动的现代影音 App。
 
 [![Release](https://img.shields.io/github/v/release/motao123/webtv?label=release)](https://github.com/motao123/webtv/releases)
 [![Android](https://img.shields.io/badge/Android-5.0%2B-3DDC84)](#用户使用指南)
@@ -17,7 +17,7 @@
 
 ## 项目简介
 
-`WebHomeTV`（当前仓库名 `webtv`）是基于 [fish2018/webhtv](https://github.com/fish2018/webhtv) 二次开发并改名维护的 Android 影音应用，底层继承 **FongMi / CatVod** 生态能力。
+`WebHomeTV`（当前仓库名 `webtv`）是围绕 **FongMi / CatVod** 生态能力增强维护的 Android 影音应用。
 
 它保留原有的点播、直播、Spider、解析、投屏、本地 HTTP 服务等能力，同时重点增强：
 
@@ -54,7 +54,7 @@
 
 ## 下载 APK
 
-到 [Releases](https://github.com/motao123/webtv/releases) 下载最新版本：**v5.5.24**。
+到 [Releases](https://github.com/motao123/webtv/releases) 下载最新版本：**v5.5.25**。
 
 | 设备类型 | 推荐 APK |
 | --- | --- |

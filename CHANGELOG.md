@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.5.25 — Fix Update Source Version Detection (2026-06-11)
+
+修复点击版本更新时误提示 `Already up to date` 的问题。
+
+### 修复
+
+- **更新源**: GitHub 更新地址改为当前仓库 Release assets，不再读取旧的外部 Release JSON
+- **版本号**: CI 生成 JSON 时使用 `app/build.gradle` 的 `versionCode`，避免 `github.run_number` 小于 APK 版本号导致误判
+- **Release assets**: GitHub Release 同时上传 APK 和 JSON，App 可直接读取 `latest/download/*.json`
+
 ## 5.5.24 — Dependency Trust & WebHome Security Controls (2026-06-11)
 
 新增远程依赖加载确认、WebHome Bridge 诊断和服务端安全控制。
