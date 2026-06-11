@@ -91,7 +91,7 @@ public class MediaSourceFactory implements MediaSource.Factory {
     }
 
     private DataSource.Factory getDataSourceFactory() {
-        if (dataSourceFactory == null) dataSourceFactory = getCacheDataSource(new CharsetDetectDataSource.Factory(new DefaultDataSource.Factory(App.get(), getHttpDataSourceFactory())));
+        if (dataSourceFactory == null) dataSourceFactory = getCacheDataSource(new DefaultDataSource.Factory(App.get(), getHttpDataSourceFactory()));
         return dataSourceFactory;
     }
 

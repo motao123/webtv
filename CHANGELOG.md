@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.5.20 — Fix Live Stream Loading Stuck (2026-06-11)
+
+修复电视直播一直加载不显示画面的问题。
+
+### 原因
+
+P2-7 字幕编码检测 (`CharsetDetectDataSource`) 被错误地应用到所有媒体数据源，其缓冲读取逻辑在遇到小文件（<5MB）时会在流末尾重复返回已读数据，导致 ExoPlayer 的 HLS 解析器收到损坏的播放列表数据（`Input does not start with the #EXTM3U header`）。
+
+### 修复
+
+- 移除全局 `CharsetDetectDataSource.Factory` 包装器，恢复原始 `DefaultDataSource.Factory`
+
 ## 5.5.19 — Fix Live Stream HTTP Blocked (2026-06-11)
 
 修复直播流 `Network Connection Failed`：`base-config cleartextTrafficPermitted` 恢复为 `true`，允许 HTTP 直播流。
