@@ -317,7 +317,7 @@ public class HomeWebBridge {
         object.addProperty("url", VodConfig.getUrl());
         object.addProperty("desc", VodConfig.getDesc());
         object.addProperty("familyFilterEnabled", Setting.isFamilyFilter());
-        object.add("familyFilterKeywords", App.gson().toJsonTree(FamilyFilter.activeKeywords()));
+        object.add("familyFilterKeywords", App.gson().toJsonTree(FamilyFilter.keywords()));
         return object.toString();
     }
 
