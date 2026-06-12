@@ -647,10 +647,6 @@ public class HomeWebController {
                     set:(key,value,rule)=>invoke('cache.set',{key,value,rule}),
                     del:(key,rule)=>invoke('cache.del',{key,rule})
                   };
-                  const pan={
-                    check:(items)=>invoke('pan.check',{items}),
-                    play:(payload)=>invoke('pan.play',payload||{})
-                  };
                   const ext={
                     info:()=>invoke('ext.info',{}),
                     log:(message,data)=>invoke('ext.log',{message,data}),
@@ -667,7 +663,6 @@ public class HomeWebController {
                       openSetting:()=>invoke('app.openSetting',{}),
                       history:()=>invoke('app.history',{})
                     },
-                    pan,
                     ext,
                     device:{info:()=>invoke('device.info',{})},
                     site:{info:()=>invoke('site.info',{})},
@@ -690,8 +685,6 @@ public class HomeWebController {
                     openKeep:window.fongmi.app.openKeep,
                     openSetting:window.fongmi.app.openSetting,
                     history:window.fongmi.app.history,
-                    pan,
-                    check:window.fongmi.pan.check,
                     cache,
                     ext,
                     ui,

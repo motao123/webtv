@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.5.39 — Remove cloud drive integration (2026-06-12)
+
+移除夸克、UC、百度、阿里云盘等云盘相关能力，并恢复正式仓库构建配置。
+
+### 移除
+
+- **云盘检测**: 删除 App 内置网盘分享链接检测服务与 `/pan/check` HTTP 端点
+- **WebHome Pan SDK**: 删除 `fm.pan.check`、`fm.pan.play` 和 `fm.check` 相关桥接能力
+- **登录态学习**: 删除登录态学习、路径管理和同步相关 UI / 逻辑
+- **设置入口**: 删除增强功能中的网盘检测和登录态学习入口
+
+### 构建恢复
+
+- **Chaquopy**: 恢复正式仓库 Python 3.10 配置
+- **requirements**: 恢复 `ujson` 依赖，撤销本地临时打包修改
+
 ## 5.5.38 — Login State Learning (2026-06-12)
 
 新增登录态学习功能，自动识别网盘登录文件路径，支持局域网同步。

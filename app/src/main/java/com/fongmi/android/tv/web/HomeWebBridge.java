@@ -11,9 +11,7 @@ import com.fongmi.android.tv.api.SiteApi;
 import com.fongmi.android.tv.api.config.VodConfig;
 import com.fongmi.android.tv.bean.History;
 import com.fongmi.android.tv.bean.Site;
-import com.fongmi.android.tv.bean.drive.DriveCheckRequest;
 import com.fongmi.android.tv.server.Server;
-import com.fongmi.android.tv.service.DriveCheckService;
 import com.fongmi.android.tv.service.PlaybackService;
 import com.fongmi.android.tv.ui.activity.KeepActivity;
 import com.fongmi.android.tv.ui.activity.LiveActivity;
@@ -122,8 +120,6 @@ public class HomeWebBridge {
                 case "app.openKeep" -> openKeep();
                 case "app.openSetting" -> openSetting();
                 case "app.history" -> history();
-                case "pan.check" -> checkLinks(payload);
-                case "pan.play" -> playPan(payload);
                 case "cache.get" -> quote(Prefers.getString(cacheKey(payload)));
                 case "cache.set" -> cacheSet(payload);
                 case "cache.del" -> cacheDel(payload);
@@ -178,7 +174,7 @@ public class HomeWebBridge {
         if (trusted) return;
         if ("net.request".equals(method) && sensitiveRequest(payload)) throw new SecurityException("Forbidden method: " + method);
         if ("player.playUrl".equals(method)) validatePlayable(Json.safeString(payload, "url"));
-        if ("app.history".equals(method) || "device.info".equals(method) || "config.info".equals(method) || "app.openSetting".equals(method) || "pan.check".equals(method) || method.startsWith("cache.")) throw new SecurityException("Forbidden method: " + method);
+        if ("app.history".equals(method) || "device.info".equals(method) || "config.info".equals(method) || "app.openSetting".equals(method) || method.startsWith("cache.")) throw new SecurityException("Forbidden method: " + method);
     }
 
     private boolean sensitiveRequest(JsonObject payload) {
@@ -266,26 +262,6 @@ public class HomeWebBridge {
         return App.gson().toJson(History.get());
     }
 
-    private String checkLinks(JsonObject payload) {
-        if (!Setting.isDriveCheck()) throw new IllegalStateException("网盘检测未开启");
-        DriveCheckRequest request = App.gson().fromJson(payload, DriveCheckRequest.class);
-        if (request == null || request.getItems().isEmpty()) throw new IllegalArgumentException("items不能为空");
-        SpiderDebug.log("webhome", "pan.check count=%s", request.getItems().size());
-        return App.gson().toJson(DriveCheckService.get().check(request.getItems()));
-    }
-
-    private String playPan(JsonObject payload) {
-        String url = Json.safeString(payload, "url");
-        String title = Json.safeString(payload, "title");
-        String type = Json.safeString(payload, "type");
-        if (TextUtils.isEmpty(url)) throw new IllegalArgumentException("url不能为空");
-        final String playUrl = stripPush(url.trim());
-        final String playTitle = TextUtils.isEmpty(title) ? playUrl : title;
-        SpiderDebug.log("webhome", "pan.play route=%s type=%s title=%s url=%s", SiteApi.PUSH, type, playTitle, playUrl);
-        App.post(() -> VideoActivity.start(activity, SiteApi.PUSH, playUrl, playTitle));
-        return "{}";
-    }
-
     private String stripPush(String url) {
         return url.regionMatches(true, 0, "push://", 0, 7) ? url.substring(7) : url;
     }
@@ -339,7 +315,6 @@ public class HomeWebBridge {
         object.addProperty("id", VodConfig.getCid());
         object.addProperty("url", VodConfig.getUrl());
         object.addProperty("desc", VodConfig.getDesc());
-        object.addProperty("driveCheck", Setting.isDriveCheck());
         return object.toString();
     }
 

@@ -18,7 +18,6 @@ import com.fongmi.android.tv.service.ManageService;
 import com.fongmi.android.tv.setting.CustomCspSetting;
 import com.fongmi.android.tv.setting.ProxySetting;
 import com.fongmi.android.tv.setting.Setting;
-import com.fongmi.android.tv.utils.LoginStateSync;
 import com.fongmi.android.tv.utils.ProgressRequestBody;
 import com.fongmi.android.tv.utils.ScanTask;
 import com.fongmi.android.tv.utils.SyncFiles;
@@ -88,12 +87,6 @@ public class Manage implements Process {
                 case "/manage/sync/detect" -> detectSyncPaths();
                 case "/manage/sync/start" -> syncStart(session.getParms());
                 case "/manage/file/archive" -> fileArchive(session.getParms());
-                case "/manage/login-state" -> loginState();
-                case "/manage/login-state/file" -> loginStateFile(session.getParms());
-                case "/manage/login-state/learn" -> loginStateLearn(session.getParms());
-                case "/manage/login-state/paths" -> loginStatePaths(session.getParms());
-                case "/manage/login-state/confirm" -> loginStateConfirm();
-                case "/manage/login-state/tree" -> loginStateTree(session.getParms());
                 case "/manage/proxy" -> proxy(session.getParms());
                 case "/manage/csp/page" -> cspPage(session.getParms());
                 case "/manage/csp" -> csp(session.getParms());
@@ -472,11 +465,9 @@ public class Manage implements Process {
         SyncOptions options = SyncOptions.objectFrom(params.get("options"));
         if (params.containsKey("paths")) options.paths(params.get("paths"));
         SyncFiles.Archive archive = null;
-        LoginStateSync.Archive loginArchive = null;
         try {
             if (!pull && options.isSpider()) archive = SyncFiles.createArchive(SyncFiles.getPaths(options.getPaths()));
-            if (!pull && options.isLoginState()) loginArchive = LoginStateSync.createArchive();
-            RequestBody body = buildSyncBody(pull, options, archive, loginArchive);
+            RequestBody body = buildSyncBody(pull, options, archive);
             String remote = remoteUrl(device, "/action?do=sync&mode=" + (pull ? "2" : "1") + "&type=backup");
             SpiderDebug.log("sync", "manage start direction=%s device=%s options=%s archive=%s", pull ? "pull" : "push", device, options, archive == null ? "none" : archive.getFile().getAbsolutePath());
             try (okhttp3.Response response = OkHttp.client(Constant.TIMEOUT_SYNC_TRANSFER).newCall(new Request.Builder().url(remote).post(body).build()).execute()) {
@@ -495,19 +486,13 @@ public class Manage implements Process {
                 object.addProperty("rawSize", archive.getRawSize());
                 object.addProperty("zipSize", archive.getZipSize());
             }
-            if (loginArchive != null) {
-                object.addProperty("loginFiles", loginArchive.getCount());
-                object.addProperty("loginRawSize", loginArchive.getRawSize());
-                object.addProperty("loginZipSize", loginArchive.getZipSize());
-            }
             return json(object);
         } finally {
             if (archive != null) archive.delete();
-            if (loginArchive != null) loginArchive.delete();
         }
     }
 
-    private RequestBody buildSyncBody(boolean pull, SyncOptions options, SyncFiles.Archive archive, LoginStateSync.Archive loginArchive) {
+    private RequestBody buildSyncBody(boolean pull, SyncOptions options, SyncFiles.Archive archive) {
         if (pull) {
             FormBody.Builder body = new FormBody.Builder();
             body.add("options", options.toString());
@@ -515,7 +500,7 @@ public class Manage implements Process {
             body.add("device", Device.get().toString());
             return body.build();
         }
-        if (archive == null && loginArchive == null) {
+        if (archive == null) {
             FormBody.Builder body = new FormBody.Builder();
             body.add("options", options.toString());
             body.add("force", "false");
@@ -526,82 +511,8 @@ public class Manage implements Process {
         body.addFormDataPart("options", options.toString());
         body.addFormDataPart("force", "false");
         body.addFormDataPart("backup", Backup.create(options).toString());
-        if (archive != null) body.addFormDataPart(SyncFiles.PART_NAME, archive.getFile().getName(), new ProgressRequestBody(archive.getFile(), ZIP, null));
-        if (loginArchive != null) body.addFormDataPart(LoginStateSync.PART_NAME, loginArchive.getFile().getName(), new ProgressRequestBody(loginArchive.getFile(), ZIP, null));
+        body.addFormDataPart(SyncFiles.PART_NAME, archive.getFile().getName(), new ProgressRequestBody(archive.getFile(), ZIP, null));
         return body.build();
-    }
-
-    private Response loginState() {
-        return json(loginStateObject());
-    }
-
-    private Response loginStateLearn(Map<String, String> params) {
-        String action = params.getOrDefault("action", "begin");
-        JsonObject object;
-        if ("finish".equalsIgnoreCase(action)) {
-            LoginStateSync.LearnResult result = LoginStateSync.finishLearning();
-            object = loginStateObject();
-            object.add("selectedNow", array(result.getSelected()));
-            object.add("pendingNow", array(result.getPending()));
-            object.addProperty("finished", result.isLearned());
-        } else {
-            LoginStateSync.beginLearning();
-            object = loginStateObject();
-            object.addProperty("started", true);
-        }
-        return json(object);
-    }
-
-    private Response loginStateFile(Map<String, String> params) throws IOException {
-        String path = params.get("path");
-        if (TextUtils.isEmpty(path)) return Nano.error(Status.BAD_REQUEST, "Missing path");
-        if (params.containsKey("content")) LoginStateSync.write(path, params.get("content"));
-        LoginStateSync.TextPreview preview = LoginStateSync.preview(path);
-        JsonObject object = new JsonObject();
-        object.addProperty("path", preview.getPath());
-        object.addProperty("displayPath", preview.getDisplayPath());
-        object.addProperty("content", preview.getContent());
-        object.addProperty("size", preview.getSize());
-        object.addProperty("truncated", preview.isTruncated());
-        object.addProperty("editable", preview.isEditable());
-        object.addProperty("text", preview.isText());
-        object.addProperty("encoding", preview.getEncoding());
-        return json(object);
-    }
-
-    private Response loginStatePaths(Map<String, String> params) {
-        if (params.containsKey("paths")) LoginStateSync.savePaths(Arrays.asList(params.get("paths").split("[\\r\\n]+")));
-        return loginState();
-    }
-
-    private Response loginStateTree(Map<String, String> params) {
-        LoginStateSync.Tree tree = LoginStateSync.tree(params.getOrDefault("path", ""));
-        JsonObject object = new JsonObject();
-        object.addProperty("path", tree.getPath());
-        object.addProperty("parent", tree.getParent());
-        object.addProperty("valid", tree.isValid());
-        object.add("items", App.gson().toJsonTree(tree.getItems()));
-        return json(object);
-    }
-
-    private Response loginStateConfirm() {
-        LoginStateSync.confirmPending();
-        return loginState();
-    }
-
-    private JsonObject loginStateObject() {
-        List<String> learned = LoginStateSync.learnedPaths();
-        List<String> pending = LoginStateSync.pendingPaths();
-        JsonObject object = new JsonObject();
-        object.addProperty("learning", LoginStateSync.hasLearningSnapshot());
-        object.addProperty("learnedCount", learned.size());
-        object.addProperty("pendingCount", pending.size());
-        object.add("learned", array(learned));
-        object.add("pending", array(pending));
-        object.add("states", App.gson().toJsonTree(LoginStateSync.pathStates(learned)));
-        object.add("findings", App.gson().toJsonTree(LoginStateSync.findings()));
-        object.addProperty("pathsText", LoginStateSync.pathsText(learned));
-        return object;
     }
 
     private Response proxy(Map<String, String> params) {
