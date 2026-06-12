@@ -131,6 +131,7 @@ jobs:
           - Android 11+ 文件管理走 SAF，不再申请 `MANAGE_EXTERNAL_STORAGE`
           - 自更新改为导出到 Downloads 通知用户手动安装
           - 旧设备（Android ≤ 10）行为不变
+          - 本版本以当前仓库功能集为准，详情请看 CHANGELOG
           NOTESEOF
 
       - name: Create GitHub Release
