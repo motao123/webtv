@@ -100,6 +100,38 @@ public class Setting {
         Prefers.put("sync_paths", paths);
     }
 
+    public static String getLoginStatePaths() {
+        return Prefers.getString("login_state_paths");
+    }
+
+    public static void putLoginStatePaths(String paths) {
+        Prefers.put("login_state_paths", paths);
+    }
+
+    public static String getLoginStatePendingPaths() {
+        return Prefers.getString("login_state_pending_paths");
+    }
+
+    public static void putLoginStatePendingPaths(String paths) {
+        Prefers.put("login_state_pending_paths", paths);
+    }
+
+    public static String getLoginStateSnapshot() {
+        return Prefers.getString("login_state_snapshot");
+    }
+
+    public static void putLoginStateSnapshot(String snapshot) {
+        Prefers.put("login_state_snapshot", snapshot);
+    }
+
+    public static String getLoginStateFindings() {
+        return Prefers.getString("login_state_findings");
+    }
+
+    public static void putLoginStateFindings(String findings) {
+        Prefers.put("login_state_findings", findings);
+    }
+
     public static boolean isIncognito() {
         return Prefers.getBoolean("incognito");
     }

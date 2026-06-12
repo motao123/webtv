@@ -1,5 +1,27 @@
 # Changelog
 
+## 5.5.38 — Login State Learning (2026-06-12)
+
+新增登录态学习功能，自动识别网盘登录文件路径，支持局域网同步。
+
+### 新增
+
+- **登录态学习**: 在增强功能中点击入口，开始学习后在 WebView 登录网盘，完成学习自动识别 Cookie/Token 登录态文件
+- **路径管理**: 支持通过目录树浏览和手动勾选需要同步的登录态文件路径
+- **文件查看/编辑**: 可直接查看登录态文件内容，支持文本文件编辑保存
+- **一键同步集成**: 同步选项中新增「登录态」复选框，学习到的文件路径参与局域网同步
+- **管理页面支持**: Web 管理页新增完整的登录态管理面板
+
+### 改动
+
+- `LoginStateSync.java` — 核心逻辑：文件系统快照、差异检测、关键词评分、ZIP 打包
+- `LoginStateLearnDialog.java` — 学习对话框：开始/完成学习、候选预览
+- `LoginStatePathDialog.java` — 路径管理：目录树、勾选、文件编辑
+- `Manage.java` — 新增 6 个 `/manage/login-state*` HTTP 端点
+- `Setting.java` — 新增 4 组 login_state_* 持久化键
+- `SyncOptions.java` — 新增 loginState 同步选项字段
+- `OneKeySyncDialog.java` — 登录态打包、上传、接收全部集成
+
 ## 5.5.37 — Manual Update Flow (2026-06-11)
 
 简化为手动下载更新：不再尝试 App 内下载安装，直接复制链接到浏览器下载。

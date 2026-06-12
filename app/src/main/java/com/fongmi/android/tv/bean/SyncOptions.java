@@ -22,6 +22,8 @@ public class SyncOptions {
     private boolean webHome = true;
     @SerializedName("settings")
     private boolean settings;
+    @SerializedName("loginState")
+    private boolean loginState = true;
     @SerializedName("paths")
     private String paths = Setting.getSyncPaths();
 
@@ -98,6 +100,15 @@ public class SyncOptions {
 
     public SyncOptions settings(boolean settings) {
         this.settings = settings;
+        return this;
+    }
+
+    public boolean isLoginState() {
+        return loginState;
+    }
+
+    public SyncOptions loginState(boolean loginState) {
+        this.loginState = loginState;
         return this;
     }
 

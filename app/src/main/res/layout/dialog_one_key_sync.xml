@@ -398,6 +398,15 @@
                     app:buttonTint="@color/dialog_checkbox_tint" />
 
                 <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/loginState"
+                    android:layout_width="match_parent"
+                    android:layout_height="38dp"
+                    android:checked="true"
+                    android:text="@string/sync_item_login_state"
+                    android:textColor="#202124"
+                    app:buttonTint="@color/dialog_checkbox_tint" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/webHome"
                     android:layout_width="match_parent"
                     android:layout_height="38dp"

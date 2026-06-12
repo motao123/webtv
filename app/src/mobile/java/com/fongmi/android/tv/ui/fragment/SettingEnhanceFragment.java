@@ -17,7 +17,9 @@ import com.fongmi.android.tv.setting.SiteHealthStore;
 import com.fongmi.android.tv.ui.base.BaseFragment;
 import com.fongmi.android.tv.ui.dialog.CustomCspDialog;
 import com.fongmi.android.tv.ui.dialog.DebugLogDialog;
+import com.fongmi.android.tv.ui.dialog.LoginStateLearnDialog;
 import com.fongmi.android.tv.ui.dialog.ManagePageDialog;
+import com.fongmi.android.tv.utils.LoginStateSync;
 import com.fongmi.android.tv.ui.dialog.OneKeySyncDialog;
 import com.fongmi.android.tv.ui.dialog.ShellProxyDialog;
 import com.fongmi.android.tv.ui.dialog.SiteHealthDialog;
@@ -60,6 +62,7 @@ public class SettingEnhanceFragment extends BaseFragment {
         mBinding.shellProxy.setOnLongClickListener(v -> false);
         mBinding.shellProxyConfig.setVisibility(View.GONE);
         mBinding.customCsp.setOnClickListener(view -> CustomCspDialog.show(this, this::setText));
+        mBinding.loginState.setOnClickListener(view -> LoginStateLearnDialog.show(this, this::setText));
         mBinding.oneKeySync.setOnClickListener(v -> OneKeySyncDialog.create().show(requireActivity()));
     }
 
@@ -75,6 +78,9 @@ public class SettingEnhanceFragment extends BaseFragment {
         CustomCspSetting.Registry registry = CustomCspSetting.load();
         CustomCspSetting.Count count = CustomCspSetting.count();
         mBinding.customCspText.setText(getSwitch(registry.isEnabled()) + " · " + getString(R.string.setting_custom_csp_count, count.active(), count.enabled()));
+        int learned = LoginStateSync.learnedCount();
+        int pending = LoginStateSync.pendingPaths().size();
+        mBinding.loginStateText.setText(getString(LoginStateSync.hasLearningSnapshot() ? R.string.login_state_learning_count : R.string.login_state_count, learned, pending));
     }
 
     private void setDriveCheck(View view) {
