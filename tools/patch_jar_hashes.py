@@ -15,7 +15,7 @@ SHA-256，输出一份带哈希的修补版。
 示例：
 
   python tools/patch_jar_hashes.py \
-      https://cnb.cool/code_free/TV/-/git/raw/master/api.json
+      https://example.com/path/to/api.json
 
   # 只看哪些 jar 会被处理，不下载 / 不写文件：
   python tools/patch_jar_hashes.py <url> --dry-run

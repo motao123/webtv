@@ -20,7 +20,6 @@
         <domain includeSubdomains="true">github.com</domain>
         <domain includeSubdomains="true">githubusercontent.com</domain>
         <domain includeSubdomains="true">raw.githubusercontent.com</domain>
-        <domain includeSubdomains="true">gitee.com</domain>
     </domain-config>
 
     <debug-overrides>

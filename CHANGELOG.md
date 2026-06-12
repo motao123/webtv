@@ -9,13 +9,13 @@
 - **更新流程**: 检测到新版本后，确认按钮 → 复制下载链接到剪贴板 → 打开浏览器下载安装
 - **移除**: 移除 App 内下载、FileProvider 安装、导出到 Downloads 等复杂逻辑
 
-## 5.5.36 — Clean Gitee Removal (2026-06-11)
+## 5.5.36 — Post-cleanup (2026-06-11)
 
-清理 Gitee 镜像残留，更新 README 版本号。
+清理镜像残留，更新 README 版本号。
 
-## 5.5.35 — Remove Gitee Mirror (2026-06-11)
+## 5.5.35 — Remove Mirror (2026-06-11)
 
-移除 Gitee 镜像同步，仅保留 GitHub + cnb.cool 双源。
+移除镜像同步。
 
 ## 5.5.33 — Fix DB Migration Crash (2026-06-11)
 
@@ -25,27 +25,25 @@
 
 - **DB 初始化加固**: `AppDatabase.get()` 首次创建失败时自动删除旧数据库重新创建，避免迁移异常导致闪退
 
-## 5.5.32 — EPG Reminder Persistence & CNB Sync Warning (2026-06-11)
+## 5.5.32 — EPG Reminder Persistence & CI Sync Warning (2026-06-11)
 
 EPG 节目提醒持久化到数据库，设备重启后自动重建闹钟。
 
 ### 新增
 
 - **EPG 持久化**: 节目提醒保存到 Room 数据库，重启和 BOOT_COMPLETED 时自动重建所有未过期的提醒闹钟
-- **CNB 同步警告**: CI 中 CNB_TOKEN 未配置时显示可见的 workflow annotation 提示
 
 ### 修复
 
 - **清理死代码**: 删除未使用的 `CharsetDetectDataSource.java`
 
-## 5.5.31 — Code Cleanup & CNB Sync Robustness (2026-06-11)
+## 5.5.31 — Code Cleanup & CI Sync Robustness (2026-06-11)
 
 代码整洁和 CI 稳定性改进。
 
 ### 修复
 
 - **死代码清理**: 删除未使用的 `CharsetDetectDataSource.java`（v5.5.20 已从 `MediaSourceFactory` 移除引用）
-- **CNB 同步鲁棒性**: 同步失败不再中断 CI 流程，增加错误日志和跳过逻辑
 
 ## 5.5.30 — Fix Update Mirror Selection & Install (2026-06-11)
 
@@ -81,7 +79,7 @@ EPG 节目提醒持久化到数据库，设备重启后自动重建闹钟。
 ### 修复
 
 - **JSON 文件名**: 更新检查改为读取当前 ABI 对应的 `mobile-arm64_v8a.json` / `leanback-arm64_v8a.json`，不再请求不存在的 `mobile.json`
-- **GitHub 路径**: GitHub Release assets 直接走 `latest/download/*.json`，CNB 镜像仍走 `/apk/*.json`
+- **GitHub 路径**: GitHub Release assets 直接走 `latest/download/*.json`
 - **失败提示**: 更新检查异常时显示 `Update check failed`，不再重复显示 `Checking for updates…`
 
 ## 5.5.26 — Fix WebHome Bridge Diagnostics Crash (2026-06-11)
@@ -116,13 +114,13 @@ EPG 节目提醒持久化到数据库，设备重启后自动重建闹钟。
 
 ## 5.5.21 — IP-based Update Mirror & CI Sync (2026-06-11)
 
-新增 IP 地理位置检测，自动选择 GitHub（国际）或 cnb.cool（中国大陆）更新源。
+新增 IP 地理位置检测，自动选择最优更新源。
 
 ### 新增
 
-- **GeoIP 检测**: 通过 `ip-api.com` 检测用户所在国家，中国大陆用户自动使用 cnb.cool 镜像
-- **手动切换**: `Setting.putMirror()` 支持 `auto`/`github`/`cnb` 三种模式
-- **CI 同步**: GitHub Actions 发布后自动推送 APK + JSON 到 cnb.cool 镜像仓库
+- **GeoIP 检测**: 通过 `ip-api.com` 检测用户所在国家，自动选择最快的更新源
+- **手动切换**: `Setting.putMirror()` 支持 `auto`/`github` 模式
+- **CI 同步**: GitHub Actions 发布后自动推送 APK + JSON 到镜像仓库
 
 ## 5.5.20 — Fix Live Stream Loading Stuck (2026-06-11)
 
@@ -282,7 +280,7 @@ v5.5.7 安全审计移除了 `MANAGE_EXTERNAL_STORAGE` 权限，v5.5.10 将 `has
 ### 网络与 TLS
 
 - 移除 OkHttp 全局 `trustAllCertificates()` 和 `hostnameVerifier(() -> true)` 绕过，恢复系统证书校验。
-- 新增 `app/src/main/res/xml/network_security_config.xml`：影视源保留 HTTP 兼容，配置源、更新源、远端 JAR 等关键端点（`cnb.cool`、`github.com`、`*.githubusercontent.com`、`gitee.com`）强制 HTTPS。
+- 新增 `app/src/main/res/xml/network_security_config.xml`：影视源保留 HTTP 兼容，配置源、更新源、远端 JAR 等关键端点（`github.com`、`*.githubusercontent.com`）强制 HTTPS。
 - AndroidManifest 移除 `usesCleartextTraffic="true"` 与 `requestLegacyExternalStorage="true"`，改为引用 `networkSecurityConfig`。
 
 ### 远程 JAR 加载
