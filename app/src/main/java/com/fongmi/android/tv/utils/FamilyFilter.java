@@ -18,6 +18,19 @@ import java.util.Set;
 
 public class FamilyFilter {
 
+    private static final List<String> ALWAYS_BLOCKED = List.of(
+            "夸克", "quark",
+            "百度网盘", "百度雲盤", "baidu",
+            "阿里云盘", "阿里雲盤", "aliyun", "alipan",
+            "uc网盘", "uc 網盤", "drive.uc.cn",
+            "天翼云盘", "天翼雲盤", "tianyi",
+            "123网盘", "123 網盤", "123pan",
+            "迅雷", "xunlei",
+            "115网盘", "115 網盤",
+            "移动云盘", "移動雲盤", "和彩云", "和彩雲", "caiyun",
+            "pikpak", "webdav"
+    );
+
     public static boolean enabled() {
         return Setting.isFamilyFilter();
     }
@@ -31,9 +44,16 @@ public class FamilyFilter {
         return new ArrayList<>(items);
     }
 
+    public static List<String> activeKeywords() {
+        LinkedHashSet<String> items = new LinkedHashSet<>();
+        ALWAYS_BLOCKED.forEach(item -> items.add(normalize(item)));
+        if (enabled()) keywords().forEach(items::add);
+        return new ArrayList<>(items);
+    }
+
     public static Result apply(Result result) {
-        if (!enabled() || result == null) return result;
-        List<String> words = keywords();
+        if (result == null) return result;
+        List<String> words = activeKeywords();
         if (words.isEmpty()) return result;
 
         List<Class> types = new ArrayList<>();

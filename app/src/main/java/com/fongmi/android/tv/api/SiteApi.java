@@ -83,7 +83,7 @@ public class SiteApi {
                 Result result = Result.fromType(site.getType(), homeContent);
                 fetchPic(site, result);
                 setTypes(site, result);
-                return result;
+                return FamilyFilter.apply(result);
             }
         }
     }
@@ -95,7 +95,7 @@ public class SiteApi {
         if (isSpider(site)) {
             String categoryContent = site.recent().spider().categoryContent(tid, page, filter, extend);
             SpiderDebug.log("category", categoryContent);
-            return Result.fromJson(categoryContent);
+            return FamilyFilter.apply(Result.fromJson(categoryContent));
         } else {
             ArrayMap<String, String> params = new ArrayMap<>();
             if (site.getType() == 1 && !extend.isEmpty()) params.put("f", App.gson().toJson(extend));
@@ -105,7 +105,7 @@ public class SiteApi {
             params.put("pg", page);
             String categoryContent = call(site, params);
             SpiderDebug.log("category", categoryContent);
-            return Result.fromType(site.getType(), categoryContent);
+            return FamilyFilter.apply(Result.fromType(site.getType(), categoryContent));
         }
     }
 
@@ -125,7 +125,7 @@ public class SiteApi {
         } else if (isSpider(site)) {
             String detailContent = site.recent().spider().detailContent(Arrays.asList(id));
             SpiderDebug.log("detail", detailContent);
-            Result result = Result.fromJson(detailContent);
+            Result result = FamilyFilter.apply(Result.fromJson(detailContent));
             Source.get().parse(result.getVod().setFlags());
             return result;
         } else {
@@ -134,7 +134,7 @@ public class SiteApi {
             params.put("ids", id);
             String detailContent = call(site, params);
             SpiderDebug.log("detail", detailContent);
-            Result result = Result.fromType(site.getType(), detailContent);
+            Result result = FamilyFilter.apply(Result.fromType(site.getType(), detailContent));
             Source.get().parse(result.getVod().setFlags());
             return result;
         }
@@ -193,7 +193,7 @@ public class SiteApi {
         if (isSpider(site)) {
             String searchContent = hasPage ? site.spider().searchContent(keyword, quick, page) : site.spider().searchContent(keyword, quick);
             SpiderDebug.log("search", searchContent);
-            Result result = Result.fromJson(searchContent);
+            Result result = FamilyFilter.apply(Result.fromJson(searchContent));
             for (Vod vod : result.getList()) vod.setSite(site);
             return result;
         } else {
@@ -204,7 +204,7 @@ public class SiteApi {
             if (hasPage) params.put("pg", page);
             String searchContent = call(site, params);
             SpiderDebug.log("search", searchContent);
-            Result result = fetchPic(site, Result.fromType(site.getType(), searchContent));
+            Result result = FamilyFilter.apply(fetchPic(site, Result.fromType(site.getType(), searchContent)));
             for (Vod vod : result.getList()) vod.setSite(site);
             return result;
         }
