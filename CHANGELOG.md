@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.5.44 — README cleanup and release polish (2026-06-13)
+
+重构 README 结构，突出播放器壳子定位、导入/管理/同步路径与当前亮点，让用户更容易快速理解项目用途和边界。
+
+### 新增 / 优化
+
+- **README 重写**: 收紧为用户导向结构，拆分“这是什么 / 亮点 / 使用 / 文档 / 构建 / 更新说明”
+- **版本文案统一**: README、CHANGELOG 与 release 语义进一步对齐
+
 ## 5.5.43 — Family filter for TV-style homepage content (2026-06-12)
 
 新增壳子级家庭过滤能力，基于站点返回的元数据关键词屏蔽不适合电视客厅展示的分类、推荐卡片和搜索结果，并向 WebHome 页面暴露过滤策略供其协作隐藏内容。
