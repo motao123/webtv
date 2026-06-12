@@ -245,11 +245,11 @@ public class SettingActivity extends BaseActivity implements ConfigListener, Sit
     }
 
     private void onVodHistory(View view) {
-        HistoryDialog.create().vod().show(this);
+        ConfigCenterActivity.start(this, 0);
     }
 
     private void onLiveHistory(View view) {
-        HistoryDialog.create().live().show(this);
+        ConfigCenterActivity.start(this, 1);
     }
 
     private void onPlayer(View view) {
@@ -280,7 +280,7 @@ public class SettingActivity extends BaseActivity implements ConfigListener, Sit
     }
 
     private boolean onWallHistory(View view) {
-        HistoryDialog.create().wall().show(this);
+        ConfigCenterActivity.start(this, 2);
         return true;
     }
 

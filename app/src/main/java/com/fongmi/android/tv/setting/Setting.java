@@ -100,6 +100,14 @@ public class Setting {
         Prefers.put("sync_paths", paths);
     }
 
+    public static String getSyncDevice() {
+        return Prefers.getString("sync_device");
+    }
+
+    public static void putSyncDevice(String uuid) {
+        Prefers.put("sync_device", uuid);
+    }
+
     public static boolean isIncognito() {
         return Prefers.getBoolean("incognito");
     }

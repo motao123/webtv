@@ -100,6 +100,11 @@
             android:screenOrientation="fullUser" />
 
         <activity
+            android:name=".ui.activity.ConfigCenterActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout"
+            android:screenOrientation="fullUser" />
+
+        <activity
             android:name=".ui.activity.LiveActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|uiMode|orientation"
             android:exported="true"

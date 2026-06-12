@@ -230,6 +230,7 @@ public class OneKeySyncDialog extends BaseBottomSheetDialog implements SyncDevic
     private void setSelected(Device device) {
         stopScan();
         selected = device;
+        Setting.putSyncDevice(device == null ? "" : device.getUuid());
         binding.options.setVisibility(View.VISIBLE);
         binding.actionBar.setVisibility(View.VISIBLE);
         updateDevice(binding.remoteName, binding.remoteHost, binding.remoteIcon, device);
@@ -275,6 +276,7 @@ public class OneKeySyncDialog extends BaseBottomSheetDialog implements SyncDevic
         adapter.sort(device, () -> {
             updateVisible();
             focusFirstDevice();
+            autoSelectRecent();
         });
     }
 
@@ -308,6 +310,19 @@ public class OneKeySyncDialog extends BaseBottomSheetDialog implements SyncDevic
         if (!focusFirstOnNextDevice || selected != null || adapter.getItemCount() == 0) return;
         focusFirstOnNextDevice = false;
         binding.recycler.scrollToPosition(0);
+    }
+
+    private void autoSelectRecent() {
+        if (selected != null) return;
+        String uuid = Setting.getSyncDevice();
+        if (uuid == null || uuid.isEmpty()) return;
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            Device item = adapter.getItem(i);
+            if (uuid.equals(item.getUuid())) {
+                setSelected(item);
+                break;
+            }
+        }
     }
 
     @Override

@@ -168,6 +168,11 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:screenOrientation="sensorLandscape" />
 
+        <activity
+            android:name=".ui.activity.ConfigCenterActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:screenOrientation="sensorLandscape" />
+
         <service
             android:name=".service.DLNARendererService"
             android:exported="false"

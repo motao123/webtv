@@ -27,6 +27,7 @@ import com.fongmi.android.tv.impl.LiveListener;
 import com.fongmi.android.tv.impl.SiteListener;
 import com.fongmi.android.tv.setting.PlayerSetting;
 import com.fongmi.android.tv.setting.Setting;
+import com.fongmi.android.tv.ui.activity.ConfigCenterActivity;
 import com.fongmi.android.tv.ui.activity.HomeActivity;
 import com.fongmi.android.tv.ui.base.BaseFragment;
 import com.fongmi.android.tv.ui.dialog.ConfigDialog;
@@ -267,11 +268,11 @@ public class SettingFragment extends BaseFragment implements ConfigListener, Sit
     }
 
     private void onVodHistory(View view) {
-        HistoryDialog.create().vod().show(this);
+        ConfigCenterActivity.start(requireActivity(), 0);
     }
 
     private void onLiveHistory(View view) {
-        HistoryDialog.create().live().show(this);
+        ConfigCenterActivity.start(requireActivity(), 1);
     }
 
     private void onPlayer(View view) {
@@ -307,7 +308,7 @@ public class SettingFragment extends BaseFragment implements ConfigListener, Sit
     }
 
     private boolean onWallHistory(View view) {
-        HistoryDialog.create().wall().show(this);
+        ConfigCenterActivity.start(requireActivity(), 2);
         return true;
     }
 
