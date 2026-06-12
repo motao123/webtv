@@ -251,7 +251,6 @@ AI 或人工拿到网站 URL 后，按下面顺序分析。
 ".download-link"
 "[data-url]"
 "a[href*='magnet:']"
-"a[href*='pan.quark.cn']"
 ```
 
 避免选择：
@@ -280,15 +279,8 @@ function classify(url) {
   if (/^magnet:/i.test(url)) return "magnet";
   if (/^ed2k:/i.test(url)) return "ed2k";
   if (/^thunder:/i.test(url)) return "thunder";
-  if (/pan\.quark\.cn/i.test(url)) return "quark";
-  if (/aliyundrive\.com|alipan\.com/i.test(url)) return "aliyun";
-  if (/pan\.baidu\.com/i.test(url)) return "baidu";
   if (/drive\.uc\.cn/i.test(url)) return "uc";
-  if (/pan\.xunlei\.com/i.test(url)) return "xunlei";
-  if (/cloud\.189\.cn/i.test(url)) return "tianyi";
-  if (/123pan\.|123684\.|123685\.|123912\.|123592\.|123865\./i.test(url)) return "123";
   if (/115\.com|115cdn\.com/i.test(url)) return "115";
-  if (/yun\.139\.com|caiyun\.139\.com/i.test(url)) return "mobile";
   if (/\.(m3u8|mp4|mkv|flv|mov|avi|webm)(\?|#|$)/i.test(url)) return "media";
   return "http";
 }
@@ -459,7 +451,6 @@ AI 生成脚本时必须遵守：
 4. 生成脚本：
    - 资源点击路由模板。
    - 注入 App 播放按钮模板。
-   - 网盘检测模板。
    - 媒体嗅探模板。
    - 页面清理模板。
 5. 用户点击“保存并预览”，App 写入本地扩展并 reload 当前 WebHome。
@@ -516,7 +507,6 @@ AI 生成脚本时必须遵守：
 - SPA 路由切换后按钮不会重复出现。
 - `console.log("ready")` 或 `GM_log("ready")` 能在调试工作台看到。
 - 失败时有 toast 或日志，不会静默无响应。
-- 网盘检测只在用户开启检测时运行。
 - 大页面扫描有 debounce，不会卡顿。
 - 没有把账号、Cookie、隐私数据输出到远程日志。
 
@@ -534,7 +524,6 @@ AI 生成脚本时必须遵守：
 - 从详情页资源区提取网盘、磁力、电驴、迅雷等资源。
 - 后台读取 Pomo 的在线播放页，解析 `rawData` 里的 m3u8 选集。
 - 在详情卡片下生成一个统一播放面板，按“在线播放 / 网盘 / 磁力”三组展示。
-- 点击在线播放条目调用 `fm.play()`；点击网盘、磁力、电驴、迅雷条目调用 `fm.pan.play()`。
 
 示例脚本见 [examples/pomo.mom.js](examples/pomo.mom.js)。
 

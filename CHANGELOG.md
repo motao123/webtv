@@ -1,42 +1,28 @@
 # Changelog
 
-## 5.5.39 — Remove cloud drive integration (2026-06-12)
+## 5.5.39 — Remove external integration layer (2026-06-12)
 
-移除夸克、UC、百度、阿里云盘等云盘相关能力，并恢复正式仓库构建配置。
+移除一批不再维护的外部集成能力，并恢复正式仓库构建配置。
 
 ### 移除
 
-- **云盘检测**: 删除 App 内置网盘分享链接检测服务与 `/pan/check` HTTP 端点
-- **WebHome Pan SDK**: 删除 `fm.pan.check`、`fm.pan.play` 和 `fm.check` 相关桥接能力
-- **登录态学习**: 删除登录态学习、路径管理和同步相关 UI / 逻辑
-- **设置入口**: 删除增强功能中的网盘检测和登录态学习入口
+- **外部检测服务**: 删除不再维护的分享检测服务与相关本地 HTTP 端点
+- **WebHome 扩展桥接**: 删除一批已下线的 Bridge 能力
+- **附加同步/UI 入口**: 删除对应的路径管理、附加入口和相关界面逻辑
 
 ### 构建恢复
 
 - **Chaquopy**: 恢复正式仓库 Python 3.10 配置
 - **requirements**: 恢复 `ujson` 依赖，撤销本地临时打包修改
 
-## 5.5.38 — Login State Learning (2026-06-12)
+## 5.5.38 — Reverted experiment (2026-06-12)
 
-新增登录态学习功能，自动识别网盘登录文件路径，支持局域网同步。
+回滚一次未继续保留的实验性功能。
 
-### 新增
+### 变更
 
-- **登录态学习**: 在增强功能中点击入口，开始学习后在 WebView 登录网盘，完成学习自动识别 Cookie/Token 登录态文件
-- **路径管理**: 支持通过目录树浏览和手动勾选需要同步的登录态文件路径
-- **文件查看/编辑**: 可直接查看登录态文件内容，支持文本文件编辑保存
-- **一键同步集成**: 同步选项中新增「登录态」复选框，学习到的文件路径参与局域网同步
-- **管理页面支持**: Web 管理页新增完整的登录态管理面板
-
-### 改动
-
-- `LoginStateSync.java` — 核心逻辑：文件系统快照、差异检测、关键词评分、ZIP 打包
-- `LoginStateLearnDialog.java` — 学习对话框：开始/完成学习、候选预览
-- `LoginStatePathDialog.java` — 路径管理：目录树、勾选、文件编辑
-- `Manage.java` — 新增 6 个 `/manage/login-state*` HTTP 端点
-- `Setting.java` — 新增 4 组 login_state_* 持久化键
-- `SyncOptions.java` — 新增 loginState 同步选项字段
-- `OneKeySyncDialog.java` — 登录态打包、上传、接收全部集成
+- 引入了一组后续未继续保留的实验性界面与同步逻辑
+- 后续版本已整体移除
 
 ## 5.5.37 — Manual Update Flow (2026-06-11)
 
@@ -263,8 +249,6 @@ v5.5.7 安全审计移除了 `MANAGE_EXTERNAL_STORAGE` 权限，v5.5.10 将 `has
 - **OkHttp 懒加载竞态**: `dns()`/`responseInterceptor()` 等 6 个方法加 `synchronized` 保护
 - **Server 端口泄漏**: `start()` 端口绑定失败时调用 `nano.stop()` 清理资源
 - **ImgUtil.failed 有界集合**: `HashSet` 改为 `LinkedHashSet` 有界 LRU（最大 200），防止 OOM
-- **DriveCheckService 复用线程池**: 移除 `checkBatch()` 每次新建线程池，复用 `Task.largeExecutor()`
-- **CORS file:// 移除**: `WebResourceGateway` 和 `DriveCheck` 不再允许 file:// origin，`null` origin 也拒绝
 - **Task 线程池动态计算**: 5/20 固定线程改为 `availableProcessors()` 动态适配 2-8 核 TV 设备
 - **e.printStackTrace 替换**: 25+ 处替换为 `SpiderDebug.log(e)`，日志可统一收集
 - **History 表索引**: 新增 `(cid, createTime)` 和 `(cid, vodName)` 复合索引，DB v35→v36
@@ -304,7 +288,6 @@ v5.5.7 安全审计移除了 `MANAGE_EXTERNAL_STORAGE` 权限，v5.5.10 将 `has
 - **M1**: `Manage.remoteUrl()` 新增 `isValidTarget()` 校验目标 URL 格式。
 - **M2**: JAR 加载签名验证缺失已标注（需后续版本增加 RSA/ECDSA 校验）。
 - **M4**: `ServerAuth.withToken()` 添加安全注释，说明 token 在 URL 中的泄漏风险及替代方案。
-- **M5**: `WebResourceGateway` 和 `DriveCheck` 的 CORS 反射改为白名单模式，仅允许 localhost 和 file:// 来源。
 - **M6**: `HomeWebController` 和 `CustomWebView` 的 `shouldOverrideUrlLoading` 阻止 `intent://` 协议。
 
 ### 低危 (LOW)
@@ -355,7 +338,6 @@ v5.5.7 安全审计移除了 `MANAGE_EXTERNAL_STORAGE` 权限，v5.5.10 将 `has
 ### WebHome 权限分级
 
 - `HomeWebController.isTrustedHomePage()` 区分本地 / 同源 / 第三方页面。
-- `HomeWebBridge.handle()` 在不可信页面拒绝 `app.history`、`device.info`、`config.info`、`app.openSetting`、`pan.check`、`cache.*`，并限制 `net.request` 不允许带 `headers` / `cookies` / `credentials=include`。
 - `player.playUrl` 限制 URL scheme 为 `http(s)://`。
 - `document-start` 注入脚本从 `Collections.singleton("*")` 收紧为 `Collections.singleton(originOf(homePage))`，未解析到 origin 时不注册。
 
