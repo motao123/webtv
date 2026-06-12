@@ -130,6 +130,12 @@
     <string name="setting_site_health_dialog_sort">站点弹窗排序</string>
     <string name="site_health_clear_done">站点健康记录已清空</string>
     <string name="setting_web_home_extension">WebHome 扩展</string>
+    <string name="setting_family_filter">家庭过滤</string>
+    <string name="setting_family_filter_summary_off">禁用</string>
+    <string name="setting_family_filter_summary_on">启用 · %1$d 个关键词</string>
+    <string name="setting_family_filter_keywords">过滤关键词</string>
+    <string name="setting_family_filter_keywords_hint">每行一个关键词</string>
+    <string name="setting_family_filter_saved">家庭过滤已保存</string>
     <string name="web_home_extension_clear_done">WebHome 扩展缓存已清空</string>
     <string name="web_home_extension_empty">暂无扩展。点击新增创建本地代码或添加外部源。</string>
     <string name="web_home_extension_add_source">新增</string>

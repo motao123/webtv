@@ -17,6 +17,7 @@ import com.fongmi.android.tv.ui.activity.KeepActivity;
 import com.fongmi.android.tv.ui.activity.LiveActivity;
 import com.fongmi.android.tv.ui.activity.SearchActivity;
 import com.fongmi.android.tv.ui.activity.VideoActivity;
+import com.fongmi.android.tv.utils.FamilyFilter;
 import com.fongmi.android.tv.utils.Notify;
 import com.fongmi.android.tv.utils.Task;
 import com.fongmi.android.tv.web.ext.WebHomeExtensionRegistry;
@@ -315,6 +316,8 @@ public class HomeWebBridge {
         object.addProperty("id", VodConfig.getCid());
         object.addProperty("url", VodConfig.getUrl());
         object.addProperty("desc", VodConfig.getDesc());
+        object.addProperty("familyFilterEnabled", Setting.isFamilyFilter());
+        object.add("familyFilterKeywords", App.gson().toJsonTree(FamilyFilter.keywords()));
         return object.toString();
     }
 

@@ -13,6 +13,7 @@ import com.fongmi.android.tv.bean.Result;
 import com.fongmi.android.tv.bean.Site;
 import com.fongmi.android.tv.bean.Vod;
 import com.fongmi.android.tv.player.Source;
+import com.fongmi.android.tv.utils.FamilyFilter;
 import com.fongmi.android.tv.utils.ResUtil;
 import com.fongmi.android.tv.utils.Sniffer;
 import com.github.catvod.crawler.Spider;
@@ -66,7 +67,7 @@ public class SiteApi {
             List<Vod> list = Result.fromJson(video).getList();
             if (!list.isEmpty()) result.setList(list);
             setTypes(site, result);
-            return result;
+            return FamilyFilter.apply(result);
         } else if (site.getType() == 4) {
             ArrayMap<String, String> params = new ArrayMap<>();
             params.put("filter", "true");
@@ -74,7 +75,7 @@ public class SiteApi {
             SpiderDebug.log("home", homeContent);
             Result result = Result.fromJson(homeContent);
             setTypes(site, result);
-            return result;
+            return FamilyFilter.apply(result);
         } else {
             try (Response response = OkHttp.newCall(site.getApi(), site.getHeader()).execute()) {
                 String homeContent = response.body().string();

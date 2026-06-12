@@ -108,6 +108,30 @@ public class Setting {
         Prefers.put("sync_device", uuid);
     }
 
+    public static boolean isFamilyFilter() {
+        return Prefers.getBoolean("family_filter_enabled");
+    }
+
+    public static void putFamilyFilter(boolean enabled) {
+        Prefers.put("family_filter_enabled", enabled);
+    }
+
+    public static String getFamilyFilterKeywords() {
+        return Prefers.getString("family_filter_keywords", "情色\n三级片");
+    }
+
+    public static void putFamilyFilterKeywords(String keywords) {
+        Prefers.put("family_filter_keywords", keywords);
+    }
+
+    public static String getFamilyFilterPass() {
+        return Prefers.getString("family_filter_pass");
+    }
+
+    public static void putFamilyFilterPass(String pass) {
+        Prefers.put("family_filter_pass", pass);
+    }
+
     public static boolean isIncognito() {
         return Prefers.getBoolean("incognito");
     }

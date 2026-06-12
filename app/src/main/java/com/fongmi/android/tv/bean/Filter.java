@@ -65,6 +65,10 @@ public class Filter implements Parcelable {
         return value == null ? Collections.emptyList() : value;
     }
 
+    public void setValue(List<Value> value) {
+        this.value = value;
+    }
+
     public String setSelected(String v) {
         getValue().stream().filter(item -> item.equals(Value.create(v))).findFirst().ifPresent(item -> item.setSelected(true));
         return v;

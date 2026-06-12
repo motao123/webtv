@@ -191,6 +191,10 @@ public class Result implements Parcelable {
         return filters == null ? new LinkedHashMap<>() : filters;
     }
 
+    public void setFilters(LinkedHashMap<String, List<Filter>> filters) {
+        this.filters = filters;
+    }
+
     public Url getUrl() {
         return url == null ? Url.create() : url;
     }

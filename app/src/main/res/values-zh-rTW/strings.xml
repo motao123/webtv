@@ -130,6 +130,12 @@
     <string name="setting_site_health_dialog_sort">站點彈窗排序</string>
     <string name="site_health_clear_done">站點健康記錄已清空</string>
     <string name="setting_web_home_extension">WebHome 擴展</string>
+    <string name="setting_family_filter">家庭過濾</string>
+    <string name="setting_family_filter_summary_off">禁用</string>
+    <string name="setting_family_filter_summary_on">啟用 · %1$d 個關鍵詞</string>
+    <string name="setting_family_filter_keywords">過濾關鍵詞</string>
+    <string name="setting_family_filter_keywords_hint">每行一個關鍵詞</string>
+    <string name="setting_family_filter_saved">家庭過濾已保存</string>
     <string name="web_home_extension_clear_done">WebHome 擴展快取已清空</string>
     <string name="web_home_extension_empty">暫無擴展。點選新增建立本地代碼或加入外部源。</string>
     <string name="web_home_extension_add_source">新增</string>

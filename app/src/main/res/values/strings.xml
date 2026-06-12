@@ -131,6 +131,12 @@
     <string name="setting_site_health_dialog_sort">Sort site dialog</string>
     <string name="site_health_clear_done">Site health data cleared</string>
     <string name="setting_web_home_extension">WebHome extensions</string>
+    <string name="setting_family_filter">Family filter</string>
+    <string name="setting_family_filter_summary_off">Disabled</string>
+    <string name="setting_family_filter_summary_on">Enabled · %1$d keywords</string>
+    <string name="setting_family_filter_keywords">Keywords</string>
+    <string name="setting_family_filter_keywords_hint">One keyword per line</string>
+    <string name="setting_family_filter_saved">Family filter saved</string>
     <string name="web_home_extension_clear_done">WebHome extension cache cleared</string>
     <string name="web_home_extension_empty">No extensions yet. Tap Add to create a local script or add an external source.</string>
     <string name="web_home_extension_add_source">Add</string>
