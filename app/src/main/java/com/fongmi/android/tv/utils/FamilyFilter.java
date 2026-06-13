@@ -10,13 +10,36 @@ import com.fongmi.android.tv.bean.Vod;
 import com.fongmi.android.tv.setting.Setting;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 public class FamilyFilter {
+
+    private static final List<String> BLOCKED_TYPE_NAMES = List.of(
+            "夸克网盘配置",
+            "UC网盘配置",
+            "百度网盘配置",
+            "天翼云盘配置",
+            "123云盘配置",
+            "阿里云盘配置",
+            "移动云盘配置",
+            "哔哩配置"
+    );
+
+    private static final List<String> BLOCKED_ITEM_NAMES = List.of(
+            "夸克网盘配置",
+            "UC网盘配置",
+            "百度网盘配置",
+            "天翼云盘配置",
+            "123云盘配置",
+            "阿里云盘配置",
+            "移动云盘配置",
+            "哔哩配置",
+            "云盘排序"
+    );
 
     public static boolean enabled() {
         return Setting.isFamilyFilter();
@@ -32,25 +55,37 @@ public class FamilyFilter {
     }
 
     public static Result apply(Result result) {
-        if (!enabled() || result == null) return result;
-        List<String> words = keywords();
-        if (words.isEmpty()) return result;
+        if (result == null) return result;
+        List<String> words = enabled() ? keywords() : Collections.emptyList();
 
         List<Class> types = new ArrayList<>();
-        for (Class type : result.getTypes()) if (!match(type.getTypeName(), words)) types.add(type);
+        for (Class type : result.getTypes()) {
+            if (blockedType(type.getTypeName())) continue;
+            if (!words.isEmpty() && match(type.getTypeName(), words)) continue;
+            types.add(type);
+        }
         result.setTypes(types);
 
         List<Vod> vods = new ArrayList<>();
-        for (Vod vod : result.getList()) if (!match(vod, words)) vods.add(vod);
+        for (Vod vod : result.getList()) {
+            if (blockedItem(vod)) continue;
+            if (!words.isEmpty() && match(vod, words)) continue;
+            vods.add(vod);
+        }
         result.setList(vods);
 
         LinkedHashMap<String, List<Filter>> filters = new LinkedHashMap<>();
-        for (var entry : result.getFilters().entrySet()) {
+        for (java.util.Map.Entry<String, List<Filter>> entry : result.getFilters().entrySet()) {
             List<Filter> keep = new ArrayList<>();
             for (Filter filter : entry.getValue()) {
-                if (match(filter.getName(), words)) continue;
+                if (blockedText(filter.getName(), BLOCKED_ITEM_NAMES)) continue;
+                if (!words.isEmpty() && match(filter.getName(), words)) continue;
                 List<Value> values = new ArrayList<>();
-                for (Value value : filter.getValue()) if (!match(join(value.getN(), value.getV()), words)) values.add(value);
+                for (Value value : filter.getValue()) {
+                    if (blockedText(join(value.getN(), value.getV()), BLOCKED_ITEM_NAMES)) continue;
+                    if (!words.isEmpty() && match(join(value.getN(), value.getV()), words)) continue;
+                    values.add(value);
+                }
                 if (!values.isEmpty()) {
                     Filter copy = filter.copy();
                     copy.setValue(values);
@@ -65,6 +100,23 @@ public class FamilyFilter {
             else type.setFilters(new ArrayList<>());
         });
         return result;
+    }
+
+    private static boolean blockedType(String text) {
+        return blockedText(text, BLOCKED_TYPE_NAMES);
+    }
+
+    private static boolean blockedItem(Vod vod) {
+        return blockedText(vod.getName(), BLOCKED_ITEM_NAMES)
+                || blockedText(vod.getRemarks(), BLOCKED_ITEM_NAMES)
+                || blockedText(vod.getAction(), BLOCKED_ITEM_NAMES);
+    }
+
+    private static boolean blockedText(String text, List<String> list) {
+        String value = normalize(text);
+        if (value.isEmpty()) return false;
+        for (String item : list) if (value.equals(normalize(item))) return true;
+        return false;
     }
 
     public static boolean match(Vod vod, List<String> words) {
