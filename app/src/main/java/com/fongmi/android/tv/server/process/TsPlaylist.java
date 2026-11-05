@@ -1,7 +1,5 @@
 package com.fongmi.android.tv.server.process;
 
-import android.text.TextUtils;
-
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,10 +40,15 @@ final class TsPlaylist {
      * @param baseUrl the URL the playlist was fetched from, used to resolve relative segment URIs
      */
     static Parsed parse(String text, String baseUrl) {
-        if (TextUtils.isEmpty(text) || !text.trim().startsWith("#EXTM3U")) {
+        // Plain Java on purpose: this class is unit-tested on the JVM, where android.jar is a
+        // stub whose methods throw. A UTF-8 BOM is stripped because some origins emit one and
+        // it would otherwise hide the #EXTM3U header on the very first line.
+        if (text == null) return unsupported("Not an HLS playlist");
+        String body = text.startsWith("\uFEFF") ? text.substring(1) : text;
+        if (body.trim().isEmpty() || !body.trim().startsWith("#EXTM3U")) {
             return unsupported("Not an HLS playlist");
         }
-        String[] lines = text.replace("\r\n", "\n").replace('\r', '\n').split("\n", -1);
+        String[] lines = body.replace("\r\n", "\n").replace('\r', '\n').split("\n", -1);
 
         List<String> entries = new ArrayList<>();
         boolean encrypted = false;

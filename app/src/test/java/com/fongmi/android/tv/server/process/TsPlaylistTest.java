@@ -157,6 +157,17 @@ public class TsPlaylistTest {
     }
 
     @Test
+    public void byteOrderMarkAndNullInputAreHandled() {
+        String playlist = "\uFEFF#EXTM3U\n#EXTINF:10.0,\nseg0.ts\n#EXT-X-ENDLIST\n";
+
+        TsPlaylist.Parsed parsed = TsPlaylist.parse(playlist, BASE);
+
+        assertEquals(TsPlaylist.Kind.VOD, parsed.kind);
+        assertEquals(1, parsed.segments.size());
+        assertEquals(TsPlaylist.Kind.UNSUPPORTED, TsPlaylist.parse(null, BASE).kind);
+    }
+
+    @Test
     public void relativeUrisResolveAgainstPlaylistUrl() {
         assertEquals("https://cdn.example.com/hls/movie/a.ts", TsPlaylist.resolve(BASE, "a.ts"));
         assertEquals("https://cdn.example.com/a.ts", TsPlaylist.resolve(BASE, "/a.ts"));
