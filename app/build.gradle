@@ -38,8 +38,8 @@ android {
         applicationId "com.fongmi.android.tv"
         minSdk libs.versions.minSdk.get().toInteger()
         targetSdk libs.versions.targetSdk.get().toInteger()
-        versionCode 720
-        versionName "5.17.2"
+        versionCode 721
+        versionName "5.17.3"
         buildConfigField "String", "MEDIA3_VERSION", "\"${libs.versions.media3.get()}\""
         buildConfigField "String", "GIT_REVISION", "\"${gitRevision}\""
         buildConfigField "String", "GIT_STATE", "\"${gitDirty}\""
