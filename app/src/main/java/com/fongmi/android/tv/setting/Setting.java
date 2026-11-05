@@ -561,6 +561,19 @@ public class Setting {
         Prefers.put("update", update);
     }
 
+    /**
+     * DLNA renderers that cannot read HLS playlists need the phone to concatenate .ts segments
+     * into one continuous MPEG-TS stream. Off by default: it disables seeking and keeps the
+     * phone in the stream path, so it would be a regression for HLS-capable devices.
+     */
+    public static boolean getCastTsCompat() {
+        return Prefers.getBoolean("cast_ts_compat", false);
+    }
+
+    public static void putCastTsCompat(boolean compat) {
+        Prefers.put("cast_ts_compat", compat);
+    }
+
     public static String getMirror() {
         return Prefers.getString("update_mirror", "auto");
     }

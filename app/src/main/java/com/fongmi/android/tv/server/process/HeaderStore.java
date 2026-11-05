@@ -42,22 +42,30 @@ final class HeaderStore {
     }
 
     static String put(Map<String, String> headers) {
-        Stored stored = Stored.of(headers);
-        if (stored.headers.isEmpty()) return "";
         String id = id();
-        ENTRIES.put(id, stored);
+        ENTRIES.put(id, Stored.of(headers));
         return id;
     }
 
-    static Map<String, String> get(String id) {
-        if (id == null || id.isEmpty()) return Map.of();
+    /**
+     * Distinguishes "a valid context that legitimately has no headers" (a public source) from
+     * "no such context". Some callers need a context to exist even when there is nothing to send
+     * upstream — an id is also the proof that this process initiated the cast.
+     */
+    static boolean has(String id) {
+        if (id == null || id.isEmpty()) return false;
         Stored stored = ENTRIES.get(id);
-        if (stored == null) return Map.of();
+        if (stored == null) return false;
         if (stored.expired()) {
             ENTRIES.remove(id);
-            return Map.of();
+            return false;
         }
-        return stored.headers;
+        return true;
+    }
+
+    static Map<String, String> get(String id) {
+        if (!has(id)) return Map.of();
+        return ENTRIES.get(id).headers;
     }
 
     private static String id() {

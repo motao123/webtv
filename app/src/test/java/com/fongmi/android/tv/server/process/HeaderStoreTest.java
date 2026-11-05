@@ -61,14 +61,23 @@ public class HeaderStoreTest {
     }
 
     @Test
-    public void emptyOrBlankHeadersYieldNoContext() {
-        assertEquals("", HeaderStore.put(null));
-        assertEquals("", HeaderStore.put(Map.of()));
+    public void anEmptyContextIsStillAValidContext() {
+        // A public HLS source needs no headers, but the cast still needs an id to prove to the
+        // server that this process initiated the request. So an empty map is a valid context;
+        // the server sends no upstream headers instead of falling back to unrelated defaults.
+        String publicId = HeaderStore.put(Map.of());
+        assertEquals(18, publicId.length());
+        assertTrue(HeaderStore.has(publicId));
+        assertTrue(HeaderStore.get(publicId).isEmpty());
+
+        String nullId = HeaderStore.put(null);
+        assertTrue(HeaderStore.has(nullId));
+        assertTrue(HeaderStore.get(nullId).isEmpty());
 
         Map<String, String> blanks = new LinkedHashMap<>();
         blanks.put("Referer", "");
         blanks.put("User-Agent", "");
-        assertEquals("", HeaderStore.put(blanks));
+        assertTrue(HeaderStore.get(HeaderStore.put(blanks)).isEmpty());
     }
 
     @Test
@@ -76,6 +85,9 @@ public class HeaderStoreTest {
         assertTrue(HeaderStore.get(null).isEmpty());
         assertTrue(HeaderStore.get("").isEmpty());
         assertTrue(HeaderStore.get("does-not-exist").isEmpty());
+        assertFalse(HeaderStore.has(null));
+        assertFalse(HeaderStore.has(""));
+        assertFalse(HeaderStore.has("does-not-exist"));
     }
 
     @Test

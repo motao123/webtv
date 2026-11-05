@@ -1369,4 +1369,6 @@ WebHomeTV 是播放器壳子，不内置内容源，请使用合法配置。</st
         <item>Texture</item>
     </string-array>
 
+    <string name="cast_ts_compat">兼容模式（电视不支持 HLS 时开启）：转为 MPEG-TS 中转，不支持拖动进度</string>
+
 </resources>

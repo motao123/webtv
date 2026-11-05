@@ -23,7 +23,19 @@ import org.jupnp.support.model.item.VideoItem;
 
 import java.util.Locale;
 
-public record DLNACast(CastVideo video, Runnable runnable) {
+public final class DLNACast {
+
+    private final CastVideo video;
+    private final Runnable runnable;
+    private final String target;
+
+    public DLNACast(CastVideo video, Runnable runnable) {
+        this.video = video;
+        this.runnable = runnable;
+        // Decide here, at cast time, so the compatibility switch in the device dialog is honoured.
+        // CastVideo is constructed earlier, when the player activity opens.
+        this.target = video.castUrl(com.fongmi.android.tv.setting.Setting.getCastTsCompat());
+    }
 
     public void cast(Device item) {
         DLNACastManager mgr = DLNACastManager.get();
@@ -39,7 +51,11 @@ public record DLNACast(CastVideo video, Runnable runnable) {
     private String buildMetaData() {
         try {
             DIDLContent content = new DIDLContent();
-            VideoItem item = new VideoItem("0", "-1", video.name(), "", new Res(new ProtocolInfo("http-get:*:video/*:*"), 0L, video.url()));
+            // A renderer decides whether it can play a URL from this declaration before it even
+            // fetches it. Claiming video/* for a TS stream is what makes stricter devices reject
+            // the cast outright, so advertise the real MIME type in compatibility mode.
+            String mime = CastVideo.isTsCast(target) ? com.fongmi.android.tv.server.process.TsCast.MIME_TS : "video/*";
+            VideoItem item = new VideoItem("0", "-1", video.name(), "", new Res(new ProtocolInfo("http-get:*:" + mime + ":*"), 0L, target));
             if (!video.headers().isEmpty()) item.addProperty(new DIDLObject.Property.DC.DESCRIPTION(App.gson().toJson(video.headers())));
             content.addItem(item);
             return new DIDLParser().generate(content);
@@ -49,7 +65,7 @@ public record DLNACast(CastVideo video, Runnable runnable) {
     }
 
     private SetAVTransportURI uriAction(ControlPoint control, RemoteService service) {
-        return new SetAVTransportURI(service, video.url(), buildMetaData()) {
+        return new SetAVTransportURI(service, target, buildMetaData()) {
             @Override
             public void success(ActionInvocation i) {
                 control.execute(playAction(control, service));

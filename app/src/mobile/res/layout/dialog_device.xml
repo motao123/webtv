@@ -60,9 +60,22 @@
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingHorizontal="24dp"
-        android:paddingBottom="24dp"
+        android:paddingBottom="8dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/adapter_device" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/tsCompat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="20dp"
+        android:text="@string/cast_ts_compat"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="13sp"
+        app:useMaterialThemeColors="true"
+        tools:checked="false" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

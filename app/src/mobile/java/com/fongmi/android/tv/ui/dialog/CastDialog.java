@@ -115,6 +115,9 @@ public class CastDialog extends BaseBottomSheetDialog implements DeviceAdapter.O
     protected void initEvent() {
         binding.scan.setOnClickListener(v -> onScan());
         binding.refresh.setOnClickListener(v -> onRefresh());
+        binding.tsCompat.setChecked(com.fongmi.android.tv.setting.Setting.getCastTsCompat());
+        binding.tsCompat.setOnCheckedChangeListener((button, checked) ->
+                com.fongmi.android.tv.setting.Setting.putCastTsCompat(checked));
     }
 
     private void setRecyclerView() {

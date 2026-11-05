@@ -1370,4 +1370,6 @@ WebHomeTV is a player shell. It does not include content sources. Please use law
         <item>Strict</item>
     </string-array>
 
+    <string name="cast_ts_compat">Compatibility mode (TVs that cannot play HLS): relay as MPEG-TS; seeking disabled</string>
+
 </resources>

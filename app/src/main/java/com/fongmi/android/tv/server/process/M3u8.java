@@ -79,13 +79,14 @@ public class M3u8 implements Process {
         // could turn the device into an SSRF relay against the router, intranet or cloud metadata.
         if (!UrlSafety.isSafeHttpUrl(target)) return Nano.error(Response.Status.BAD_REQUEST, "Unsupported url");
         String id = session.getParms().get(PARAM_ID);
+        boolean hasContext = HeaderStore.has(id);
         Map<String, String> headers = HeaderStore.get(id);
         // A renderer reaching us over the LAN must be sent LAN-addressed segment URLs; the local
         // player keeps getting loopback ones exactly as before.
         boolean lan = !ServerAuth.isLocal(session);
         okhttp3.Response upstream = null;
         try {
-            Request request = request(session, target, headers);
+            Request request = request(session, target, headers, hasContext);
             long start = System.currentTimeMillis();
             upstream = executeChecked(request);
             SpiderDebug.log(TAG, "%s %s -> %s in %sms lan=%s stored=%s", request.method(), shortUrl(target), upstream.code(), System.currentTimeMillis() - start, lan, id != null);
@@ -103,9 +104,9 @@ public class M3u8 implements Process {
         }
     }
 
-    private Request request(IHTTPSession session, String target, Map<String, String> headers) {
+    private Request request(IHTTPSession session, String target, Map<String, String> headers, boolean hasContext) {
         Request.Builder builder = new Request.Builder().url(target);
-        Map<String, String> upstream = headerMap(headers);
+        Map<String, String> upstream = headerMap(headers, hasContext);
         for (Map.Entry<String, String> entry : upstream.entrySet()) builder.header(entry.getKey(), entry.getValue());
         String range = session.getHeaders().get("range");
         if (!TextUtils.isEmpty(range)) builder.header("Range", range);
@@ -120,8 +121,11 @@ public class M3u8 implements Process {
      * <p>Sending the 4gtv referer to an unrelated source would be worse than sending none: a
      * mismatched referer is itself a reason for a CDN to answer 403.</p>
      */
-    private Map<String, String> headerMap(Map<String, String> stored) {
-        if (!stored.isEmpty()) return stored;
+    private Map<String, String> headerMap(Map<String, String> stored, boolean hasContext) {
+        // A valid context with no headers means a public source: send exactly what the caller
+        // supplied (nothing). Falling back to the 4gtv defaults here would inject a wrong
+        // Referer, which is itself a common reason for a CDN to answer 403.
+        if (hasContext) return stored;
         Map<String, String> defaults = new LinkedHashMap<>();
         defaults.put("User-Agent", DEFAULT_UA);
         defaults.put("Referer", DEFAULT_REFERER);

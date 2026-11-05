@@ -89,7 +89,7 @@ public class ServerAuth {
     }
 
     private static boolean protectedPath(String url) {
-        return url.startsWith("/manage/") || url.startsWith("/file") || url.startsWith("/upload") || url.startsWith("/newFolder") || url.startsWith("/delFolder") || url.startsWith("/delFile") || url.startsWith("/debug/") || url.startsWith("/cache") || url.startsWith("/action") || url.startsWith("/proxy") || url.startsWith("/webResource") || url.startsWith("/pan/check") || url.startsWith("/parse") || url.startsWith("/media") || url.startsWith("/tvbus") || url.startsWith("/device") || url.startsWith("/api/playback") || url.startsWith("/playback") || url.startsWith("/m3u8") || url.startsWith("/image/");
+        return url.startsWith("/manage/") || url.startsWith("/file") || url.startsWith("/upload") || url.startsWith("/newFolder") || url.startsWith("/delFolder") || url.startsWith("/delFile") || url.startsWith("/debug/") || url.startsWith("/cache") || url.startsWith("/action") || url.startsWith("/proxy") || url.startsWith("/webResource") || url.startsWith("/pan/check") || url.startsWith("/parse") || url.startsWith("/media") || url.startsWith("/tvbus") || url.startsWith("/device") || url.startsWith("/api/playback") || url.startsWith("/playback") || url.startsWith("/m3u8") || url.startsWith("/cast.ts") || url.startsWith("/image/");
     }
 
     /**
