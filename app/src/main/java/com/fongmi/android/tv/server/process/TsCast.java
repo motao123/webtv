@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.InterruptedIOException;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -28,8 +29,10 @@ import okhttp3.ResponseBody;
  * <p>A MPEG-TS stream is a sequence of self-contained 188-byte packets with no global header,
  * so {@code .ts} segments can simply be appended in playlist order — that is exactly what
  * {@code ffmpeg -c copy -f mpegts} does, and it needs neither a native binary nor re-encoding.
- * Sources that cannot be concatenated byte-for-byte (fMP4, AES-128, discontinuities) are
- * rejected with a plain-text reason instead of producing a silent black screen.</p>
+ * AES-128 encrypted segments are decrypted on the fly, because the relay endpoints this app casts
+ * through encrypt their playlists and the sources would otherwise be uncancellable in bulk.
+ * Sources that cannot be concatenated byte-for-byte (fMP4, discontinuities) are rejected with a
+ * plain-text reason instead of producing a silent black screen.</p>
  *
  * <p>The stream is lazy: segments are fetched only as the renderer reads, so start-up is one
  * segment rather than the whole video, and nothing is written to disk.</p>
@@ -41,8 +44,11 @@ public class TsCast implements Process {
 
     private static final String TAG = "ts-cast";
     private static final int MAX_REDIRECTS = 5;
+    /** HLS sync byte. Verified instead of trusting URL suffixes: relays serve extension-less segments. */
+    private static final int TS_SYNC = 0x47;
     private static final OkHttpClient CLIENT = OkHttp.player().newBuilder()
             .followRedirects(false).followSslRedirects(false).build();
+    private static final ConcurrentHashMap<String, byte[]> KEYS = new ConcurrentHashMap<>();
 
     @Override
     public boolean isRequest(IHTTPSession session, String url) {
@@ -87,6 +93,14 @@ public class TsCast implements Process {
 
         SpiderDebug.log(TAG, "start segments=%d url=%s", parsed.segments.size(), shortUrl(target));
         SequenceStream stream = new SequenceStream(parsed.segments, headers);
+        // Validate the first segment before answering: a source that turns out not to be MPEG-TS
+        // must produce an explicit error now, not an empty response after the renderer accepted one.
+        try {
+            if (!stream.prime()) return Nano.error(Response.Status.BAD_REQUEST, "No playable MPEG-TS segments in playlist");
+        } catch (Exception e) {
+            SpiderDebug.log(TAG, e);
+            return Nano.error(Response.Status.BAD_REQUEST, "First segment failed: " + message(e));
+        }
         Response response = NanoHTTPD.newChunkedResponse(Response.Status.OK, MIME_TS, stream);
         response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate");
         response.addHeader("Pragma", "no-cache");
@@ -100,28 +114,54 @@ public class TsCast implements Process {
     private TsPlaylist.Parsed loadPlaylist(String url, Map<String, String> headers, int depth) throws IOException {
         if (depth > MAX_REDIRECTS) throw new IOException("Too many redirects");
         if (!UrlSafety.isSafeHttpUrl(url)) throw new IOException("Unsafe playlist url");
-        okhttp3.Response response = fetch(url, headers);
+        okhttp3.Response response = fetchFollowing(url, headers);
         try (response; ResponseBody body = response.body()) {
-            if (isRedirect(response.code())) {
-                String location = response.header("Location");
-                if (TextUtils.isEmpty(location)) throw new IOException("Redirect without location");
-                String next = java.net.URI.create(url).resolve(location).toString();
-                return loadPlaylist(next, headers, depth + 1);
-            }
             if (!response.isSuccessful() || body == null) throw new IOException("Playlist HTTP " + response.code());
             return TsPlaylist.parse(body.string(), url);
         }
     }
 
-    private okhttp3.Response fetch(String url, Map<String, String> headers) throws IOException {
-        if (!UrlSafety.isSafeHttpUrl(url)) throw new IOException("Unsafe segment url");
-        Request.Builder builder = new Request.Builder().url(url);
-        for (Map.Entry<String, String> entry : headers.entrySet()) builder.header(entry.getKey(), entry.getValue());
-        return CLIENT.newCall(builder.build()).execute();
+    /**
+     * Fetches a URL following redirects one hop at a time, re-checking every target with
+     * {@link UrlSafety}. Used for playlists, segments and keys alike: a relay can 302 any of them
+     * to a CDN node, and a client left to follow redirects on its own would bypass the guard.
+     */
+    private okhttp3.Response fetchFollowing(String url, Map<String, String> headers) throws IOException {
+        String current = url;
+        for (int hop = 0; hop <= MAX_REDIRECTS; hop++) {
+            if (!UrlSafety.isSafeHttpUrl(current)) throw new IOException("Unsafe url");
+            Request.Builder builder = new Request.Builder().url(current);
+            for (Map.Entry<String, String> entry : headers.entrySet()) builder.header(entry.getKey(), entry.getValue());
+            okhttp3.Response response = CLIENT.newCall(builder.build()).execute();
+            if (!isRedirect(response.code())) return response;
+            String location = response.header("Location");
+            if (TextUtils.isEmpty(location)) return response;
+            response.close();
+            if (hop == MAX_REDIRECTS) break;
+            String next = java.net.URI.create(current).resolve(location).toString();
+            current = next;
+        }
+        throw new IOException("Too many redirects");
     }
 
     private static boolean isRedirect(int code) {
         return code == 301 || code == 302 || code == 303 || code == 307 || code == 308;
+    }
+
+    private byte[] key(String uri, Map<String, String> headers) throws IOException {
+        byte[] cached = KEYS.get(uri);
+        if (cached != null) return cached;
+        okhttp3.Response response = fetchFollowing(uri, headers);
+        try (response; ResponseBody body = response.body()) {
+            if (!response.isSuccessful() || body == null) throw new IOException("Key HTTP " + response.code());
+            byte[] bytes = body.bytes();
+            if (bytes.length != 16 && bytes.length != 24 && bytes.length != 32) throw new IOException("Invalid key length " + bytes.length);
+            // The cache is unbounded by design — keys are 16–32 bytes and few per cast — but a
+            // runaway source should not be able to grow it forever.
+            if (KEYS.size() > 256) KEYS.clear();
+            KEYS.put(uri, bytes);
+            return bytes;
+        }
     }
 
     private static String message(Throwable e) {
@@ -139,16 +179,31 @@ public class TsCast implements Process {
      */
     private final class SequenceStream extends InputStream {
 
-        private final List<String> segments;
+        private final List<TsPlaylist.Segment> segments;
         private final Map<String, String> headers;
         private int index;
         private okhttp3.Response current;
         private InputStream input;
+        /** First byte of the current segment, kept back so callers can verify the sync byte. */
+        private int primed = -1;
         private boolean closed;
 
-        private SequenceStream(List<String> segments, Map<String, String> headers) {
+        private SequenceStream(List<TsPlaylist.Segment> segments, Map<String, String> headers) {
             this.segments = segments;
             this.headers = headers;
+        }
+
+        /**
+         * Opens the first playable segment and verifies it is really MPEG-TS. Returns false when
+         * no segment qualifies; the caller then refuses the cast with an explicit error instead
+         * of delivering an empty stream.
+         */
+        private boolean prime() throws IOException {
+            while (index < segments.size()) {
+                open(index++);
+                if (input != null) return true;
+            }
+            return false;
         }
 
         @Override
@@ -162,6 +217,11 @@ public class TsCast implements Process {
         public int read(byte[] buffer, int offset, int length) throws IOException {
             if (closed) throw new IOException("Stream closed");
             if (length == 0) return 0;
+            if (primed >= 0) {
+                buffer[offset] = (byte) primed;
+                primed = -1;
+                return 1;
+            }
             while (true) {
                 if (input == null) {
                     if (index >= segments.size()) return -1;
@@ -180,13 +240,13 @@ public class TsCast implements Process {
         }
 
         private void open(int position) throws IOException {
-            String url = segments.get(position);
+            String url = segments.get(position).url;
             okhttp3.Response response = null;
             // A single dead segment should not kill a two-hour film. Retry once, then skip:
             // MPEG-TS tolerates a missing chunk far better than a truncated connection.
             for (int attempt = 0; attempt < 2; attempt++) {
                 try {
-                    response = fetch(url, headers);
+                    response = fetchFollowing(url, headers);
                     if (!response.isSuccessful() || response.body() == null) {
                         response.close();
                         response = null;
@@ -206,8 +266,37 @@ public class TsCast implements Process {
                 SpiderDebug.log(TAG, "skip segment %d: upstream failed", position);
                 return;
             }
+            try {
+                input = wrap(position, response.body().byteStream());
+            } catch (Exception e) {
+                // A key that cannot be fetched is treated like a dead segment: skip it rather
+                // than end a two-hour stream.
+                response.close();
+                SpiderDebug.log(TAG, "skip segment %d: %s", position, message(e));
+                return;
+            }
             current = response;
-            input = response.body().byteStream();
+            // MPEG-TS packets all start with the same sync byte. Anything else here is not a
+            // segment this stream can append, so skip it instead of corrupting the output.
+            try {
+                int first = input.read();
+                if (first != TS_SYNC) {
+                    SpiderDebug.log(TAG, "skip segment %d: not MPEG-TS (0x%02x)", position, first);
+                    release();
+                    return;
+                }
+                primed = first;
+            } catch (IOException e) {
+                release();
+            }
+        }
+
+        private InputStream wrap(int position, InputStream input) throws Exception {
+            TsPlaylist.Segment segment = segments.get(position);
+            if (segment.keyUri == null) return input;
+            byte[] key = key(segment.keyUri, headers);
+            byte[] iv = segment.iv != null ? segment.iv : HlsAes.sequenceIv(segment.sequence);
+            return HlsAes.decrypt(input, key, iv);
         }
 
         private void release() {
@@ -222,6 +311,7 @@ public class TsCast implements Process {
                 current.close();
                 current = null;
             }
+            primed = -1;
         }
 
         @Override

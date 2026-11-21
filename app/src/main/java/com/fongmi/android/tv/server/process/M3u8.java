@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.SequenceInputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
@@ -53,6 +54,10 @@ public class M3u8 implements Process {
     private static final int MAX_REDIRECTS = 5;
     private static final OkHttpClient CLIENT = OkHttp.player().newBuilder().followRedirects(false).followSslRedirects(false).build();
     private static final String MIME_M3U8 = "application/vnd.apple.mpegurl; charset=utf-8";
+    /** Bytes pulled from the response head to classify it by content, not by MIME or suffix. */
+    private static final int SNIFF_BYTES = 512;
+    /** Refusing to buffer more than this keeps a misbehaving origin from ballooning memory. */
+    private static final int MAX_PLAYLIST_BYTES = 2 * 1024 * 1024;
     private static final String DEFAULT_UA = "okhttp/4.9.2";
     private static final String DEFAULT_REFERER = "https://www.4gtv.tv/";
     private static final String DEFAULT_ORIGIN = "https://www.4gtv.tv";
@@ -95,13 +100,41 @@ public class M3u8 implements Process {
                 upstream.close();
                 return Nano.error(Response.Status.INTERNAL_ERROR, "Empty upstream body");
             }
-            if (isPlaylist(upstream.request().url().toString(), body.contentType())) return playlist(upstream, body, id, lan);
-            return stream(upstream, body);
+            return classify(upstream, body, target, id, lan);
         } catch (Throwable e) {
             if (upstream != null) upstream.close();
             SpiderDebug.log(TAG, e);
             return Nano.error(Response.Status.INTERNAL_ERROR, TextUtils.isEmpty(e.getMessage()) ? e.toString() : e.getMessage());
         }
+    }
+
+    /**
+     * Decides playlist vs. raw stream by looking at the response body, not at its MIME type or
+     * URL. Relay endpoints of the "聚合解析" kind answer with {@code text/plain} on paths that do
+     * not end in {@code .m3u8}, and the in-app player sniffs the content the same way — but the
+     * old classification passed such a playlist through byte-for-byte, sending the renderer to
+     * the origin without the headers it needs, which is exactly the cast failure users report.
+     */
+    private Response classify(okhttp3.Response upstream, ResponseBody body, String target, String id, boolean lan) throws IOException {
+        // Handing a 403 error page to the renderer as if it were media only ends in "cannot
+        // play". Failing with the upstream status keeps the server log useful.
+        if (!upstream.isSuccessful()) return error(status(upstream.code()), "Upstream HTTP " + upstream.code());
+        okio.BufferedSource source = body.source();
+        source.request(SNIFF_BYTES);
+        int headLen = (int) Math.min(source.buffer().size(), SNIFF_BYTES);
+        byte[] head = new byte[headLen];
+        if (headLen > 0) source.readFully(head);
+        String headText = new String(head, StandardCharsets.UTF_8);
+        // Empty or unrecognized bodies fall back to the historical MIME-based check, so servers
+        // that declare an HLS type keep their old behaviour.
+        if (TsPlaylist.looksLikePlaylist(headText) || (headLen == 0 && isPlaylist(target, body.contentType()))) {
+            return playlist(upstream, source, head, id, lan);
+        }
+        return stream(upstream, body, head);
+    }
+
+    private Response error(Response.IStatus status, String message) {
+        return NanoHTTPD.newFixedLengthResponse(status, NanoHTTPD.MIME_PLAINTEXT, message);
     }
 
     private Request request(IHTTPSession session, String target, Map<String, String> headers, boolean hasContext) {
@@ -163,11 +196,17 @@ public class M3u8 implements Process {
         return code == 301 || code == 302 || code == 303 || code == 307 || code == 308;
     }
 
-    private Response playlist(okhttp3.Response upstream, ResponseBody body, String id, boolean lan) throws IOException {
-        try (upstream; body) {
-            if (!upstream.isSuccessful()) return error(status(upstream.code()), "Playlist HTTP " + upstream.code());
-            String text = body.string();
-            if (!looksLikePlaylist(text)) return Nano.error(Response.Status.BAD_REQUEST, "Invalid playlist");
+    private Response playlist(okhttp3.Response upstream, okio.BufferedSource source, byte[] head, String id, boolean lan) throws IOException {
+        try (upstream) {
+            okio.Buffer rest = new okio.Buffer();
+            while (rest.size() < MAX_PLAYLIST_BYTES) {
+                long read = source.read(rest, 8192);
+                if (read == -1) break;
+            }
+            if (!source.exhausted()) throw new IOException("Playlist exceeds " + MAX_PLAYLIST_BYTES + " bytes");
+            String text = new String(head, StandardCharsets.UTF_8) + rest.readUtf8();
+            if (text.startsWith("\uFEFF")) text = text.substring(1);
+            if (!TsPlaylist.looksLikePlaylist(text)) return Nano.error(Response.Status.BAD_REQUEST, "Invalid playlist");
             String rewritten = rewrite(upstream.request().url(), text, id, lan);
             byte[] bytes = rewritten.getBytes(StandardCharsets.UTF_8);
             SpiderDebug.log(TAG, "playlist bytes=%s rewritten=%s url=%s", text.length(), bytes.length, shortUrl(upstream.request().url().toString()));
@@ -175,13 +214,16 @@ public class M3u8 implements Process {
         }
     }
 
-    private Response stream(okhttp3.Response upstream, ResponseBody body) {
+    private Response stream(okhttp3.Response upstream, ResponseBody body, byte[] head) {
         long length = body.contentLength();
         String mime = body.contentType() == null ? "application/octet-stream" : body.contentType().toString();
-        InputStream input = new CloseResponseInputStream(body.byteStream(), upstream);
+        // The sniffed head was consumed from the source, so it has to go back in front of the
+        // rest — a raw segment must reach the renderer byte-complete.
+        InputStream input = head.length == 0 ? body.byteStream() : new SequenceInputStream(new ByteArrayInputStream(head), body.byteStream());
+        InputStream wrapped = new CloseResponseInputStream(input, upstream);
         Response response = length >= 0
-                ? NanoHTTPD.newFixedLengthResponse(status(upstream.code()), mime, input, length)
-                : NanoHTTPD.newChunkedResponse(status(upstream.code()), mime, input);
+                ? NanoHTTPD.newFixedLengthResponse(status(upstream.code()), mime, wrapped, length)
+                : NanoHTTPD.newChunkedResponse(status(upstream.code()), mime, wrapped);
         copyHeader(upstream, response, "Accept-Ranges");
         copyHeader(upstream, response, "Content-Range");
         copyHeader(upstream, response, "Cache-Control");
@@ -242,10 +284,6 @@ public class M3u8 implements Process {
         return lower.endsWith(".m3u8") || lower.endsWith(".m3u");
     }
 
-    private boolean looksLikePlaylist(String text) {
-        return !TextUtils.isEmpty(text) && text.trim().startsWith("#EXTM3U");
-    }
-
     private boolean isHttp(String url) {
         return !TextUtils.isEmpty(url) && (url.startsWith("http://") || url.startsWith("https://"));
     }
@@ -254,10 +292,6 @@ public class M3u8 implements Process {
         response.addHeader("Cache-Control", "no-store, no-cache, must-revalidate");
         response.addHeader("Pragma", "no-cache");
         return response;
-    }
-
-    private Response error(Response.IStatus status, String message) {
-        return NanoHTTPD.newFixedLengthResponse(status, NanoHTTPD.MIME_PLAINTEXT, message);
     }
 
     private void copyHeader(okhttp3.Response source, Response target, String name) {
