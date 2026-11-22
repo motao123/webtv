@@ -218,6 +218,12 @@
     transition: background 160ms ease;
   }
   .dl-btn:hover { background: rgba(0, 102, 204, 0.05); text-decoration: none; }
+  .dl-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .dl-alt { font-size: 12px; color: var(--ink-muted-48); }
+  .dl-alt:hover { color: var(--blue); text-decoration: none; }
+  .dl-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .dl-alt { font-size: 12px; color: var(--ink-muted-48); }
+  .dl-alt:hover { color: var(--blue); text-decoration: none; }
 
   /* ---------- Security (parchment) ---------- */
   .tile-parchment .card { background: var(--canvas); border-color: var(--divider-soft); }
@@ -421,70 +427,100 @@
           <div class="dl-name">mobile-arm64_v8a-5.17.4.apk</div>
           <div class="dl-desc">Android 手机 · 新设备</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/mobile-arm64_v8a-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/mobile-arm64_v8a-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/mobile-arm64_v8a-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">mobile-universal-5.17.4.apk</div>
           <div class="dl-desc">Android 手机 · 不确定架构</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/mobile-universal-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/mobile-universal-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/mobile-universal-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">leanback-arm64_v8a-5.17.4.apk</div>
           <div class="dl-desc">Android TV · 新电视盒子</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/leanback-arm64_v8a-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/leanback-arm64_v8a-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/leanback-arm64_v8a-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">leanback-universal-5.17.4.apk</div>
           <div class="dl-desc">Android TV · 不确定架构</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/leanback-universal-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/leanback-universal-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/leanback-universal-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">mobile-armeabi_v7a-5.17.4.apk</div>
           <div class="dl-desc">Android 手机 · 老设备</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/mobile-armeabi_v7a-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/mobile-armeabi_v7a-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/mobile-armeabi_v7a-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">leanback-armeabi_v7a-5.17.4.apk</div>
           <div class="dl-desc">Android TV · 老盒子</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/leanback-armeabi_v7a-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/leanback-armeabi_v7a-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/leanback-armeabi_v7a-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">mobile-lite-arm64_v8a-5.17.4.apk</div>
           <div class="dl-desc">Android 手机 · 精简版 · 新设备（约 56MB）</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/mobile-lite-arm64_v8a-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/mobile-lite-arm64_v8a-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/mobile-lite-arm64_v8a-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">mobile-lite-universal-5.17.4.apk</div>
           <div class="dl-desc">Android 手机 · 精简版 · 不确定架构（约 88MB）</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/mobile-lite-universal-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/mobile-lite-universal-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/mobile-lite-universal-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">leanback-lite-arm64_v8a-5.17.4.apk</div>
           <div class="dl-desc">Android TV · 精简版 · 新电视盒子</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/leanback-lite-arm64_v8a-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/leanback-lite-arm64_v8a-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/leanback-lite-arm64_v8a-5.17.4.apk">GitHub</a>
+        </div>
       </div>
       <div class="dl-row">
         <div>
           <div class="dl-name">leanback-lite-universal-5.17.4.apk</div>
           <div class="dl-desc">Android TV · 精简版 · 不确定架构</div>
         </div>
-        <a class="dl-btn" href="https://github.com/motao123/webtv/releases/latest/download/leanback-lite-universal-5.17.4.apk">下载</a>
+        <div class="dl-actions">
+          <a class="dl-btn" href="https://pan.imotao.com/file/apk/leanback-lite-universal-5.17.4.apk">下载</a>
+          <a class="dl-alt" href="https://github.com/motao123/webtv/releases/latest/download/leanback-lite-universal-5.17.4.apk">GitHub</a>
+        </div>
       </div>
     </div>
     <p style="margin-top:24px;font-size:14px;color:var(--ink-muted-48)">更多版本与更新说明见 <a href="https://github.com/motao123/webtv/releases">GitHub Releases</a></p>

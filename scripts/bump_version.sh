@@ -62,6 +62,7 @@ apply docs/index.html "s/(最新版本 <strong[^>]*>v)[0-9]+\.[0-9]+\.[0-9]+/\1$
 echo "== docs/index.html 下载链接与显示名 =="
 for f in $FLAVORS; do
   apply docs/index.html "s|/download/${f}(-[0-9][0-9.]*)?\.apk|/download/${f}-${VERSION}.apk|g"
+  apply docs/index.html "s|/file/apk/${f}(-[0-9][0-9.]*)?\.apk|/file/apk/${f}-${VERSION}.apk|g"
   apply docs/index.html "s|(<div class=\"dl-name\">)${f}(-[0-9][0-9.]*)?\.apk(</div>)|\1${f}-${VERSION}.apk\3|g"
 done
 

@@ -72,11 +72,16 @@ jobs:
           # no CDN edge has cached. The Pages download buttons have to name those same
           # files: the bare <flavor>.apk they pointed at stops existing as soon as the
           # first versioned release is published, and a 404 on the download page is
-          # silent until someone tries it.
-          STALE=$(grep -oE '/download/[a-z0-9_]+(-[0-9][0-9.]*)?\.apk' docs/index.html | grep -vE -- "/download/[a-z0-9_]+-${VERSION}\.apk\$" || true)
-          if [ -n "$STALE" ]; then
+          # silent until someone tries it. Both link families are checked — the mirror
+          # buttons (primary) and the GitHub fallbacks.
+          # Flavor names contain dashes (mobile-arm64_v8a), so the character class
+          # must allow them — a dash-less class matches nothing and turns this whole
+          # check into a vacuous pass (which is exactly what it had been doing).
+          STALE=$(grep -oE '/download/[a-z0-9_-]+(-[0-9][0-9.]*)?\.apk' docs/index.html | grep -vE -- "/download/[a-z0-9_-]+-${VERSION}\.apk\$" || true)
+          STALE_MIRROR=$(grep -oE '/file/apk/[a-z0-9_-]+(-[0-9][0-9.]*)?\.apk' docs/index.html | grep -vE -- "/file/apk/[a-z0-9_-]+-${VERSION}\.apk\$" || true)
+          if [ -n "$STALE" ] || [ -n "$STALE_MIRROR" ]; then
             echo "::error::docs/index.html 的下载链接没跟上版本号，发版后会 404："
-            echo "$STALE" | sort -u | sed 's/^/    /'
+            echo "$STALE$STALE_MIRROR" | sort -u | sed 's/^/    /'
             echo "  修复：bash scripts/bump_version.sh $VERSION"
             fail=1
           fi
